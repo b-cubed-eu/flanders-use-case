@@ -1,6 +1,6 @@
 ---
 title: "Flanders use case "
-subtitle: "demonstrating B-cubed workflows"
+subtitle: "Demonstrating B-Cubed workflows"
 image: '_site/images/assets/foto1.jpg'
 about:
   template: trestles
@@ -18,7 +18,7 @@ about:
 ---
 
 
-This dashboard showcases developed workflows within [the B-cubed project](https://b-cubed.eu/case-studies) for the region of Flanders, a region of Europe where species occurrence data are abundant.
+This dashboard showcases developed workflows within [the B-Cubed project](https://b-cubed.eu/case-studies) for the region of Flanders, a region of Europe where species occurrence data are abundant.
 
 The implemented indicators in this dashboard can be subdivided into:
 
