@@ -11,6 +11,6 @@
     "href": "index.html",
     "title": "Flanders use case",
     "section": "",
-    "text": "This dashboard showcases developed workflows within the B-Cubed project for the region of Flanders, a region of Europe where species occurrence data are abundant.\nThe implemented indicators in this dashboard can be subdivided into:\n\nGeneral biodiversity indicators (based on b3gbi, for instance, cumulative species richness, relative species richness, etc.);\nPhylogenetic indicators (based on pdindicatoR);\nInvasive Alien Species indicators (based on impIndicator, TRIAS and b3alien)"
+    "text": "This dashboard showcases developed workflows within the B-Cubed project for the region of Flanders, a region of Europe where species occurrence data are abundant.\nThe implemented indicators in this dashboard can be subdivided into:\n\nGeneral biodiversity indicators (based on b3gbi, for instance, cumulative species richness, relative species richness, etc.);\nPhylogenetic indicators (based on pdindicatoR);\nInvasive Alien Species indicators (based on impIndicator, TrIAS and b3alien)"
   }
 ]

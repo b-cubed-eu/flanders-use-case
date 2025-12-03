@@ -37,6 +37,7 @@ google-services.json
 .Renviron
 
 preprocessing/data/raw/*
+_preprocessing/data/raw/*
 
 /.quarto/
 **/*.quarto_ipynb

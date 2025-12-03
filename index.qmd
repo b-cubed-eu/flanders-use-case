@@ -17,7 +17,6 @@ about:
       href: https://github.com/b-cubed-eu/pdindicatoR
 ---
 
-
 This dashboard showcases developed workflows within [the B-Cubed project](https://b-cubed.eu/case-studies) for the region of Flanders, a region of Europe where species occurrence data are abundant.
 
 The implemented indicators in this dashboard can be subdivided into:
@@ -26,6 +25,4 @@ The implemented indicators in this dashboard can be subdivided into:
 
 -   Phylogenetic indicators (based on [pdindicatoR](https://github.com/b-cubed-eu/pdindicator));
 
--   Invasive Alien Species indicators (based on [impIndicator](https://github.com/b-cubed-eu/impindicator), [TRIAS](https://trias-project.github.io/indicators/) and [b3alien](https://pypi.org/project/b3alien/))
-
-  
+-   Invasive Alien Species indicators (based on [impIndicator](https://github.com/b-cubed-eu/impindicator), [TrIAS](https://trias-project.github.io/indicators/) and [b3alien](https://pypi.org/project/b3alien/))
