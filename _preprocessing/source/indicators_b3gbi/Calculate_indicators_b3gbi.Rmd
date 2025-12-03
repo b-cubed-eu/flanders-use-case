@@ -1,9 +1,10 @@
 ---
 title: "Calculate General Indicators Flanders Case Study WP6"
 output: html_document
-
 ---
+
 #install packages
+
 ```{r}
 #install.packages("b3gbi", repos = c("https://b-cubed-eu.r-universe.dev", "https://cloud.r-project.org"))
 
@@ -14,8 +15,9 @@ library(taxize)
 ```
 
 #read in Angiosperm data
+
 ```{r}
-Angiosperm_data_cube <- process_cube(read.csv('./data/raw/Angiosperm_data.csv'))
+Angiosperm_data_cube <- process_cube(read.csv('./preprocessing/data/raw/Angiosperm_data.csv'))
 
 Angiosperm_data_cube 
 
@@ -23,19 +25,20 @@ str(Angiosperm_data_cube)
 ```
 
 ```{r}
-Flanders <- read_sf('./data/spatial/flanders_wgs84.geojson')
+Flanders <- read_sf('./preprocessing/data/spatial/flanders_wgs84.geojson')
 ```
 
-#Running b3gbi indicators
-##8.1. Observed Species Richness ~ recorded richness
+#Running b3gbi indicators ##8.1. Observed Species Richness \~ recorded richness
+
 ```{r}
 'This fundamental indicator quantifies the total number of unique species detected within a given spatial unit (e.g., grid cell, for indicator_map) or temporal period (e.g., year, for indicator_ts). It provides a straightforward measure of detected biodiversity.'
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
+                            cell_size="grid",
                             level = "country", 
                             region = "Belgium",
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            shapefile_path = './preprocessing/data/spatial/Flanders.shp')
 
 saveRDS(OSR_map, 
         './data/output/general_indicators/OSR_map.rds')
@@ -51,6 +54,7 @@ saveRDS(OSR_ts,
 ```
 
 ##8.2. Total Occurrences
+
 ```{r}
 'This variable quantifies the overall number of species occurrence records within a spatial unit or temporal period. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.'
 
@@ -82,6 +86,7 @@ saveRDS(TO_ts,
 ```
 
 #8.3. Evenness
+
 ```{r}
 "Evenness measures how uniformly individuals (or observations in GBIF data) are distributed among species within a given area or over time. It complements species richness by providing insight into community structure. b3gbi supports Pielou's Evenness and Williams' Evenness, displaying their values spatially on maps (indicator_map) or as trends over time (indicator_ts)."
 
@@ -134,6 +139,7 @@ saveRDS(WEM_ts,
 ```
 
 #8.4. Rarity
+
 ```{r}
 "Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity."
 
@@ -186,6 +192,7 @@ saveRDS(AbRM_ts,
 ```
 
 #8.5. Estimated Hill Diversity
+
 ```{r}
 'Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the "effective number of species" and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.
 
@@ -262,6 +269,7 @@ saveRDS(HSi_ts,
 ```
 
 #8.6. Cumulative Species Richness
+
 ```{r}
 'This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).'
 
@@ -282,6 +290,7 @@ saveRDS(CR_ts,
 ```
 
 #8.7. Mean Year of Occurrence (Newness)
+
 ```{r}
 'This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.'
 
@@ -316,6 +325,7 @@ saveRDS(NN_ts,
 ```
 
 #8.8. Occurrence Density
+
 ```{r}
 'Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes. It can be displayed as a map (indicator_map) illustrating areas with higher concentrations of records, or as a time series (indicator_ts) showing changes in the rate of recording over time for the study area.'
 
@@ -346,6 +356,7 @@ saveRDS(OD_ts,
 ```
 
 #8.9. Species Occurrences
+
 ```{r}
 'This variable provides the number of occurrences for individual species, focusing on their observed frequency and distribution. It can serve as a proxy for relative abundance for species with similar detectability. It visualizes the observed geographical distribution of a specific species on a map (indicator_map) or tracks its annual record counts over time (indicator_ts).'
 
@@ -379,6 +390,7 @@ saveRDS(SO_ts,
 ```
 
 #8.10. Species Range
+
 ```{r}
 'Species Range refers to the observed geographical extent of individual species, depicted by the grid cells they occupy. This indicator primarily visualizes the distribution of specific species based on occurrence data, showing occupied cells on a map (indicator_map). Temporally (indicator_ts), it tracks how the number of occupied grid cells for a species changes over time, indicating range expansion, contraction, or stability.'
 
@@ -412,6 +424,7 @@ saveRDS(SRa_ts,
 ```
 
 #8.11. Taxonomic Distinctness
+
 ```{r}
 
 'Taxonomic Distinctness measures the average taxonomic distance between any two randomly chosen species in a sample, incorporating their phylogenetic or taxonomic relatedness. A higher value indicates a broader representation of evolutionary history within the community. It can highlight areas on a map (indicator_map) or show trends over time (indicator_ts) where species are, on average, more distantly related.'
@@ -442,7 +455,8 @@ saveRDS(TD_ts,
 
 ```
 
-#8.12. Species Turnover -> possibly renamed Occupancy turnover?
+#8.12. Species Turnover -\> possibly renamed Occupancy turnover?
+
 ```{r}
 'Species Turnover measures the rate at which species composition changes over time within a community, quantifying the balance between species "gains" and "losses" between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).'
 
@@ -462,4 +476,3 @@ saveRDS(OT_ts,
 
 
 ```
-

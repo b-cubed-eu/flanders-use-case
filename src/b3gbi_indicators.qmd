@@ -146,7 +146,6 @@ plot(WEM_ts)
 
 ```
 
-
 ```{r, echo = FALSE}
 WEM_map <- readRDS('WEM_map.rds')
 plot(WEM_map)
@@ -164,6 +163,7 @@ plot(WEM_ts)
 Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity.
 
 ### Abundance - Based Rarity
+
 ```{r, eval=FALSE}
 #load library
 library(b3gbi)
@@ -195,6 +195,7 @@ plot(AbRM_ts)
 ```
 
 ### Area-based rarity
+
 ```{r, eval=FALSE}
 #load library
 library(b3gbi)
@@ -232,6 +233,7 @@ plot(ArRM_ts)
 Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the "effective number of species" and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.
 
 ### Species richness (q=0)
+
 ```{r, eval=FALSE}
 #load library
 library(b3gbi)
@@ -264,6 +266,7 @@ plot(SR_ts)
 ```
 
 ### Hill - Shanon (q=1)
+
 ```{r, eval=FALSE}
 #load library
 library(b3gbi)
@@ -285,7 +288,8 @@ plot(HSh_map)
 plot(HSh_ts)
 
 ```
-`
+
+\`
 
 ```{r, echo = FALSE}
 HSh_map <- readRDS('HSh_map.rds')
@@ -329,7 +333,6 @@ plot(HSi_map)
 HSi_ts <- readRDS('HSi_ts.rds')
 plot(HSi_ts)
 ```
-
 :::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
