@@ -1,0 +1,10 @@
+---
+title: "Prepare_Natura2000_versus_nonNatura2000_shape"
+output: html_document
+---
+
+```{r}
+library(sf)
+
+```
+
