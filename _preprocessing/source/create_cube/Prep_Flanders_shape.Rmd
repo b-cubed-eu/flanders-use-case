@@ -63,6 +63,37 @@ Flanders_map <- leaflet()%>%
 st_write(Flanders_noholes, './_preprocessing/data/spatial/flanders_noholes.geojson')
 
 st_write(Flanders_buffer15km_wgs84, './_preprocessing/data/spatial/flanders_buffer15_wgs84.geojson')
+
+f <- st_read('./_preprocessing/data/spatial/flanders_buffer15_wgs84.geojson')
+
+f <- st_convex_hull(f)
+f <- st_convex_hull(f)
+f <- st_convex_hull(f)
+st_crs(f)
+
+f <- st_transform(f, 4326) # will do nothing if already EPSG:4326
+
+# 4. make geometries valid
+f <- st_make_valid(f)
+
+map <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=f)
+# 5. union all features into a single geometry (one polygon/multipolygon)
+geom_union <- st_union(st_geometry(f))
+
+# 6. cast to MULTIPOLYGON if necessary (safer for complex ranges)
+geom_union <- st_cast(geom_union, "MULTIPOLYGON")
+
+# 7. get WKT text
+wkt <- st_as_text(geom_union)
+wkt <- gsub("\n", " ", wkt)   # remove newlines if any
+wkt
+
+# Export to a file
+writeLines(wkt, "./_preprocessing/data/spatial/flanders_buffer15km_wkt.txt")
+
+
 ```
 
 ```{r}
