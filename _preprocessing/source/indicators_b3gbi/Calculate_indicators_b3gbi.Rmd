@@ -7,6 +7,11 @@ output: html_document
 
 ```{r}
 #install.packages("b3gbi", repos = c("https://b-cubed-eu.r-universe.dev", "https://cloud.r-project.org"))
+#install.packages("rnaturalearthdata")
+#install.packages("sf")
+#install.packages("taxize")
+#install.packages("here")
+
 
 gc()
 library(b3gbi)
@@ -50,7 +55,7 @@ OSR_ts <- obs_richness_ts(Angiosperm_data_cube,
                           cell_size="grid")
 
 saveRDS(OSR_ts, 
-        paste0(output_path, '/OSR_map.ts'))
+        paste0(output_path, '/OSR_ts.rds'))
 
 ```
 
