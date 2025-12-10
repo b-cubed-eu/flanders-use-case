@@ -110,7 +110,7 @@ We get a big dataframe with all occurrences.
 
 ```{r}
 # Explore dataframe
-glimpse(data_total_1km)
+glimpse(data_total_10km)
 ```
 
 # Select Flanders grid cells
@@ -128,7 +128,7 @@ Cube_Angio_Flanders_10km <- data_total_10km%>%
 
 ```{r}
 write.csv(Cube_Angio_Flanders_10km,
-          '_preprocessing/data/raw/Angiosperm_data_Flanders.csv')
+          '_preprocessing/data/raw/Angiosperm_data_Flanders_10km.csv')
 
 ```
 
