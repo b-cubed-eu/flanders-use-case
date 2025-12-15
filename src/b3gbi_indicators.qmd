@@ -24,7 +24,7 @@ This fundamental indicator quantifies the total number of unique species detecte
 #load library
 library(b3gbi)
 
-#Execute preprocessing step
+#Execute preprocessing step (TEST)
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
                             level = "country", 
                             region = "Belgium",
@@ -41,7 +41,7 @@ plot(OSR_ts)
 ```
 
 ```{r, echo = FALSE}
-OSR_map <- readRDS('OSR_map.rds')
+OSR_map <- readRDS("OSR_map.rds")
 plot(OSR_map)
 ```
 

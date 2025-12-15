@@ -1,11 +1,14 @@
 ---
 title: "Flanders use case "
 subtitle: "Demonstrating B-Cubed workflows"
-image: '_site/images/assets/foto1.jpg'
+image: "_site/images/assets/foto1.jpg"
 about:
   template: trestles
   image-shape: round
   links:
+    - icon: camera
+      text: unsplash
+      href: https://unsplash.com/photos/a-field-with-yellow-flowers-and-trees-in-the-background-rEICwwO3qpU?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText
     - icon: github
       text: b3gbi
       href: https://github.com/b-cubed-eu/b3gbi

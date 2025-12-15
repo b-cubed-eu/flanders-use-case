@@ -133,10 +133,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="../src/b3gbi_indicators.html" aria-current="page"> 
-<span class="menu-text">General indicators</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-general-indicators" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">General indicators</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-general-indicators">    
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators.html">
+ <span class="dropdown-text">Generate example Cube</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
+ <span class="dropdown-text">Results at 1 km resolution</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
+ <span class="dropdown-text">Results at 10 km resolution</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
@@ -199,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step (</span><span class="al">TEST</span><span class="co">)</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>OSR_map <span class="ot">&lt;-</span> <span class="fu">obs_richness_map</span>(Angiosperm_data_cube,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">level =</span> <span class="st">"country"</span>, </span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">region =</span> <span class="st">"Belgium"</span>,</span>

@@ -118,16 +118,16 @@ WEM_ts_plot <- plot(WEM_ts)
 
 ##export data to showcase in dashboard
 saveRDS(PEM_map, 
-        paste0(output_path, 'PEM_map.rds'))
+        paste0(output_path, '/PEM_map.rds'))
 
 saveRDS(PEM_ts, 
-        paste0(output_path, 'PEM_ts.rds'))
+        paste0(output_path, '/PEM_ts.rds'))
 
 saveRDS(WEM_map, 
-        paste0(output_path, 'WEM_map.rds'))
+        paste0(output_path, '/WEM_map.rds'))
 
 saveRDS(WEM_ts, 
-        paste0(output_path, 'WEM_ts.rds'))
+        paste0(output_path, '/WEM_ts.rds'))
 
 
 ```
