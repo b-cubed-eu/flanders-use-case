@@ -1,0 +1,82 @@
+---
+title: "Prepare_Natura2000_versus_nonNatura2000_shape"
+output: html_document
+---
+
+```{r}
+library(sf)
+library(dplyr)
+library(leaflet)
+
+```
+
+```{r}
+EEA_1km <- read_sf('./_preprocessing/data/spatial/EEA_1km_Flanders_union.geojson')
+
+EEA_Flanders_union_map_1km <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=EEA_1km)
+
+Zone_Flanders_use_case <- read_sf('./_preprocessing/data/spatial/flanders_buffer15_wgs84.geojson')
+
+#inlezen habitatrichtlijn gebied
+Natura2000 <- read_sf("./_preprocessing/data/spatial/Natura2000_BE.shp")
+
+Intersect_EEA_Natura2000 <-
+read_delim("_preprocessing/data/spatial/intersect_EEA_ref_grid_protected_areas.tsv", 
+     delim = "\t", escape_double = FALSE, 
+     trim_ws = TRUE)%>%
+  select('CELLCODE', 'natura2000', 'spa', 'habitat')
+
+EEA_1km_complete_info <- left_join(EEA_1km, Intersect_EEA_Natura2000, by='CELLCODE')
+
+library(leaflet)
+library(sf)
+library(dplyr)
+
+# Kleurfunctie: TRUE = groen, FALSE = rood
+pal <- colorFactor(
+  palette = c("red", "green"),
+  domain = EEA_1km_complete_info$Natura2000
+)
+
+# Leaflet map
+map <- leaflet(EEA_1km_complete_info) %>%
+  addTiles() %>%
+  addPolygons(
+    color = "black",
+    weight = 0.4,
+    fillOpacity = 0.6,
+    fillColor = ~pal(natura2000),
+    popup = ~paste0(
+      "<b>CELLCODE:</b> ", CELLCODE, "<br>",
+      "<b>Natura2000:</b> ", natura2000
+    )
+  ) %>%
+  addLegend(
+    "bottomright",
+    pal = pal,
+    values = ~natura2000,
+    title = "Natura2000",
+    labels = c("FALSE", "TRUE")
+  )
+
+```
+
+```{r}
+EEA_1km_Natura2000 <- EEA_1km_complete_info%>%
+  filter(natura2000 == TRUE)
+
+EEA_1km_nonNatura2000 <- EEA_1km_complete_info%>%
+  filter(natura2000 == FALSE)
+```
+
+```{r}
+st_write(EEA_1km_Natura2000, './_preprocessing/data/spatial/EEA_1km_Natura2000.geojson')
+
+st_write(EEA_1km_nonNatura2000, './_preprocessing/data/spatial/EEA_1km_nonNatura2000.geojson')
+
+st_write(EEA_1km_complete_info, './_preprocessing/data/spatial/EEA_1km_complete_info.geojson')
+```
+
+

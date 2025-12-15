@@ -7,25 +7,37 @@ output: html_document
 
 ```{r}
 #install.packages("b3gbi", repos = c("https://b-cubed-eu.r-universe.dev", "https://cloud.r-project.org"))
+#install.packages("rnaturalearthdata")
+#install.packages("sf")
+#install.packages("taxize")
+#install.packages("here")
+
 
 gc()
 library(b3gbi)
 library(sf)
 library(taxize)
+library(here)
+
+
 ```
 
-#read in Angiosperm data
+#Define input file and directory of output files
 
 ```{r}
-Angiosperm_data_cube <- process_cube(read.csv('./preprocessing/data/raw/Angiosperm_data.csv'))
+Focus <- 'Flanders_1km'
 
+Angiosperm_data_cube <- process_cube(read.csv(paste0('./_preprocessing/data/raw/Angiosperm_data_', Focus, '.csv')))
+
+output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)
+
+if (!dir.exists(output_path)) {
+  dir.create(output_path, recursive = TRUE)
+}
+#check resolution of file
 Angiosperm_data_cube 
 
 str(Angiosperm_data_cube)
-```
-
-```{r}
-Flanders <- read_sf('./preprocessing/data/spatial/flanders_wgs84.geojson')
 ```
 
 #Running b3gbi indicators ##8.1. Observed Species Richness \~ recorded richness
@@ -33,23 +45,17 @@ Flanders <- read_sf('./preprocessing/data/spatial/flanders_wgs84.geojson')
 ```{r}
 'This fundamental indicator quantifies the total number of unique species detected within a given spatial unit (e.g., grid cell, for indicator_map) or temporal period (e.g., year, for indicator_ts). It provides a straightforward measure of detected biodiversity.'
 
-#TODO: lukt niet om schaal aan te passen naar 1 km
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
-                            cell_size="grid",
-                            level = "country", 
-                            region = "Belgium",
-                            shapefile_path = './preprocessing/data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 saveRDS(OSR_map, 
-        './data/output/general_indicators/OSR_map.rds')
+        paste0(output_path, '/OSR_map.rds'))
 
 OSR_ts <- obs_richness_ts(Angiosperm_data_cube, 
-                          level = "country", 
-                          region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                          cell_size="grid")
 
 saveRDS(OSR_ts, 
-        './data/output/general_indicators/OSR_ts.rds')
+        paste0(output_path, '/OSR_ts.rds'))
 
 ```
 
@@ -62,23 +68,19 @@ gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
 TO_map <- total_occ_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                          shapefile_path = './data/spatial/Flanders.shp')
+                             cell_size="grid")
 
 
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 TO_ts <- total_occ_ts(Angiosperm_data_cube, 
-                          level = "country", 
-                          region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                           cell_size="grid")
 
 saveRDS(TO_map, 
-        './data/output/general_indicators/TO_map.rds')
+        paste0(output_path, '/TO_map.rds'))
 
 saveRDS(TO_ts, 
-        './data/output/general_indicators/TO_ts.rds')
+        paste0(output_path, '/TO_ts.rds'))
 
 
 
@@ -95,45 +97,37 @@ saveRDS(TO_ts,
 gc()
 
 PEM_map <-  pielou_evenness_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                             cell_size="grid")
 
 PEM_map_plot <- plot(PEM_map)
 
 WEM_map <- williams_evenness_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                             cell_size="grid")
 
 WEM_map_plot <- plot(WEM_map)
 
 PEM_ts <-  pielou_evenness_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                             cell_size="grid")
 
 PEM_ts_plot <- plot(PEM_ts)
 
 WEM_ts <- williams_evenness_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                             cell_size="grid")
 
 WEM_ts_plot <- plot(WEM_ts)
 
 ##export data to showcase in dashboard
 saveRDS(PEM_map, 
-        './data/output/general_indicators/PEM_map.rds')
+        paste0(output_path, '/PEM_map.rds'))
 
 saveRDS(PEM_ts, 
-        './data/output/general_indicators/PEM_ts.rds')
+        paste0(output_path, '/PEM_ts.rds'))
 
 saveRDS(WEM_map, 
-        './data/output/general_indicators/WEM_map.rds')
+        paste0(output_path, '/WEM_map.rds'))
 
 saveRDS(WEM_ts, 
-        './data/output/general_indicators/WEM_ts.rds')
+        paste0(output_path, '/WEM_ts.rds'))
 
 
 ```
@@ -148,46 +142,38 @@ saveRDS(WEM_ts,
 gc()
 
 ArRM_map <-  area_rarity_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 ArRM_map_plot <- plot(ArRM_map)
 
 AbRM_map <- ab_rarity_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 AbRM_map_plot <- plot(AbRM_map)
 
 ArRM_ts <-  area_rarity_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 ArRM_ts_plot <- plot(ArRM_ts)
 
 AbRM_ts <- ab_rarity_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 AbRM_ts_plot <- plot(AbRM_ts)
 
 ##export data to showcase in dashboard
 saveRDS(ArRM_map, 
-        './data/output/general_indicators/arRM_map.rds')
+        paste0(output_path, '/arRM_map.rds'))
 
 saveRDS(ArRM_ts, 
-        './data/output/general_indicators/arRM_ts.rds')
+        paste0(output_path, '/arRM_ts.rds'))
 
 
 saveRDS(AbRM_map, 
-        './data/output/general_indicators/abRM_map.rds')
+        paste0(output_path, '/abRM_map.rds'))
 
 saveRDS(AbRM_ts, 
-        './data/output/general_indicators/abRM_ts.rds')
+        paste0(output_path, '/abRM_ts.rds'))
 
 ```
 
@@ -205,66 +191,54 @@ HSi: Hill-Simpson diversity - hill2_map() and hill2_ts()'
 gc()
 
 SR_map <-  hill0_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 SR_map_plot <- plot(SR_map)
 
 HSh_map <- hill1_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 HSh_map_plot <- plot(HSh_map)
 
 HSi_map <- hill2_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 HSi_map_plot <- plot(HSi_map)
 
 SR_ts <-  hill0_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 SR_ts_plot <- plot(SR_ts)
 
 HSh_ts <- hill1_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 HSh_ts_plot <- plot(HSh_ts)
 
 HSi_ts <- hill2_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium" , 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 HSi_ts_plot <- plot(HSi_ts)
 
 ##export data to showcase in dashboard
 saveRDS(SR_map, 
-        './data/output/general_indicators/SR_map.rds')
+        paste0(output_path, '/SR_map.rds'))
 
 saveRDS(SR_ts, 
-        './data/output/general_indicators/SR_ts.rds')
+        paste0(output_path, '/SR_ts.rds'))
 
 
 saveRDS(HSh_map, 
-        './data/output/general_indicators/HSh_map.rds')
+        paste0(output_path, '/HSh_map.rds'))
 
 saveRDS(HSh_ts, 
-        './data/output/general_indicators/HSh_ts.rds')
+        paste0(output_path, '/HSh_ts.rds'))
 
 saveRDS(HSi_map, 
-        './data/output/general_indicators/HSi_map.rds')
+        paste0(output_path, '/HSi_map.rds'))
 
 saveRDS(HSi_ts, 
-        './data/output/general_indicators/HSi_ts.rds')
+        paste0(output_path, '/HSi_ts.rds'))
 
 ```
 
@@ -276,16 +250,14 @@ saveRDS(HSi_ts,
 gc()
 
 CR_ts <- cum_richness_ts(Angiosperm_data_cube, 
-                         level = "country", 
-                         region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                         cell_size="grid")
 
 CR_ts_plot <- plot(CR_ts)
 
 ##export data to showcase in dashboard
 
 saveRDS(CR_ts, 
-        './data/output/general_indicators/CR_ts.rds')
+        paste0(output_path, '/CR_ts.rds'))
 
 ```
 
@@ -302,25 +274,21 @@ gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
 NN_map <- newness_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 NN_map_plot <- plot(NN_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 NN_ts <- newness_ts(Angiosperm_data_cube, 
-                          level = "country", 
-                          region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                          cell_size="grid")
 NN_ts_plot <- plot(NN_ts)
 
 ##export data to showcase in dashboard
 saveRDS(NN_map, 
-        './data/output/general_indicators/NN_map.rds')
+        paste0(output_path, '/NN_map.rds'))
 
 saveRDS(NN_ts, 
-        './data/output/general_indicators/NN_ts.rds')
+        paste0(output_path, '/NN_ts.rds'))
 
 ```
 
@@ -335,24 +303,20 @@ gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
 OD_map <- occ_density_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 OD_map_plot <- plot(OD_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 OD_ts <- occ_density_ts(Angiosperm_data_cube,
-                        level = "country", 
-                        region = "Belgium", 
-                        shapefile_path = './data/spatial/Flanders.shp')
+                        cell_size="grid")
 OD_ts_plot <- plot(OD_ts)
 
 ##export data to showcase in dashboard
 saveRDS(OD_map, 
-        './data/output/general_indicators/OD_map.rds')
+        paste0(output_path, '/OD_map.rds'))
 
 saveRDS(OD_ts, 
-        './data/output/general_indicators/OD_ts.rds')
+        paste0(output_path, '/OD_ts.rds'))
 ```
 
 #8.9. Species Occurrences
@@ -366,25 +330,21 @@ gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
 SO_map <- spec_occ_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 SO_map_plot <- plot(SO_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 SO_ts <- spec_occ_ts(Angiosperm_data_cube, 
-                     level = "country", 
-                     region = "Belgium",
-                     shapefile_path = './data/spatial/Flanders.shp')
+                     cell_size="grid")
 
 SO_ts_plot <- plot(SO_ts)
 
 ##export data to showcase in dashboard
 saveRDS(SO_map, 
-        './data/output/general_indicators/SO_map.rds')
+        paste0(output_path, '/SO_map.rds'))
 
 saveRDS(SO_ts, 
-        './data/output/general_indicators/SO_ts.rds')
+        paste0(output_path, '/SO_ts.rds'))
 
 
 ```
@@ -400,25 +360,21 @@ gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
 SRa_map <- spec_range_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 SRa_map_plot <- plot(SRa_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 SRa_ts <- spec_range_ts(Angiosperm_data_cube, 
-                        level = "country", 
-                        region = "Belgium",
-                        shapefile_path = './data/spatial/Flanders.shp')
+                        cell_size="grid")
 
 SRa_ts_plot <- plot(SRa_ts)
 
 ##export data to showcase in dashboard
 saveRDS(SRa_map, 
-        './data/output/general_indicators/SRa_map.rds')
+        paste0(output_path, '/SRa_map.rds'))
 
 saveRDS(SRa_ts, 
-        './data/output/general_indicators/SRa_ts.rds')
+        paste0(output_path, '/SRa_ts.rds'))
 
 
 ```
@@ -433,25 +389,21 @@ gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
 TD_map <- tax_distinct_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 TD_map_plot <- plot(TD_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 TD_ts <- tax_distinct_ts(Angiosperm_data_cube,
-                         level = "country", 
-                         region = "Belgium",
-                         shapefile_path = './data/spatial/Flanders.shp')
+                         cell_size="grid")
 
 TD_ts_plot <- plot(TD_ts)
 
 ##export data to showcase in dashboard
 saveRDS(TD_map, 
-        './data/output/general_indicators/TD_map.rds')
+        paste0(output_path, '/TD_map.rds'))
 
 saveRDS(TD_ts, 
-        './data/output/general_indicators/TD_ts.rds')
+        paste0(output_path, '/TD_ts.rds'))
 
 ```
 
@@ -464,15 +416,13 @@ saveRDS(TD_ts,
 gc()
 
 OT_ts <- occ_turnover_ts(Angiosperm_data_cube,
-                         level = "country", 
-                         region = "Belgium", 
-                         shapefile_path = './data/spatial/Flanders.shp')
+                         cell_size="grid")
 
 OT_ts_plot <- plot(OT_ts)
 
 ##export data to showcase in dashboard
 saveRDS(OT_ts, 
-        './data/output/general_indicators/OT_ts.rds')
+        paste0(output_path, '/OT_ts.rds'))
 
 
 ```

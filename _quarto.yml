@@ -6,16 +6,55 @@ website:
   bread-crumbs: true
   title: "WP6: Flanders case study"
   navbar:
+    search: true
     logo: images/assets/B3_logomark.png
     left:
-      - href: index.qmd
-        text: Home
-      - href: src/b3gbi_indicators.qmd
-        text: General indicators
-    right:
+      - text: 'Home'
+        href: index.qmd
+      - text: 'General indicators'
+        menu:
+         - text: Generate example Cube 
+           href: src/preprocessing_general_indicators.qmd
+         - text: Results at 1 km resolution
+           href: src/b3gbi_indicators_1km.qmd
+         - text: Results at 10 km resolution
+           href: src/b3gbi_indicators_10km.qmd
+         - text: Focus on Natura2000
+           href: src/b3gbi_indicators_Natura2000.qmd
+      - text: 'Phylogenetic indicators'
+        menu:
+         - text: Generate example Cube 
+           href: src/under_development.qmd
+         - text: Results at 1 km resolution
+           href: src/under_development.qmd
+         - text: Focus on Natura2000
+           href: src/under_development.qmd
+      - text: 'IAS indicators'
+        menu:
+         - text: Generate example Cube 
+           href: src/under_development.qmd
+         - text: Results at 1 km resolution
+           href: src/under_development.qmd
+         - text: Results at 10 km resolution
+           href: src/under_development.qmd
+         - text: Focus on Natura2000
+           href: src/under_development.qmd
+      - text: 'Comparing indicators'
+        menu:
+         - text: General indicators
+           href: src/under_development.qmd
+         - text: Phylogenetic indicators
+           href: src/under_development.qmd
+         - text: IAS indicators
+           href: src/under_development.qmd
+           
+    right: 
       - icon: github
         href: https://github.com/b-cubed-eu/WP6_use_case_Flanders
         aria-label: "GitHub Repository"
+        
+
+      
 
 format:
   html:
