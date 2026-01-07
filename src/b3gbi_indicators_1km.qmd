@@ -2,14 +2,14 @@
 title:  >
   <a href="https://github.com/b-cubed-eu/b3gbi" target="_blank">
     <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;">
-  </a>General indicators at 10 km resolution
+  </a>General indicators at 1 km resolution
 format:
   html:
     code-fold: true
     code-summary: "Show the code"
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE}
 #load library
 library(b3gbi)
 
@@ -18,7 +18,7 @@ library(b3gbi)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Observed species richness
 
-This fundamental indicator quantifies the total number of unique species detected within a given spatial unit (e.g., grid cell, for indicator_map) or temporal period (e.g., year, for indicator_ts). It provides a straightforward measure of detected biodiversity.
+Observed richness is calculated by summing the number of unique species observed for each year or each cell. Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al. in Journal of Applied Ecology, 2018), as well as the detectability of each species.
 
 ```{r, eval=FALSE}
 #load library
@@ -26,23 +26,21 @@ library(b3gbi)
 
 #Execute preprocessing step (TEST)
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium",
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 OSR_ts <- obs_richness_ts(Angiosperm_data_cube, 
-                          level = "country", 
-                          region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                          cell_size="grid")
 
-plot(OSR_map)
+plot_map(OSR_map,
+         visible_gridlines = FALSE)
 
-plot(OSR_ts)
+plot_ts(OSR_ts)
 ```
 
 ```{r, echo = FALSE}
 OSR_map <- readRDS("./Flanders_1km/OSR_map.rds")
-plot(OSR_map)
+plot_map(OSR_map,
+         ,visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
@@ -54,30 +52,27 @@ plot(OSR_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Total Occurrences
 
-This variable quantifies the overall number of species occurrence records within a spatial unit or temporal period. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.
+The total number of occurrences is calculated by summing the occurrences of all species observed for each cell or year. While not itself an indicator, this variable provides an overview of the comprehensiveness and distribution of data in the cube being analysed, and may be helpful, or even vital, for interpreting the results of calculated indicators.
 
 ```{r, eval=FALSE}
 #load library
 library(b3gbi)
 
 TO_map <- total_occ_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                          shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 TO_ts <- total_occ_ts(Angiosperm_data_cube, 
-                          level = "country", 
-                          region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                          cell_size="grid")
 
-plot(TO_map)
+plot_map(TO_map, 
+         visible_gridlines = FALSE)
 
-plot(TO_ts)
+plot_ts(TO_ts)
 ```
 
 ```{r, echo = FALSE}
 TO_map <- readRDS('./Flanders_1km/TO_map.rds')
-plot(TO_map)
+plot_map(TO_map, visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
@@ -89,7 +84,7 @@ plot(TO_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Evenness
 
-Evenness measures how uniformly individuals (or observations in GBIF data) are distributed among species within a given area or over time. It complements species richness by providing insight into community structure. b3gbi supports Pielou's Evenness and Williams' Evenness, displaying their values spatially on maps (indicator_map) or as trends over time (indicator_ts).
+Species evenness is a commonly used indicator that measures how uniformly individuals are distributed across species in a region or over time. It provides a complement to richness by taking relative abundance into account. Although GBIF provides information about abundances as individual counts, the majority of entries lack this information. Hence, evenness can only be calculated using the proportions of observations rather than proportions of individuals. Strictly speaking, the evenness measures therefore indicate how uniformly species are represented in the respective data set rather than the true evenness of the ecological community.
 
 ### Pielou's Evenness
 
@@ -99,24 +94,20 @@ library(b3gbi)
 
 #Execute preprocessing step
 PEM_map <-  pielou_evenness_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 PEM_ts <-  pielou_evenness_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
-plot(PEM_map)
+plot_map(PEM_map, visible_gridlines = FALSE)
 
-plot(PEM_ts)
+plot_ts(PEM_ts)
 
 ```
 
 ```{r, echo = FALSE}
 PEM_map <- readRDS('./Flanders_1km/PEM_map.rds')
-plot(PEM_map)
+plot(PEM_map, visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
@@ -131,24 +122,22 @@ plot(PEM_ts)
 library(b3gbi)
 
 WEM_map <- williams_evenness_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 WEM_ts <- williams_evenness_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
-plot(WEM_map)
+plot_map(WEM_map,
+         visible_gridlines = FALSE)
 
-plot(WEM_ts)
+plot_ts(WEM_ts)
 
 ```
 
 ```{r, echo = FALSE}
 WEM_map <- readRDS('./Flanders_1km/WEM_map.rds')
-plot(WEM_map)
+plot_map(WEM_map,
+         visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
@@ -160,7 +149,7 @@ plot(WEM_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Rarity
 
-Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity.
+Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation.A rare species might have a small population size, a limited distribution, or a unique ecological niche (Maciel, 2021; Rabinowitz, 1981). Rarity can also be a biodiversity indicator when summed over multiple species in an area, and may provide important insight for determining conservation priorities. When measured over time, rarity may indicate potential threats or changes in the environment. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity.
 
 ### Abundance - Based Rarity
 
@@ -169,29 +158,25 @@ Rarity quantifies the scarcity or infrequency of species, and when summed over m
 library(b3gbi)
 
 AbRM_map <- ab_rarity_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 AbRM_ts <- ab_rarity_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
-plot(AbRM_map)
+plot_map(AbRM_map)
 
-plot(AbRM_ts)
+plot_ts(AbRM_ts)
 
 ```
 
 ```{r, echo = FALSE}
 AbRM_map <- readRDS('./Flanders_1km/AbRM_map.rds')
-plot(AbRM_map)
+plot_map(AbRM_map, visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
 AbRM_ts <- readRDS('./Flanders_1km/AbRM_ts.rds')
-plot(AbRM_ts)
+plot_ts(AbRM_ts)
 ```
 
 ### Area-based rarity
@@ -201,29 +186,25 @@ plot(AbRM_ts)
 library(b3gbi)
 
 ArRM_map <-  area_rarity_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 ArRM_ts <-  area_rarity_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                           cell_size="grid")
 
-plot(ArRM_map)
+plot_map(ArRM_map, visible_gridlines = FALSE)
 
-plot(ArRM_ts)
+plot_ts(ArRM_ts)
 
 ```
 
 ```{r, echo = FALSE}
 ArRM_map <- readRDS('./Flanders_1km/ArRM_map.rds')
-plot(ArRM_map)
+plot_map(ArRM_map, visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
 ArRM_ts <- readRDS('./Flanders_1km/ArRM_ts.rds')
-plot(ArRM_ts)
+plot_ts(ArRM_ts)
 ```
 :::
 
@@ -240,29 +221,26 @@ library(b3gbi)
 
 #Execute preprocessing step
 SR_map <-  hill0_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 SR_ts <-  hill0_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
-plot(SR_map)
+plot_map(SR_map, visible_gridlines = FALSE)
 
-plot(SR_ts)
+plot_ts(SR_ts)
 
 ```
 
 ```{r, echo = FALSE}
 SR_map <- readRDS('./Flanders_1km/SR_map.rds')
-plot(SR_map)
+plot_map(SR_map,
+        visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
 SR_ts <- readRDS('./Flanders_1km/SR_ts.rds')
-plot(SR_ts)
+plot_ts(SR_ts)
 ```
 
 ### Hill - Shanon (q=1)
@@ -272,20 +250,17 @@ plot(SR_ts)
 library(b3gbi)
 
 HSh_map <- hill1_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 
 
 HSh_ts <- hill1_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                           cell_size="grid")
 
-plot(HSh_map)
+plot_map(HSh_map,
+         visible_gridlines = FALSE)
 
-plot(HSh_ts)
+plot_ts(HSh_ts)
 
 ```
 
@@ -293,12 +268,13 @@ plot(HSh_ts)
 
 ```{r, echo = FALSE}
 HSh_map <- readRDS('./Flanders_1km/HSh_map.rds')
-plot(HSh_map)
+plot_map(HSh_map,
+         visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
 HSh_ts <- readRDS('./Flanders_1km/HSh_ts.rds')
-plot(HSh_ts)
+plot_ts(HSh_ts)
 ```
 
 ### Hill - Simpson (q=2)
@@ -309,29 +285,27 @@ library(b3gbi)
 
 #Execute preprocessing step
 HSi_map <- hill2_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 
 HSi_ts <- hill2_ts(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium" , 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
-plot(HSi_map)
+plot_map(HSi_map,
+         visible_gridlines = FALSE)
 
-plot(HSi_ts)
+plot_ts(HSi_ts)
 ```
 
 ```{r, echo = FALSE}
 HSi_map <- readRDS('./Flanders_1km/HSi_map.rds')
-plot(HSi_map)
+plot_map(HSi_map,
+         visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
 HSi_ts <- readRDS('./Flanders_1km/HSi_ts.rds')
-plot(HSi_ts)
+plot_ts(HSi_ts)
 ```
 :::
 
@@ -346,16 +320,14 @@ library(b3gbi)
 
 #Execute preprocessing step
 CR_ts <- cum_richness_ts(Angiosperm_data_cube, 
-                         level = "country", 
-                         region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                         cell_size="grid")
 
-plot(CR_ts)
+plot_ts(CR_ts)
 ```
 
 ```{r, echo = FALSE}
 CR_ts <- readRDS('./Flanders_1km/CR_ts.rds')
-plot(OSR_ts)
+plot_ts(OSR_ts)
 ```
 :::
 
@@ -370,29 +342,27 @@ library(b3gbi)
 
 #Execute preprocessing step
 NN_map <- newness_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 NN_ts <- newness_ts(Angiosperm_data_cube, 
-                          level = "country", 
-                          region = "Belgium",
-                          shapefile_path = './data/spatial/Flanders.shp')
+                          cell_size="grid")
 
-plot(NN_map)
+plot_map(NN_map,
+         visible_gridlines = FALSE)
 
-plot(NN_ts)
+plot_ts(NN_ts)
 ```
 
 ```{r, echo = FALSE}
 NN_map <- readRDS('./Flanders_1km/NN_map.rds')
-plot(NN_map)
+plot_map(NN_map,
+         visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
 NN_ts <- readRDS('./Flanders_1km/NN_ts.rds')
-plot(NN_ts)
+plot_ts(NN_ts)
 ```
 :::
 
@@ -407,29 +377,28 @@ library(b3gbi)
 
 #Execute preprocessing step
 OD_map <- occ_density_map(Angiosperm_data_cube,
-                            level = "country", 
-                            region = "Belgium", 
-                            shapefile_path = './data/spatial/Flanders.shp')
+                            cell_size="grid")
 
-plot(OD_map)
-
+plot_map(OD_map,
+         visible_gridlines = FALSE)
 ```
 
 ```{r, echo = FALSE}
 OD_map <- readRDS('./Flanders_1km/OD_map.rds')
-plot(OD_map)
+plot_map(OD_map, 
+         visible_gridlines = FALSE)
 ```
 
-```{r, echo = FALSE, eval=FALSE}
+```{r, echo = FALSE}
 OD_ts <- readRDS('./Flanders_1km/OD_ts.rds')
-plot(OD_ts)
+plot_ts(OD_ts)
 ```
 :::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occupancy turnover
 
-Occupancy Turnover measures the rate at which occupancy composition changes over time within a community, quantifying the balance between species "gains" and "losses" between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).
+Occupancy turnover measures the change in species composition over time, reflecting the rate at which species appear or disappear from a given area. It provides insights into the dynamic nature of ecological communities, highlighting shifts in species distributions and potential environmental changes. High turnover rates may indicate rapid community restructuring, potentially driven by factors such as habitat alteration, climate change, or invasive species. Analyzing occupancy turnover can be crucial for understanding ecosystem stability, identifying areas of conservation concern, and assessing the effectiveness of management strategies.
 
 ```{r, eval=FALSE}
 #load library
@@ -437,16 +406,14 @@ library(b3gbi)
 
 #Execute preprocessing step
 OT_ts <- occ_turnover_ts(Angiosperm_data_cube,
-                         level = "country", 
-                         region = "Belgium", 
-                         shapefile_path = './data/spatial/Flanders.shp')
+                         cell_size="grid")
 
-plot(OT_ts)
+plot_ts(OT_ts)
 
 ```
 
-```{r, echo = FALSE, eval= FALSE}
+```{r, echo = FALSE}
 OT_ts <- readRDS('./Flanders_1km/OT_ts.rds')
-plot(OT_ts)
+plot_ts(OT_ts)
 ```
 :::
