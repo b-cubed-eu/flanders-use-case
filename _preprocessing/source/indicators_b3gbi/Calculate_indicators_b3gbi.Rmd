@@ -18,8 +18,6 @@ library(b3gbi)
 library(sf)
 library(taxize)
 library(here)
-
-
 ```
 
 #Define input file and directory of output files
@@ -43,7 +41,7 @@ str(Angiosperm_data_cube)
 #Running b3gbi indicators ##8.1. Observed Species Richness \~ recorded richness
 
 ```{r}
-'This fundamental indicator quantifies the total number of unique species detected within a given spatial unit (e.g., grid cell, for indicator_map) or temporal period (e.g., year, for indicator_ts). It provides a straightforward measure of detected biodiversity.'
+'Observed richness is calculated by summing the number of unique species observed for each year or each cell. Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al., 2018), as well as the detectability of each species.'
 
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
                             cell_size="grid")
@@ -62,7 +60,7 @@ saveRDS(OSR_ts,
 ##8.2. Total Occurrences
 
 ```{r}
-'This variable quantifies the overall number of species occurrence records within a spatial unit or temporal period. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.'
+'The total number of occurrences is calculated by summing the occurrences of all species observed for each cell or year. While not itself an indicator, this variable provides an overview of the comprehensiveness and distribution of data in the cube being analysed, and may be helpful, or even vital, for interpreting the results of calculated indicators.'
 
 gc()
 
@@ -90,7 +88,7 @@ saveRDS(TO_ts,
 #8.3. Evenness
 
 ```{r}
-"Evenness measures how uniformly individuals (or observations in GBIF data) are distributed among species within a given area or over time. It complements species richness by providing insight into community structure. b3gbi supports Pielou's Evenness and Williams' Evenness, displaying their values spatially on maps (indicator_map) or as trends over time (indicator_ts)."
+"Species evenness is a commonly used indicator that measures how uniformly individuals are distributed across species in a region or over time. It provides a complement to richness by taking relative abundance into account. Although GBIF provides information about abundances as individual counts, the majority of entries lack this information. Hence, evenness can only be calculated using the proportions of observations rather than proportions of individuals. Strictly speaking, the evenness measures therefore indicate how uniformly species are represented in the respective data set rather than the true evenness of the ecological community."
 
 #bootstrapping ok
 
@@ -99,22 +97,22 @@ gc()
 PEM_map <-  pielou_evenness_map(Angiosperm_data_cube,
                              cell_size="grid")
 
-PEM_map_plot <- plot(PEM_map)
+
 
 WEM_map <- williams_evenness_map(Angiosperm_data_cube,
                              cell_size="grid")
 
-WEM_map_plot <- plot(WEM_map)
+
 
 PEM_ts <-  pielou_evenness_ts(Angiosperm_data_cube,
                              cell_size="grid")
 
-PEM_ts_plot <- plot(PEM_ts)
+
 
 WEM_ts <- williams_evenness_ts(Angiosperm_data_cube,
                              cell_size="grid")
 
-WEM_ts_plot <- plot(WEM_ts)
+
 
 ##export data to showcase in dashboard
 saveRDS(PEM_map, 
@@ -135,7 +133,7 @@ saveRDS(WEM_ts,
 #8.4. Rarity
 
 ```{r}
-"Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity."
+"Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation.A rare species might have a small population size, a limited distribution, or a unique ecological niche (Maciel, 2021; Rabinowitz, 1981). Rarity can also be a biodiversity indicator when summed over multiple species in an area, and may provide important insight for determining conservation priorities. When measured over time, rarity may indicate potential threats or changes in the environment. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity."
 
 #bootstrapping ok
 
@@ -193,32 +191,26 @@ gc()
 SR_map <-  hill0_map(Angiosperm_data_cube,
                             cell_size="grid")
 
-SR_map_plot <- plot(SR_map)
 
 HSh_map <- hill1_map(Angiosperm_data_cube,
                             cell_size="grid")
 
-HSh_map_plot <- plot(HSh_map)
 
 HSi_map <- hill2_map(Angiosperm_data_cube,
                             cell_size="grid")
 
-HSi_map_plot <- plot(HSi_map)
 
 SR_ts <-  hill0_ts(Angiosperm_data_cube,
                             cell_size="grid")
 
-SR_ts_plot <- plot(SR_ts)
 
 HSh_ts <- hill1_ts(Angiosperm_data_cube,
                             cell_size="grid")
 
-HSh_ts_plot <- plot(HSh_ts)
 
 HSi_ts <- hill2_ts(Angiosperm_data_cube,
                             cell_size="grid")
 
-HSi_ts_plot <- plot(HSi_ts)
 
 ##export data to showcase in dashboard
 saveRDS(SR_map, 
@@ -270,18 +262,13 @@ saveRDS(CR_ts,
 
 gc()
 
-
-
 #TODO: lukt niet om schaal aan te passen naar 1 km
 NN_map <- newness_map(Angiosperm_data_cube,
                             cell_size="grid")
 
-NN_map_plot <- plot(NN_map)
-
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 NN_ts <- newness_ts(Angiosperm_data_cube, 
                           cell_size="grid")
-NN_ts_plot <- plot(NN_ts)
 
 ##export data to showcase in dashboard
 saveRDS(NN_map, 
@@ -407,10 +394,10 @@ saveRDS(TD_ts,
 
 ```
 
-#8.12. Species Turnover -\> possibly renamed Occupancy turnover?
+#8.12. Occupancy turnover
 
 ```{r}
-'Species Turnover measures the rate at which species composition changes over time within a community, quantifying the balance between species "gains" and "losses" between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).'
+'Occupancy turnover measures the change in species composition over time, reflecting the rate at which species appear or disappear from a given area. It provides insights into the dynamic nature of ecological communities, highlighting shifts in species distributions and potential environmental changes. High turnover rates may indicate rapid community restructuring, potentially driven by factors such as habitat alteration, climate change, or invasive species. Analyzing occupancy turnover can be crucial for understanding ecosystem stability, identifying areas of conservation concern, and assessing the effectiveness of management strategies.'
 
 
 gc()
