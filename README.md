@@ -30,7 +30,7 @@ The associated dashboard visualizes the selected indicators and serves as inspir
 ## 🌐 Links
 
 - Project website: [https://b-cubed.eu/](https://b-cubed.eu/)  
-- Dashboard: [https://b-cubed-eu.github.io/flanders-use-case/src/b3gbi_indicators_10km.html](https://b-cubed-eu.github.io/flanders-use-case/src/b3gbi_indicators_10km.html)  
+- Dashboard: [https://b-cubed-eu.github.io/flanders-use-case](https://b-cubed-eu.github.io/flanders-use-case)  
 - Case studies: [https://b-cubed.eu/case-studies](https://b-cubed.eu/case-studies)
 
 ## 🤝 Partners
