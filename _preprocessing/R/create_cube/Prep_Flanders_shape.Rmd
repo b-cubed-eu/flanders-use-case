@@ -1,0 +1,129 @@
+```{r}
+#load libraries
+
+library(sf)
+library(dplyr)
+library(leaflet)
+library(lwgeom)
+
+```
+
+```{r}
+#load in Flanders shape
+Flanders <- read_sf('./_preprocessing/data/raw/spatial/flanders_wgs84.geojson')
+Flanders_unified <- chull(Flanders)
+
+Flanders_map <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=Flanders)
+
+#Verwijder Brussel en andere gaten in Vlaanderen
+remove_holes_sf <- function(x){
+  geom <- st_geometry(x)
+  new_geom <- lapply(geom, function(g){
+
+    if (inherits(g, "POLYGON")) {
+      # Alleen buitenring behouden
+      st_polygon(list(g[[1]]))
+
+    } else if (inherits(g, "MULTIPOLYGON")) {
+      # Voor elk onderdeel enkel de buitenring behouden
+      parts <- lapply(g, function(p) list(p[[1]]))
+      st_multipolygon(parts)
+
+    } else {
+      g  # andere types onveranderd
+    }
+  })
+
+  st_geometry(x) <- st_sfc(new_geom, crs = st_crs(x))
+  x
+}
+
+Flanders_noholes <- remove_holes_sf(Flanders)
+
+Flanders_map <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=Flanders_noholes)
+
+# Voeg een buffer toe van 15 km rond Vlaanderen
+## 2. Projecteren naar metrisch CRS (meters)
+Flanders_m <- st_transform(Flanders_noholes, 31370)
+
+## 3. Buffer van 15 km (15,000 meter)
+Flanders_buffer15km <- st_buffer(Flanders_m, dist = 15000)
+
+## 4. Terug naar WGS84 indien gewenst
+Flanders_buffer15km_wgs84 <- st_transform(Flanders_buffer15km, 4326)
+
+Flanders_map <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=Flanders_buffer15km_wgs84)
+
+st_write(Flanders_noholes, './_preprocessing/data/raw/spatial/flanders_noholes.geojson')
+
+st_write(Flanders_buffer15km_wgs84, './_preprocessing/data/raw/spatial/flanders_buffer15_wgs84.geojson')
+
+f <- st_read('./_preprocessing/data/raw/spatial/flanders_buffer15_wgs84.geojson')
+
+f <- st_convex_hull(f)
+f <- st_convex_hull(f)
+f <- st_convex_hull(f)
+st_crs(f)
+
+f <- st_transform(f, 4326) # will do nothing if already EPSG:4326
+
+# 4. make geometries valid
+f <- st_make_valid(f)
+
+map <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=f)
+# 5. union all features into a single geometry (one polygon/multipolygon)
+geom_union <- st_union(st_geometry(f))
+
+# 6. cast to MULTIPOLYGON if necessary (safer for complex ranges)
+geom_union <- st_cast(geom_union, "MULTIPOLYGON")
+
+# 7. get WKT text
+wkt <- st_as_text(geom_union)
+wkt <- gsub("\n", " ", wkt)   # remove newlines if any
+wkt
+
+# Export to a file
+writeLines(wkt, "./_preprocessing/data/raw/spatial/flanders_buffer15km_wkt.txt")
+
+
+```
+
+```{r}
+#laad EEA grids 1km
+EEA_overzicht_1km <- read_sf('./_preprocessing/data/raw/spatial/be_1km.shp')
+
+EEA_overzicht_1km <- st_transform(EEA_overzicht_1km, crs=4326)
+
+EEA_Flanders_union_1km <- st_intersection(EEA_overzicht_1km, Flanders_noholes)
+
+EEA_Flanders_union_map_1km <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=EEA_Flanders_union_1km)
+
+st_write(EEA_Flanders_union_1km, './_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+
+```
+
+```{r}
+#laad EEA grids 10 km
+EEA_overzicht_10km <- read_sf('./_preprocessing/data/raw/spatial/be_10km.shp')
+
+EEA_overzicht_10km <- st_transform(EEA_overzicht_10km, crs=4326)
+
+EEA_Flanders_union_10km <- st_intersection(EEA_overzicht_10km, Flanders_noholes)
+
+EEA_Flanders_union_map_10km <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=EEA_Flanders_union_10km)
+
+st_write(EEA_Flanders_union_10km, './_preprocessing/data/raw/spatial/EEA_10km_Flanders_union.geojson')
+
+```
