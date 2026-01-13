@@ -10,7 +10,7 @@ library(lwgeom)
 
 ```{r}
 #load in Flanders shape
-Flanders <- read_sf('./_preprocessing/data/spatial/flanders_wgs84.geojson')
+Flanders <- read_sf('./_preprocessing/data/raw/spatial/flanders_wgs84.geojson')
 Flanders_unified <- chull(Flanders)
 
 Flanders_map <- leaflet()%>%
@@ -60,11 +60,11 @@ Flanders_map <- leaflet()%>%
   addTiles()%>%
   addPolygons(data=Flanders_buffer15km_wgs84)
 
-st_write(Flanders_noholes, './_preprocessing/data/spatial/flanders_noholes.geojson')
+st_write(Flanders_noholes, './_preprocessing/data/raw/spatial/flanders_noholes.geojson')
 
-st_write(Flanders_buffer15km_wgs84, './_preprocessing/data/spatial/flanders_buffer15_wgs84.geojson')
+st_write(Flanders_buffer15km_wgs84, './_preprocessing/data/raw/spatial/flanders_buffer15_wgs84.geojson')
 
-f <- st_read('./_preprocessing/data/spatial/flanders_buffer15_wgs84.geojson')
+f <- st_read('./_preprocessing/data/raw/spatial/flanders_buffer15_wgs84.geojson')
 
 f <- st_convex_hull(f)
 f <- st_convex_hull(f)
@@ -91,14 +91,14 @@ wkt <- gsub("\n", " ", wkt)   # remove newlines if any
 wkt
 
 # Export to a file
-writeLines(wkt, "./_preprocessing/data/spatial/flanders_buffer15km_wkt.txt")
+writeLines(wkt, "./_preprocessing/data/raw/spatial/flanders_buffer15km_wkt.txt")
 
 
 ```
 
 ```{r}
 #laad EEA grids 1km
-EEA_overzicht_1km <- read_sf('./_preprocessing/data/spatial/be_1km.shp')
+EEA_overzicht_1km <- read_sf('./_preprocessing/data/raw/spatial/be_1km.shp')
 
 EEA_overzicht_1km <- st_transform(EEA_overzicht_1km, crs=4326)
 
@@ -108,13 +108,13 @@ EEA_Flanders_union_map_1km <- leaflet()%>%
   addTiles()%>%
   addPolygons(data=EEA_Flanders_union_1km)
 
-st_write(EEA_Flanders_union_1km, './_preprocessing/data/spatial/EEA_1km_Flanders_union.geojson')
+st_write(EEA_Flanders_union_1km, './_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
 
 ```
 
 ```{r}
 #laad EEA grids 10 km
-EEA_overzicht_10km <- read_sf('./_preprocessing/data/spatial/be_10km.shp')
+EEA_overzicht_10km <- read_sf('./_preprocessing/data/raw/spatial/be_10km.shp')
 
 EEA_overzicht_10km <- st_transform(EEA_overzicht_10km, crs=4326)
 
@@ -124,6 +124,6 @@ EEA_Flanders_union_map_10km <- leaflet()%>%
   addTiles()%>%
   addPolygons(data=EEA_Flanders_union_10km)
 
-st_write(EEA_Flanders_union_10km, './_preprocessing/data/spatial/EEA_10km_Flanders_union.geojson')
+st_write(EEA_Flanders_union_10km, './_preprocessing/data/raw/spatial/EEA_10km_Flanders_union.geojson')
 
 ```

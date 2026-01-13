@@ -11,19 +11,19 @@ library(leaflet)
 ```
 
 ```{r}
-EEA_1km <- read_sf('./_preprocessing/data/spatial/EEA_1km_Flanders_union.geojson')
+EEA_1km <- read_sf('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
 
 EEA_Flanders_union_map_1km <- leaflet()%>%
   addTiles()%>%
   addPolygons(data=EEA_1km)
 
-Zone_Flanders_use_case <- read_sf('./_preprocessing/data/spatial/flanders_buffer15_wgs84.geojson')
+Zone_Flanders_use_case <- read_sf('./_preprocessing/data/raw/spatial/flanders_buffer15_wgs84.geojson')
 
 #inlezen habitatrichtlijn gebied
-Natura2000 <- read_sf("./_preprocessing/data/spatial/Natura2000_BE.shp")
+Natura2000 <- read_sf("./_preprocessing/data/raw/spatial/Natura2000_BE.shp")
 
 Intersect_EEA_Natura2000 <-
-read_delim("_preprocessing/data/spatial/intersect_EEA_ref_grid_protected_areas.tsv", 
+read_delim("_preprocessing/data/raw/spatial/intersect_EEA_ref_grid_protected_areas.tsv", 
      delim = "\t", escape_double = FALSE, 
      trim_ws = TRUE)%>%
   select('CELLCODE', 'natura2000', 'spa', 'habitat')
@@ -72,11 +72,9 @@ EEA_1km_nonNatura2000 <- EEA_1km_complete_info%>%
 ```
 
 ```{r}
-st_write(EEA_1km_Natura2000, './_preprocessing/data/spatial/EEA_1km_Natura2000.geojson')
+st_write(EEA_1km_Natura2000, './_preprocessing/data/raw/spatial/EEA_1km_Natura2000.geojson')
 
-st_write(EEA_1km_nonNatura2000, './_preprocessing/data/spatial/EEA_1km_nonNatura2000.geojson')
+st_write(EEA_1km_nonNatura2000, './_preprocessing/data/raw/spatial/EEA_1km_nonNatura2000.geojson')
 
-st_write(EEA_1km_complete_info, './_preprocessing/data/spatial/EEA_1km_complete_info.geojson')
+st_write(EEA_1km_complete_info, './_preprocessing/data/raw/spatial/EEA_1km_complete_info.geojson')
 ```
-
-

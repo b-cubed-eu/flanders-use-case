@@ -23,10 +23,10 @@ library(dplyr)
 This fundamental indicator quantifies the total number of unique species per year detected in Natura 2000 versus non Natura 2000 area. It provides a straightforward measure of detected biodiversity.
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-OSR_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/OSR_ts.rds')
+OSR_ts_Natura2000 <- readRDS('./Flanders_Natura2000/OSR_ts.rds')
 
 
-OSR_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src//Flanders_nonNatura2000/OSR_ts.rds')
+OSR_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/OSR_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(OSR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -51,13 +51,11 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 
 This variable quantifies the overall number of species occurrence records per year in Natura2000 versus nonNatura2000 area. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.
 
-
-
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-TO_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/TO_ts.rds')
+TO_ts_Natura2000 <- readRDS('./Flanders_Natura2000/TO_ts.rds')
 
 
-TO_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src//Flanders_nonNatura2000/TO_ts.rds')
+TO_ts_nonNatura2000 <- readRDS('.//Flanders_nonNatura2000/TO_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(TO_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -98,13 +96,13 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occurrence Density
 
-Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes. 
+Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.
 
 ```{r, echo=FALSE, warning = FALSE,message = FALSE}
-OD_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/OD_ts.rds')
+OD_ts_Natura2000 <- readRDS('./Flanders_Natura2000/OD_ts.rds')
 
 
-OD_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src//Flanders_nonNatura2000/OD_ts.rds')
+OD_ts_nonNatura2000 <- readRDS('.//Flanders_nonNatura2000/OD_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(OD_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -141,6 +139,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
   theme_minimal() 
 ```
 :::
+
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Evenness
 
@@ -148,12 +147,11 @@ Evenness measures how uniformly individuals (or observations in GBIF data) are d
 
 ### Pielou's Evenness
 
-
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-PEM_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/PEM_ts.rds')
+PEM_ts_Natura2000 <- readRDS('./Flanders_Natura2000/PEM_ts.rds')
 
 
-PEM_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src//Flanders_nonNatura2000/PEM_ts.rds')
+PEM_ts_nonNatura2000 <- readRDS('.//Flanders_nonNatura2000/PEM_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(PEM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -192,12 +190,11 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 
 ### Williams' Evenness
 
-
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-WEM_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/WEM_ts.rds')
+WEM_ts_Natura2000 <- readRDS('./Flanders_Natura2000/WEM_ts.rds')
 
 
-WEM_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src//Flanders_nonNatura2000/WEM_ts.rds')
+WEM_ts_nonNatura2000 <- readRDS('.//Flanders_nonNatura2000/WEM_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(WEM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -243,10 +240,10 @@ Rarity quantifies the scarcity or infrequency of species, and when summed over m
 ### Abundance - Based Rarity
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-AbRM_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/AbRM_ts.rds')
+AbRM_ts_Natura2000 <- readRDS('./Flanders_Natura2000/AbRM_ts.rds')
 
 
-AbRM_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/AbRM_ts.rds')
+AbRM_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/AbRM_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(AbRM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -286,10 +283,10 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 ### Area-based rarity
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-ArRM_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/ArRM_ts.rds')
+ArRM_ts_Natura2000 <- readRDS('./Flanders_Natura2000/ArRM_ts.rds')
 
 
-ArRM_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/ArRM_ts.rds')
+ArRM_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/ArRM_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(ArRM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -334,12 +331,11 @@ Hill Diversity provides a unified framework for various diversity measures, allo
 
 ### Species richness (q=0)
 
-
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-SR_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/SR_ts.rds')
+SR_ts_Natura2000 <- readRDS('./Flanders_Natura2000/SR_ts.rds')
 
 
-SR_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/SR_ts.rds')
+SR_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/SR_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(SR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -379,10 +375,10 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 ### Hill - Shanon (q=1)
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-HSh_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/HSh_ts.rds')
+HSh_ts_Natura2000 <- readRDS('./Flanders_Natura2000/HSh_ts.rds')
 
 
-HSh_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/HSh_ts.rds')
+HSh_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/HSh_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(HSh_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -421,12 +417,11 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 
 ### Hill - Simpson (q=2)
 
-
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-HSi_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/HSi_ts.rds')
+HSi_ts_Natura2000 <- readRDS('./Flanders_Natura2000/HSi_ts.rds')
 
 
-HSi_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/HSi_ts.rds')
+HSi_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/HSi_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(HSi_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -470,10 +465,10 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-CR_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/CR_ts.rds')
+CR_ts_Natura2000 <- readRDS('./Flanders_Natura2000/CR_ts.rds')
 
 
-CR_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/CR_ts.rds')
+CR_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/CR_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(CR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -497,10 +492,10 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-NN_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/NN_ts.rds')
+NN_ts_Natura2000 <- readRDS('./Flanders_Natura2000/NN_ts.rds')
 
 
-NN_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/NN_ts.rds')
+NN_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/NN_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(NN_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -518,19 +513,16 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 ```
 :::
 
-
-
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occupancy turnover
 
 Occupancy Turnover measures the rate at which occupancy composition changes over time within a community, quantifying the balance between species "gains" and "losses" between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).
 
-
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-OT_ts_Natura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_Natura2000/OT_ts.rds')
+OT_ts_Natura2000 <- readRDS('./Flanders_Natura2000/OT_ts.rds')
 
 
-OT_ts_nonNatura2000 <- readRDS('C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/src/Flanders_nonNatura2000/OT_ts.rds')
+OT_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/OT_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")

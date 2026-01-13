@@ -10,12 +10,13 @@ format:
 ---
 
 First upload the package rgbif
+
 ```{r, eval= FALSE}
 library(rgbif)
 ```
 
-Define the sql-query to download the data from GBIF.
-See this [link](https://techdocs.gbif.org/en/data-use/api-sql-download-functions) on how to create an sql-query and relevant functions.
+Define the sql-query to download the data from GBIF. See this [link](https://techdocs.gbif.org/en/data-use/api-sql-download-functions) on how to create an sql-query and relevant functions.
+
 ```{r}
 query_ang_1km <-  "SELECT
 kingdom,
@@ -74,21 +75,25 @@ GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncer
 ```
 
 Check whether sql-query is valid
+
 ```{r, eval= FALSE}
 occ_download_sql_prep(query_ang_1km)
 ```
 
 If the query is valid, download the cube from GBIF
+
 ```{r, eval= FALSE}
 occ_download_sql(query_ang_1km)
 ```
 
 The downloadkey is returned. Use this to check the status of your download.
+
 ```{r, eval= FALSE}
 occ_download_wait('0044110-251120083545085')
 ```
 
 When finished, download the data.
+
 ```{r, eval= FALSE}
 d <- occ_download_get('0044110-251120083545085') %>%
   occ_download_import()
