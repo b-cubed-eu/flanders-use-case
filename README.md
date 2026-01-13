@@ -1,6 +1,9 @@
 # Flanders Use Case - B-Cubed
 
 ![Repo Status: Active](https://img.shields.io/badge/status-active-brightgreen)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+![Last Commit](https://img.shields.io/github/last-commit/b-cubed-eu/flanders-use-case)
+![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blueviolet)
 
 ## 🚀 Quick Start / Explore the Dashboard
 
