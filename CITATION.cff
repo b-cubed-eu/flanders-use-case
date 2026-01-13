@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using these metadata.
+title: "Flanders-use-case: calculating regional indicators in Europe using the B-Cubed workflow."
+authors:
+- given-names: Jasmijn
+  family-names: Hillaert
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0002-3761-8846
+- given-names: Tim
+  family-names: Adriaens
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0001-7268-4200
+- given-names: Lissa
+  family-names: Breugelmans
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0002-8472-3577
+- given-names: Ward
+  family-names: Langeraert
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0002-5900-8109
+- given-names: Toon
+  family-names: Van Daele
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0002-1362-853X
+- given-names: Quentin 
+  family-names: Groom
+  affiliation: Botanical Garden of Meise 
+  orcid: 0000-0002-0596-5376
+keywords:
+- dashboard
+- general indicators
+- phylogenetic indicators
+- Invasive Alien Species indicators
+- Biodiversity Cubes
+contact:
+- given-names: Jasmijn 
+  family-names: Hillaert
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0002-3761-8846
+license: MIT
+repository-code: https://github.com/b-cubed-eu/flanders-use-case/
