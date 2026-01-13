@@ -19,7 +19,7 @@ library(here)      # Relative paths
 library(sf)        # Work with spatial data
 
 # Source
-source(here("_preprocessing/source/create_cube/download_occ_cube.R"))
+source(here("_preprocessing/R/create_cube/download_occ_cube.R"))
 
 data_path <- here("_preprocessing","data", "raw")
 ```
@@ -37,10 +37,10 @@ The zip file is stored under *./data/raw*.
 > GBIF.org (15 April 2025) GBIF Occurrence Download <https://doi.org/10.15468/dl.ddzhrc>
 
 ```{r}
-#https://techdocs.gbif.org/en/data-use/api-sql-download-functions
+
 
 # nolint start: line_length_linter.
-query_ang_10km <-  "SELECT
+query_ang_1km <-  "SELECT
 kingdom,
 kingdomkey,
 phylum,
@@ -56,13 +56,13 @@ genuskey,
 species,
 specieskey,
 \"year\",
-GBIF_EEARGCODE(10000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)) eeacellcode,
+GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)) eeacellcode,
 IF(ISNULL(orderkey), NULL, SUM(COUNT(*)) OVER (
-  PARTITION BY orderkey, GBIF_EEARGCODE(10000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)),\"year\")) ordercount,
+  PARTITION BY orderkey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)),\"year\")) ordercount,
 IF(ISNULL(familykey), NULL, SUM(COUNT(*)) OVER (
-  PARTITION BY familykey, GBIF_EEARGCODE(10000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) familycount,
+  PARTITION BY familykey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) familycount,
 IF(ISNULL(genuskey), NULL, SUM(COUNT(*)) OVER (
-  PARTITION BY genuskey, GBIF_EEARGCODE(10000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) genuscount,
+  PARTITION BY genuskey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) genuscount,
 COUNT(*) occurrences,
 MIN(GBIF_TEMPORALUNCERTAINTY(eventdate, eventtime)) mintemporaluncertainty,
 MIN(COALESCE(coordinateuncertaintyinmeters, 1000)) mincoordinateuncertaintyinmeters
@@ -93,13 +93,13 @@ occurrence.genuskey,
 occurrence.species,
 occurrence.specieskey,
 occurrence.\"year\",
-GBIF_EEARGCODE(10000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000))"
+GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000))"
 
 # nolint end
 
-data_total_10km <- download_occ_cube(
-  sql_query = query_ang_10km,
-  file = "Angiosperm_data_10km.csv",
+data_total_1km <- download_occ_cube(
+  sql_query = query_ang_1km,
+  file = "Angiosperm_data.csv",
   path = data_path,
   overwrite = TRUE
 )
@@ -110,25 +110,31 @@ We get a big dataframe with all occurrences.
 
 ```{r}
 # Explore dataframe
-glimpse(data_total_10km)
+glimpse(data_total_1km)
 ```
 
 # Select Flanders grid cells
 
 ```{r}
-FLANDERS_EEA_10km <- st_read('_preprocessing/data/spatial/EEA_10km_Flanders_union.geojson')
-
+FLANDERS_EEA_1km <- st_read('_preprocessing/data/spatial/EEA_1km_Flanders_union.geojson')
+FLANDERS_EEA_1km_Natura2000 <- st_read('_preprocessing/data/spatial/EEA_1km_Natura2000.geojson')
+FLANDERS_EEA_1km_nonNatura2000 <- st_read('_preprocessing/data/spatial/EEA_1km_nonNatura2000.geojson')
 ```
 
 ```{r}
-Cube_Angio_Flanders_10km <- data_total_10km%>%
-  filter(eeacellcode %in% FLANDERS_EEA_10km$CELLCODE)
-
+Cube_Angio_Flanders <- data_total_1km%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km$CELLCODE)
+Cube_Angio_Flanders_Natura2000 <- data_total_1km%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km_Natura2000$CELLCODE)
+Cube_Angio_Flanders_nonNatura2000 <- data_total_1km%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km_nonNatura2000$CELLCODE)
 ```
 
 ```{r}
-write.csv(Cube_Angio_Flanders_10km,
-          '_preprocessing/data/raw/Angiosperm_data_Flanders_10km.csv')
-
+write.csv(Cube_Angio_Flanders,
+          '_preprocessing/data/raw/Angiosperm_data_Flanders.csv')
+write.csv(Cube_Angio_Flanders_Natura2000,
+          '_preprocessing/data/raw/Angiosperm_data_Flanders_Natura2000.csv')
+write.csv(Cube_Angio_Flanders_nonNatura2000,
+          '_preprocessing/data/raw/Angiosperm_data_Flanders_nonNatura2000.csv')
 ```
-
