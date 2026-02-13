@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>  Generate cube of Angiosperms in Flanders – WP6: Flanders case study</title>
+<title>Phylogenetic diversity – WP6: Flanders case study</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -235,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>Generate cube of Angiosperms in Flanders</p></h1>
+<h1 class="title">Phylogenetic diversity</h1>
 </div>
 
 
@@ -252,87 +217,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>First upload the package rgbif</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgbif)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
 </div>
-<p>Define the sql-query to download the data from GBIF. See this <a href="https://techdocs.gbif.org/en/data-use/api-sql-download-functions">link</a> on how to create an sql-query and relevant functions.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>query_ang_1km <span class="ot">&lt;-</span>  <span class="st">"SELECT</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">kingdom,</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">kingdomkey,</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">phylum,</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">phylumkey,</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">class,</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">classkey,</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="sc">\"</span><span class="st">order</span><span class="sc">\"</span><span class="st">,</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">orderkey,</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">family,</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">familykey,</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">genus,</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">genuskey,</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">species,</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">specieskey,</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st">,</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="st">GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)) eeacellcode,</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="st">IF(ISNULL(orderkey), NULL, SUM(COUNT(*)) OVER (</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="st">  PARTITION BY orderkey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)),</span><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st">)) ordercount,</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="st">IF(ISNULL(familykey), NULL, SUM(COUNT(*)) OVER (</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="st">  PARTITION BY familykey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), </span><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st">)) familycount,</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="st">IF(ISNULL(genuskey), NULL, SUM(COUNT(*)) OVER (</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="st">  PARTITION BY genuskey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), </span><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st">)) genuscount,</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="st">COUNT(*) occurrences,</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="st">MIN(GBIF_TEMPORALUNCERTAINTY(eventdate, eventtime)) mintemporaluncertainty,</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="st">MIN(COALESCE(coordinateuncertaintyinmeters, 1000)) mincoordinateuncertaintyinmeters</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="st">FROM</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="st">WHERE</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="st">GBIF_Within('POLYGON ((2.327344 51.09871, 2.327248 51.09155, 2.327756 51.08439, 2.328866 51.07727, 2.38788 50.83058, 2.389178 50.82564, 2.389474 50.82463, 2.392533 50.81583, 2.392596 50.81567, 2.395418 50.80932, 2.398725 50.80307, 2.40251 50.79693, 2.402566 50.79684, 2.40735 50.79013, 2.412703 50.78359, 2.418611 50.77724, 2.452746 50.74326, 2.458523 50.73752, 2.464748 50.73197, 2.471405 50.72663, 2.478478 50.7215, 2.485947 50.71661, 2.493794 50.71197, 2.645918 50.62661, 2.653966 50.62213, 2.662357 50.6179, 2.671072 50.61395, 2.680087 50.61029, 2.695308 50.60417, 2.704275 50.60068, 2.713502 50.59748, 2.722966 50.59456, 2.732645 50.59195, 2.742514 50.58965, 2.752283 50.58742, 2.763376 50.58529, 2.763545 50.58526, 2.812808 50.5772, 2.823872 50.57568, 2.835047 50.57454, 2.8463 50.57379, 2.857602 50.57341, 3.97823 50.5527, 3.990176 50.55257, 4.243717 50.55461, 4.254527 50.5547, 5.147574 50.56059, 5.166759 50.56068, 5.885665 50.575, 5.89688 50.57527, 5.908057 50.57591, 5.919166 50.57693, 5.930175 50.57832, 5.941053 50.58008, 5.951771 50.5822, 5.962298 50.58468, 5.972605 50.58751, 5.982663 50.59069, 5.992445 50.59419, 6.001923 50.59803, 6.011069 50.60217, 6.01986 50.60662, 6.02827 50.61135, 6.036275 50.61637, 6.043854 50.62164, 6.050984 50.62716, 6.057646 50.63292, 6.082732 50.65573, 6.089073 50.66155, 6.094926 50.66759, 6.100273 50.6738, 6.1051 50.68019, 6.109394 50.68673, 6.113142 50.6934, 6.116334 50.70019, 6.118961 50.70708, 6.121015 50.71405, 6.122491 50.72107, 6.123384 50.72813, 6.123692 50.73522, 6.123412 50.7423, 6.122547 50.74936, 6.069023 51.15756, 6.06766 51.16463, 6.065704 51.17165, 6.06316 51.17859, 6.060036 51.18544, 6.056338 51.19218, 6.052079 51.19878, 6.047269 51.20524, 6.041921 51.21152, 6.036051 51.21762, 6.029675 51.22351, 6.02281 51.22919, 5.998465 51.24813, 5.98935 51.25483, 5.98096 51.26056, 5.972055 51.26598, 5.971368 51.26637, 5.966595 51.26903, 5.965309 51.26972, 5.956736 51.27412, 5.947813 51.27823, 5.94678 51.27868, 5.633364 51.4081, 5.191326 51.58673, 5.151025 51.60233, 5.149672 51.60283, 5.13959 51.60636, 5.129218 51.60955, 5.118586 51.61238, 5.107725 51.61486, 5.096666 51.61697, 5.08544 51.61872, 5.074081 51.62008, 5.07161 51.62033, 5.057201 51.62151, 4.800797 51.63886, 4.789391 51.63957, 4.777941 51.63989, 4.76648 51.63984, 4.755039 51.63941, 4.743651 51.6386, 3.157399 51.49629, 3.148893 51.49546, 3.14873 51.49544, 3.137587 51.49402, 3.126581 51.49224, 3.115741 51.49009, 3.105098 51.48759, 3.094682 51.48474, 3.084522 51.48155, 3.084121 51.48142, 3.073943 51.47779, 3.065801 51.47451, 3.064098 51.47382, 2.496252 51.23821, 2.486476 51.23404, 2.414896 51.20268, 2.405879 51.1983, 2.397248 51.19362, 2.389026 51.18866, 2.381236 51.18344, 2.3739 51.17796, 2.367039 51.17224, 2.360672 51.16631, 2.354816 51.16017, 2.34949 51.15384, 2.344706 51.14734, 2.340479 51.14069, 2.33682 51.13391, 2.333739 51.12702, 2.331246 51.12003, 2.329345 51.11297, 2.328044 51.10585, 2.327344 51.09871))', decimalLatitude, decimalLongitude) = TRUE</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="st">AND occurrence.occurrencestatus = 'PRESENT'</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="st">AND (occurrence.taxonkey IN ('196', '220') OR occurrence.acceptedtaxonkey IN ('196', '220') OR occurrence.kingdomkey IN ('196', '220') OR occurrence.phylumkey IN ('196', '220') OR occurrence.classkey IN ('196', '220') OR occurrence.orderkey IN ('196', '220') OR occurrence.familykey IN ('196', '220') OR occurrence.genuskey IN ('196', '220') OR occurrence.specieskey IN ('196', '220'))</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="st">AND (occurrence.</span><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st"> &gt;= 1975 AND occurrence.</span><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st"> &lt;= 2025)</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="st">AND occurrence.hasgeospatialissues = FALSE</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="st">AND NOT GBIF_STRINGARRAYCONTAINS(occurrence.issue, 'TAXON_MATCH_FUZZY', TRUE)</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="st">AND NOT occurrence.basisofrecord IN ('FOSSIL_SPECIMEN', 'LIVING_SPECIMEN')</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="st">AND (occurrence.specieskey IS NOT NULL AND occurrence.</span><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st"> IS NOT NULL AND occurrence.</span><span class="sc">\"</span><span class="st">month</span><span class="sc">\"</span><span class="st"> IS NOT NULL AND occurrence.</span><span class="sc">\"</span><span class="st">day</span><span class="sc">\"</span><span class="st"> IS NOT NULL AND occurrence.hascoordinate = TRUE)</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.kingdom,</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.kingdomkey,</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.phylum,</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.phylumkey,</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.class,</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.classkey,</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.</span><span class="sc">\"</span><span class="st">order</span><span class="sc">\"</span><span class="st">,</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.orderkey,</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.family,</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.familykey,</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.genus,</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.genuskey,</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.species,</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.specieskey,</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="st">occurrence.</span><span class="sc">\"</span><span class="st">year</span><span class="sc">\"</span><span class="st">,</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="st">GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000))"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Phylogenetic diversity
 </div>
-<p>Check whether sql-query is valid</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">occ_download_sql_prep</span>(query_ang_1km)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<p>If the query is valid, download the cube from GBIF</p>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Phylogenetic diversity (PD) is a measure of biodiversity which takes evolution into account. It is calculated as the sum of the lengths of the phylogenetic tree branches representing the minimum tree-spanning path among a group of species. Phylogenetic diversity can be used in conservation planning to maximise a variety of features, meaning we do not aim to conserve specific features, but rather want to boost a diverse range of features. Conserving a variety of features could be particularly useful in light of the changing environmental conditions, as we can only guess which features will be important in the future.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">occ_download_sql</span>(query_ang_1km)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="pd_indicator_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<p>The downloadkey is returned. Use this to check the status of your download.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">occ_download_wait</span>(<span class="st">'0044110-251120083545085'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When finished, download the data.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">occ_download_get</span>(<span class="st">'0044110-251120083545085'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">occ_download_import</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Good luck with the further processing of your cube!</p>
 
 
+</div>
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
