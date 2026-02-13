@@ -23,12 +23,9 @@ website:
            href: src/b3gbi_indicators_Natura2000.qmd
       - text: 'Phylogenetic indicators'
         menu:
-         - text: Generate example Cube 
-           href: src/under_development.qmd
          - text: Results at 1 km resolution
-           href: src/under_development.qmd
-         - text: Focus on Natura2000
-           href: src/under_development.qmd
+           href: src/pd_indicator.qmd
+
       - text: 'IAS indicators'
         menu:
          - text: Generate example Cube 
