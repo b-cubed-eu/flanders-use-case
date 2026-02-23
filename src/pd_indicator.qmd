@@ -6,7 +6,6 @@ format:
     code-summary: "Show the code"
 ---
 
-
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Phylogenetic diversity
 
@@ -20,6 +19,8 @@ pd_map <- read_sf("./pd_Vl.geojson")
 
 ggplot(data = pd_map) +
   geom_sf(aes(fill = pd), color = NA) +
-  scale_fill_viridis_c() +   # voor continue waarden
-  theme_minimal()
+  scale_fill_viridis_c(na.value = NA) +   # voor continue waarden
+  theme_minimal()+
+  theme(legend.title = element_blank())
 ```
+:::

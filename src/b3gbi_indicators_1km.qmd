@@ -12,6 +12,7 @@ format:
 ```{r, echo = FALSE, warning = FALSE}
 #load library
 library(b3gbi)
+library(ggplot2)
 
 ```
 
@@ -23,6 +24,7 @@ Observed richness is calculated by summing the number of unique species observed
 ```{r, eval=FALSE}
 #load library
 library(b3gbi)
+
 
 #Execute preprocessing step (TEST)
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
@@ -38,9 +40,13 @@ plot_ts(OSR_ts)
 ```
 
 ```{r, echo = FALSE}
-OSR_map <- readRDS("./Flanders_1km/OSR_map.rds")
-plot_map(OSR_map,
-         ,visible_gridlines = FALSE)
+OSR_map <- readRDS("./Flanders_1km/OSR_map.rds")$data
+
+ggplot(data = OSR_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -71,8 +77,13 @@ plot_ts(TO_ts)
 ```
 
 ```{r, echo = FALSE}
-TO_map <- readRDS('./Flanders_1km/TO_map.rds')
-plot_map(TO_map, visible_gridlines = FALSE)
+TO_map <- readRDS('./Flanders_1km/TO_map.rds')$data
+
+ggplot(data = TO_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -106,8 +117,13 @@ plot_ts(PEM_ts)
 ```
 
 ```{r, echo = FALSE}
-PEM_map <- readRDS('./Flanders_1km/PEM_map.rds')
-plot(PEM_map, visible_gridlines = FALSE)
+PEM_map <- readRDS('./Flanders_1km/PEM_map.rds')$data
+
+ggplot(data = PEM_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -135,9 +151,13 @@ plot_ts(WEM_ts)
 ```
 
 ```{r, echo = FALSE}
-WEM_map <- readRDS('./Flanders_1km/WEM_map.rds')
-plot_map(WEM_map,
-         visible_gridlines = FALSE)
+WEM_map <- readRDS('./Flanders_1km/WEM_map.rds')$data
+
+ggplot(data = WEM_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -170,8 +190,13 @@ plot_ts(AbRM_ts)
 ```
 
 ```{r, echo = FALSE}
-AbRM_map <- readRDS('./Flanders_1km/AbRM_map.rds')
-plot_map(AbRM_map, visible_gridlines = FALSE)
+AbRM_map <- readRDS('./Flanders_1km/AbRM_map.rds')$data
+
+ggplot(data = AbRM_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -198,8 +223,13 @@ plot_ts(ArRM_ts)
 ```
 
 ```{r, echo = FALSE}
-ArRM_map <- readRDS('./Flanders_1km/ArRM_map.rds')
-plot_map(ArRM_map, visible_gridlines = FALSE)
+ArRM_map <- readRDS('./Flanders_1km/ArRM_map.rds')$data
+
+ggplot(data = ArRM_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -233,9 +263,13 @@ plot_ts(SR_ts)
 ```
 
 ```{r, echo = FALSE}
-SR_map <- readRDS('./Flanders_1km/SR_map.rds')
-plot_map(SR_map,
-        visible_gridlines = FALSE)
+SR_map <- readRDS('./Flanders_1km/SR_map.rds')$data
+
+ggplot(data = SR_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -267,9 +301,13 @@ plot_ts(HSh_ts)
 \`
 
 ```{r, echo = FALSE}
-HSh_map <- readRDS('./Flanders_1km/HSh_map.rds')
-plot_map(HSh_map,
-         visible_gridlines = FALSE)
+HSh_map <- readRDS('./Flanders_1km/HSh_map.rds')$data
+
+ggplot(data = HSh_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -298,9 +336,13 @@ plot_ts(HSi_ts)
 ```
 
 ```{r, echo = FALSE}
-HSi_map <- readRDS('./Flanders_1km/HSi_map.rds')
-plot_map(HSi_map,
-         visible_gridlines = FALSE)
+HSi_map <- readRDS('./Flanders_1km/HSi_map.rds')$data
+
+ggplot(data = HSi_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -327,7 +369,7 @@ plot_ts(CR_ts)
 
 ```{r, echo = FALSE}
 CR_ts <- readRDS('./Flanders_1km/CR_ts.rds')
-plot_ts(OSR_ts)
+plot_ts(CR_ts)
 ```
 :::
 
@@ -355,9 +397,13 @@ plot_ts(NN_ts)
 ```
 
 ```{r, echo = FALSE}
-NN_map <- readRDS('./Flanders_1km/NN_map.rds')
-plot_map(NN_map,
-         visible_gridlines = FALSE)
+NN_map <- readRDS('./Flanders_1km/NN_map.rds')$data
+
+ggplot(data = NN_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
@@ -384,9 +430,12 @@ plot_map(OD_map,
 ```
 
 ```{r, echo = FALSE}
-OD_map <- readRDS('./Flanders_1km/OD_map.rds')
-plot_map(OD_map, 
-         visible_gridlines = FALSE)
+OD_map <- readRDS('./Flanders_1km/OD_map.rds')$data
+ggplot(data = OD_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
