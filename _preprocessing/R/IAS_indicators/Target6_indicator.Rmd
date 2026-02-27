@@ -1,0 +1,31 @@
+---
+title: "Target6_indicator"
+author: "Jasmijn Hillaert"
+date: "2026-02-06"
+output: html_document
+---
+
+
+```{python}
+pip install b3alien
+```
+```{python}
+from b3alien import b3cube
+from b3alien import simulation
+from b3alien import griis
+
+import pandas as pd
+import geopandas as gpd
+
+import folium
+from folium import Choropleth
+from IPython.display import display
+
+import matplotlib.pyplot as plt
+
+%matplotlib inline
+
+```
+
+
+
