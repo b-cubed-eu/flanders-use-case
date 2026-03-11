@@ -27,5 +27,5 @@ utils.to_geoparquet("C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_cas
                     "C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/_preprocessing/data/raw/EQDGC-Level-2.gpkg",
                     leftID='eqdcellcode',
                     rightID='cellCode', 
-                    exportPath='C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case//_preprocessing/data/interim/export.parquet')
+                    exportPath='C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/_preprocessing/data/interim/export.parquet')
 
