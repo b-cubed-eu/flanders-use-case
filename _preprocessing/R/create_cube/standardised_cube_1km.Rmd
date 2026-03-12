@@ -75,7 +75,6 @@ WHERE
   AND \"year\" >= 1975
   AND occurrenceStatus = 'PRESENT'
   AND (coordinateUncertaintyInMeters <= 1000 OR coordinateUncertaintyInMeters IS NULL)
-  AND(temporalUncertaintyInSeconds <= 315360000 or temporalUncertaintyInSecond IS NULL)
   AND NOT occurrence.basisofrecord IN ('FOSSIL_SPECIMEN', 'LIVING_SPECIMEN')
   AND NOT ARRAY_CONTAINS(issue, 'ZERO_COORDINATE')
   AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_OUT_OF_RANGE')
