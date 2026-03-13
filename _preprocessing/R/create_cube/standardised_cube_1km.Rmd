@@ -59,6 +59,7 @@ query_ang_1km <- "SELECT
       decimallongitude,
       COALESCE(coordinateuncertaintyinmeters,1000)
   ) AS eeacellcode,
+  MIN(GBIF_TEMPORALUNCERTAINTY(eventdate, eventtime)) AS mintemporaluncertainty,
   MIN(COALESCE(coordinateUncertaintyInMeters, 1000)) AS minCoordinateUncertaintyInMeters,
   IF(ISNULL(orderkey), NULL, SUM(COUNT(*)) OVER (
 PARTITION BY orderkey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) ordercount,
@@ -75,6 +76,7 @@ WHERE
   AND \"year\" >= 1975
   AND occurrenceStatus = 'PRESENT'
   AND (coordinateUncertaintyInMeters <= 1000 OR coordinateUncertaintyInMeters IS NULL)
+  AND (mintemporaluncertainty <=  315360000  OR mintemporaluncertainty IS NULL)
   AND NOT occurrence.basisofrecord IN ('FOSSIL_SPECIMEN', 'LIVING_SPECIMEN')
   AND NOT ARRAY_CONTAINS(issue, 'ZERO_COORDINATE')
   AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_OUT_OF_RANGE')
@@ -122,9 +124,9 @@ glimpse(data_total_1km)
 # Select Flanders grid cells
 
 ```{r}
-FLANDERS_EEA_1km <- st_read('_preprocessing/data/spatial/EEA_1km_Flanders_union.geojson')
-FLANDERS_EEA_1km_Natura2000 <- st_read('_preprocessing/data/spatial/EEA_1km_Natura2000.geojson')
-FLANDERS_EEA_1km_nonNatura2000 <- st_read('_preprocessing/data/spatial/EEA_1km_nonNatura2000.geojson')
+FLANDERS_EEA_1km <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+FLANDERS_EEA_1km_Natura2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.geojson')
+FLANDERS_EEA_1km_nonNatura2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_nonNatura2000.geojson')
 ```
 
 ```{r}
