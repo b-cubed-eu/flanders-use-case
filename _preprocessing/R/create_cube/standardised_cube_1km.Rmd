@@ -84,9 +84,11 @@ WHERE
   AND speciesKey IS NOT NULL
   AND decimalLatitude IS NOT NULL
   AND decimalLongitude IS NOT NULL
+  AND occurrence.hasgeospatialissues = FALSE
   AND GBIF_STRINGARRAYCONTAINS(occurrence.classifications['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c'], '196', TRUE)
-  AND GBIF_STRINGARRAYCONTAINS(occurrence.classifications['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c'], '220', TRUE)
-  AND (occurrence.classificationdetails['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c']['specieskey'] <> ''
+  AND GBIF_STRINGARRAYCONTAINS(occurrence.classifications['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c'], '220', TRUE) AND (occurrence.classificationdetails['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c']['specieskey'] <> '')
+  AND NOT GBIF_STRINGARRAYCONTAINS(occurrence.issue, 'TAXON_MATCH_FUZZY', TRUE)
+  AND NOT occurrence.basisofrecord IN ('FOSSIL_SPECIMEN', 'LIVING_SPECIMEN')
 
 GROUP BY
   kingdom, kingdomkey,
@@ -103,7 +105,7 @@ GROUP BY
       decimallongitude,
       COALESCE(coordinateuncertaintyinmeters,1000)
   )
-  "
+"
 
 
 data_total_1km <- download_occ_cube(
