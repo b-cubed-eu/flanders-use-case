@@ -59,7 +59,7 @@ query_ang_1km <- "SELECT
       decimallongitude,
       COALESCE(coordinateuncertaintyinmeters,1000)
   ) AS eeacellcode,
-  MIN(GBIF_TEMPORALUNCERTAINTY(eventdate, eventtime)) AS mintemporaluncertainty,
+  MIN(GBIF_TEMPORALUNCERTAINTY(eventdate, eventtime)) AS minTemporalUncertainty,
   MIN(COALESCE(coordinateUncertaintyInMeters, 1000)) AS minCoordinateUncertaintyInMeters,
   IF(ISNULL(orderkey), NULL, SUM(COUNT(*)) OVER (
 PARTITION BY orderkey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) ordercount,
@@ -76,7 +76,7 @@ WHERE
   AND \"year\" >= 1975
   AND occurrenceStatus = 'PRESENT'
   AND (coordinateUncertaintyInMeters <= 1000 OR coordinateUncertaintyInMeters IS NULL)
-  AND (mintemporaluncertainty <=  315360000  OR mintemporaluncertainty IS NULL)
+  AND (mintemporaluncertainty <=  315360000  OR minTemporalUncertainty IS NULL)
   AND NOT occurrence.basisofrecord IN ('FOSSIL_SPECIMEN', 'LIVING_SPECIMEN')
   AND NOT ARRAY_CONTAINS(issue, 'ZERO_COORDINATE')
   AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_OUT_OF_RANGE')
@@ -85,7 +85,7 @@ WHERE
   AND speciesKey IS NOT NULL
   AND decimalLatitude IS NOT NULL
   AND decimalLongitude IS NOT NULL
-  AND (occurrence.taxonkey IN ('196', '220') OR occurrence.acceptedtaxonkey IN ('196',    '220') OR occurrence.kingdomkey IN ('196', '220') OR occurrence.phylumkey IN ('196',    '220') OR occurrence.classkey IN ('196', '220') OR occurrence.orderkey IN ('196',       '220') OR occurrence.familykey IN ('196', '220') OR occurrence.genuskey IN ('196',      '220') OR occurrence.specieskey IN ('196', '220'))
+  AND occurrence.taxonkey IN ('196','220') 
 
 GROUP BY
   kingdom, kingdomkey,
