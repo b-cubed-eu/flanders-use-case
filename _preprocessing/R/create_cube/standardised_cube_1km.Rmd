@@ -86,7 +86,7 @@ WHERE
   AND decimalLongitude IS NOT NULL
   AND GBIF_STRINGARRAYCONTAINS(occurrence.classifications['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c'], '196', TRUE)
   AND GBIF_STRINGARRAYCONTAINS(occurrence.classifications['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c'], '220', TRUE)
-   AND (occurrence.classificationdetails['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c']['specieskey'] <> '' AND
+  AND (occurrence.classificationdetails['d7dddbf4-2cf0-4f39-9b2a-bb099caae36c']['specieskey'] <> ''
 
 GROUP BY
   kingdom, kingdomkey,
