@@ -236,6 +236,9 @@ be_plants_native <- be_plants_native[be_plants_native$matchType %in%
 cube_native <- data_total_1km[data_total_1km$specieskey %in%
                               be_plants_native$acceptedUsageKey,]
 
+#add filter for temporal uncertainty
+cube_native <- cube_native%>%
+  filter(mintemporaluncertainty <= 315360000)
 
 ```
 
@@ -249,11 +252,11 @@ FLANDERS_EEA_1km_nonNatura2000 <- st_read('./_preprocessing/data/raw/spatial/EEA
 ```
 
 ```{r}
-Cube_Angio_Flanders <- cube%>%
+Cube_Angio_Flanders <- cube_native%>%
   filter(eeacellcode %in% FLANDERS_EEA_1km$CELLCODE)
-Cube_Angio_Flanders_Natura2000 <- cube%>%
+Cube_Angio_Flanders_Natura2000 <- cube_native%>%
   filter(eeacellcode %in% FLANDERS_EEA_1km_Natura2000$CELLCODE)
-Cube_Angio_Flanders_nonNatura2000 <- cube%>%
+Cube_Angio_Flanders_nonNatura2000 <- cube_native%>%
   filter(eeacellcode %in% FLANDERS_EEA_1km_nonNatura2000$CELLCODE)
 ```
 
