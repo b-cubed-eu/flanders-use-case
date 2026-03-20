@@ -1,0 +1,166 @@
+---
+title: "Download and prepare Angiosperm data"
+author: "Jasmijn Hillaert, Ward Langeraert"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, warning=FALSE, message=FALSE}
+# Load packages
+library(tidyverse) # Data wrangling and visualisation
+library(here)      # Relative paths
+library(sf)        # Work with spatial data
+library(rgbif)
+# Source
+source(here("_preprocessing/R/create_cube/download_occ_cube.R"))
+
+data_path <- here("_preprocessing","data", "raw")
+```
+
+# Goal
+
+Load and save structured data
+
+# Structured data
+
+## Occurrence data
+
+The zip file is stored under *./data/raw*.
+
+> GBIF.org (15 April 2025) GBIF Occurrence Download <https://doi.org/10.15468/dl.ddzhrc>
+
+```{r}
+query_ang_1km <- "SELECT
+  kingdom,
+  kingdomkey,
+  phylum,
+  phylumkey,
+  class,
+  classkey,
+  \"order\",
+  orderkey,
+  family,
+  familykey,
+  genus,
+  genuskey,
+  species,
+  specieskey,
+  \"year\",
+  GBIF_EEARGCODE(
+      1000,
+      decimallatitude,
+      decimallongitude,
+      COALESCE(coordinateuncertaintyinmeters,1000)
+  ) AS eeacellcode,
+  MIN(COALESCE(coordinateUncertaintyInMeters, 1000)) AS minCoordinateUncertaintyInMeters,
+MIN(GBIF_TEMPORALUNCERTAINTY(eventDate, eventTime)) AS minTemporalUncertainty,
+  IF(ISNULL(orderkey), NULL, SUM(COUNT(*)) OVER (
+PARTITION BY orderkey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) ordercount,
+IF(ISNULL(familykey), NULL, SUM(COUNT(*)) OVER (
+PARTITION BY familykey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) familycount,
+IF(ISNULL(genuskey), NULL, SUM(COUNT(*)) OVER (
+PARTITION BY genuskey, GBIF_EEARGCODE(1000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 1000)), \"year\")) genuscount,
+  COUNT(*) AS occurrences
+
+FROM occurrence
+
+WHERE
+  GBIF_Within('POLYGON ((2.327344 51.09871, 2.327248 51.09155, 2.327756 51.08439, 2.328866 51.07727, 2.38788 50.83058, 2.389178 50.82564, 2.389474 50.82463, 2.392533 50.81583, 2.392596 50.81567, 2.395418 50.80932, 2.398725 50.80307, 2.40251 50.79693, 2.402566 50.79684, 2.40735 50.79013, 2.412703 50.78359, 2.418611 50.77724, 2.452746 50.74326, 2.458523 50.73752, 2.464748 50.73197, 2.471405 50.72663, 2.478478 50.7215, 2.485947 50.71661, 2.493794 50.71197, 2.645918 50.62661, 2.653966 50.62213, 2.662357 50.6179, 2.671072 50.61395, 2.680087 50.61029, 2.695308 50.60417, 2.704275 50.60068, 2.713502 50.59748, 2.722966 50.59456, 2.732645 50.59195, 2.742514 50.58965, 2.752283 50.58742, 2.763376 50.58529, 2.763545 50.58526, 2.812808 50.5772, 2.823872 50.57568, 2.835047 50.57454, 2.8463 50.57379, 2.857602 50.57341, 3.97823 50.5527, 3.990176 50.55257, 4.243717 50.55461, 4.254527 50.5547, 5.147574 50.56059, 5.166759 50.56068, 5.885665 50.575, 5.89688 50.57527, 5.908057 50.57591, 5.919166 50.57693, 5.930175 50.57832, 5.941053 50.58008, 5.951771 50.5822, 5.962298 50.58468, 5.972605 50.58751, 5.982663 50.59069, 5.992445 50.59419, 6.001923 50.59803, 6.011069 50.60217, 6.01986 50.60662, 6.02827 50.61135, 6.036275 50.61637, 6.043854 50.62164, 6.050984 50.62716, 6.057646 50.63292, 6.082732 50.65573, 6.089073 50.66155, 6.094926 50.66759, 6.100273 50.6738, 6.1051 50.68019, 6.109394 50.68673, 6.113142 50.6934, 6.116334 50.70019, 6.118961 50.70708, 6.121015 50.71405, 6.122491 50.72107, 6.123384 50.72813, 6.123692 50.73522, 6.123412 50.7423, 6.122547 50.74936, 6.069023 51.15756, 6.06766 51.16463, 6.065704 51.17165, 6.06316 51.17859, 6.060036 51.18544, 6.056338 51.19218, 6.052079 51.19878, 6.047269 51.20524, 6.041921 51.21152, 6.036051 51.21762, 6.029675 51.22351, 6.02281 51.22919, 5.998465 51.24813, 5.98935 51.25483, 5.98096 51.26056, 5.972055 51.26598, 5.971368 51.26637, 5.966595 51.26903, 5.965309 51.26972, 5.956736 51.27412, 5.947813 51.27823, 5.94678 51.27868, 5.633364 51.4081, 5.191326 51.58673, 5.151025 51.60233, 5.149672 51.60283, 5.13959 51.60636, 5.129218 51.60955, 5.118586 51.61238, 5.107725 51.61486, 5.096666 51.61697, 5.08544 51.61872, 5.074081 51.62008, 5.07161 51.62033, 5.057201 51.62151, 4.800797 51.63886, 4.789391 51.63957, 4.777941 51.63989, 4.76648 51.63984, 4.755039 51.63941, 4.743651 51.6386, 3.157399 51.49629, 3.148893 51.49546, 3.14873 51.49544, 3.137587 51.49402, 3.126581 51.49224, 3.115741 51.49009, 3.105098 51.48759, 3.094682 51.48474, 3.084522 51.48155, 3.084121 51.48142, 3.073943 51.47779, 3.065801 51.47451, 3.064098 51.47382, 2.496252 51.23821, 2.486476 51.23404, 2.414896 51.20268, 2.405879 51.1983, 2.397248 51.19362, 2.389026 51.18866, 2.381236 51.18344, 2.3739 51.17796, 2.367039 51.17224, 2.360672 51.16631, 2.354816 51.16017, 2.34949 51.15384, 2.344706 51.14734, 2.340479 51.14069, 2.33682 51.13391, 2.333739 51.12702, 2.331246 51.12003, 2.329345 51.11297, 2.328044 51.10585, 2.327344 51.09871))', decimalLatitude, decimalLongitude) = TRUE
+AND \"year\" >= 1975
+  AND occurrenceStatus = 'PRESENT'
+  AND (coordinateUncertaintyInMeters <= 1000 OR coordinateUncertaintyInMeters IS NULL)
+  AND NOT occurrence.basisofrecord IN ('FOSSIL_SPECIMEN', 'LIVING_SPECIMEN')
+  AND NOT ARRAY_CONTAINS(issue, 'ZERO_COORDINATE')
+  AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_OUT_OF_RANGE')
+  AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_INVALID')
+  AND NOT ARRAY_CONTAINS(issue, 'COUNTRY_COORDINATE_MISMATCH')
+  AND datasetKey IN ('271c444f-f8d8-4986-b748-e7367755c0c1')
+  AND speciesKey IS NOT NULL
+  AND decimalLatitude IS NOT NULL
+  AND decimalLongitude IS NOT NULL
+  AND occurrence.hasgeospatialissues = FALSE
+  AND NOT GBIF_STRINGARRAYCONTAINS(occurrence.issue, 'TAXON_MATCH_FUZZY', TRUE)
+  AND (occurrence.taxonkey IN ('196', '220') OR occurrence.acceptedtaxonkey IN ('196',    '220') OR occurrence.kingdomkey IN ('196', '220') OR occurrence.phylumkey IN ('196',    '220') OR occurrence.classkey IN ('196', '220') OR occurrence.orderkey IN ('196',       '220') OR occurrence.familykey IN ('196', '220') OR occurrence.genuskey IN ('196',      '220') OR occurrence.specieskey IN ('196', '220'))
+
+
+GROUP BY
+  kingdom, kingdomkey,
+  phylum, phylumkey,
+  class, classkey,
+  \"order\", orderkey,
+  family, familykey,
+  genus, genuskey,
+  species, specieskey,
+  \"year\",
+  GBIF_EEARGCODE(
+      1000,
+      decimallatitude,
+      decimallongitude,
+      COALESCE(coordinateuncertaintyinmeters,1000)
+  )
+"
+
+
+data_total_1km <- download_occ_cube(
+  sql_query = query_ang_1km,
+  file = "Angiosperm_data.csv",
+  path = data_path,
+  overwrite = TRUE
+  )
+
+```
+
+We get a big dataframe with all occurrences.
+
+```{r}
+# Explore dataframe
+glimpse(data_total_1km)
+```
+
+```{r}
+#read in native species in Flanders (Waarnemingen)
+
+be_plants_native <-  read.csv('_preprocessing/data/interim/Waarnemingen_native_species.csv')
+# alternative cube waarbij enkel native soorten op observed plantlijst
+# Natuurpunt worden behouden
+cube_native <- data_total_1km[data_total_1km$specieskey %in%
+                              be_plants_native$acceptedUsageKey,]
+
+#add filter for temporal uncertainty
+cube_native <- cube_native%>%
+  filter(mintemporaluncertainty <= 315360000)
+
+```
+
+# Select Flanders grid cells
+
+```{r}
+FLANDERS_EEA_1km <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+FLANDERS_EEA_1km_Natura2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.geojson')
+FLANDERS_EEA_1km_nonNatura2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_nonNatura2000.geojson')
+```
+
+```{r}
+Cube_Angio_Flanders <- cube_native%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km$CELLCODE)
+Cube_Angio_Flanders_Natura2000 <- cube_native%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km_Natura2000$CELLCODE)
+Cube_Angio_Flanders_nonNatura2000 <- cube_native%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km_nonNatura2000$CELLCODE)
+```
+
+```{r}
+write.csv(Cube_Angio_Flanders,
+          '_preprocessing/data/raw/Florabank_data_Flanders_1km.csv')
+write.csv(Cube_Angio_Flanders_Natura2000,
+          '_preprocessing/data/raw/Florabank_data_Flanders_Natura2000.csv')
+write.csv(Cube_Angio_Flanders_nonNatura2000,
+          '_preprocessing/data/raw/Florabank_data_Flanders_nonNatura2000.csv')
+```
