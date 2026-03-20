@@ -157,9 +157,9 @@ Cube_Angio_Flanders_nonNatura2000 <- cube_native%>%
 
 ```{r}
 write.csv(Cube_Angio_Flanders,
-          '_preprocessing/data/interim/Angiosperm_data_Flanders_1km.csv')
+          '_preprocessing/data/raw/Angiosperm_data_Flanders_1km.csv')
 write.csv(Cube_Angio_Flanders_Natura2000,
-          '_preprocessing/data/interim/Angiosperm_data_Flanders_Natura2000.csv')
+          '_preprocessing/data/raw/Angiosperm_data_Flanders_Natura2000.csv')
 write.csv(Cube_Angio_Flanders_nonNatura2000,
-          '_preprocessing/data/interim/Angiosperm_data_Flanders_nonNatura2000.csv')
+          '_preprocessing/data/raw/Angiosperm_data_Flanders_nonNatura2000.csv')
 ```

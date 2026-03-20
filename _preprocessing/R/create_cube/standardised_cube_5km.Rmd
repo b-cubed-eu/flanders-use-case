@@ -151,6 +151,6 @@ Cube_Angio_Flanders <- cube_native%>%
 
 ```{r}
 write.csv(Cube_Angio_Flanders,
-          '_preprocessing/data/interim/Angiosperm_data_Flanders_5km.csv')
+          '_preprocessing/data/raw/Angiosperm_data_Flanders_5km.csv')
 
 ```
