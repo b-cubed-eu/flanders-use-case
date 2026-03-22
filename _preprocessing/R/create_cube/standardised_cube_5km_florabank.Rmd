@@ -147,7 +147,7 @@ FLANDERS_EEA_5km <- st_read('./_preprocessing/data/raw/spatial/EEA_5km_Flanders_
 
 ```{r}
 Cube_Angio_Flanders <- cube_native%>%
-  filter(eeacellcode %in% FLANDERS_EEA_5km$CELLCODE)
+  filter(eeacellcode %in% FLANDERS_EEA_5km$cellCode)
 ```
 
 ```{r}
