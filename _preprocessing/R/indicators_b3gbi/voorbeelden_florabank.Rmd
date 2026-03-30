@@ -1,19 +1,23 @@
 ---
-title: "Download and prepare Angiosperm data"
-author: "Jasmijn Hillaert, Ward Langeraert"
-date: "`r Sys.Date()`"
-output:
-  html_document:
-    code_folding: show
-    toc: true
-    toc_float: true
-    toc_collapsed: true
-editor_options: 
-  chunk_output_type: console
+title: "Calculate General Indicators Flanders Case Study WP6"
+output: html_document
 ---
 
-```{r, warning=FALSE, message=FALSE}
-# Load packages
+#install packages
+
+```{r}
+#install.packages("b3gbi", repos = c("https://b-cubed-eu.r-universe.dev", "https://cloud.r-project.org"))
+#install.packages("rnaturalearthdata")
+#install.packages("sf")
+#install.packages("taxize")
+#install.packages("here")
+
+
+gc()
+library(b3gbi)
+library(sf)
+library(taxize)
+library(here)
 library(tidyverse) # Data wrangling and visualisation
 library(here)      # Relative paths
 library(sf)        # Work with spatial data
@@ -37,7 +41,7 @@ The zip file is stored under *./data/raw*.
 > GBIF.org (15 April 2025) GBIF Occurrence Download <https://doi.org/10.15468/dl.ddzhrc>
 
 ```{r}
-query_ang_5km <- "SELECT
+query_florabank_5km <- "SELECT
   kingdom,
   kingdomkey,
   phylum,
@@ -57,16 +61,8 @@ query_ang_5km <- "SELECT
       5000,
       decimallatitude,
       decimallongitude,
-      COALESCE(coordinateuncertaintyinmeters,5000)
+      0
   ) AS eeacellcode,
-  MIN(COALESCE(coordinateUncertaintyInMeters, 5000)) AS minCoordinateUncertaintyInMeters,
-MIN(GBIF_TEMPORALUNCERTAINTY(eventDate, eventTime)) AS minTemporalUncertainty,
-  IF(ISNULL(orderkey), NULL, SUM(COUNT(*)) OVER (
-PARTITION BY orderkey, GBIF_EEARGCODE(5000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 5000)), \"year\")) ordercount,
-IF(ISNULL(familykey), NULL, SUM(COUNT(*)) OVER (
-PARTITION BY familykey, GBIF_EEARGCODE(5000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 5000)), \"year\")) familycount,
-IF(ISNULL(genuskey), NULL, SUM(COUNT(*)) OVER (
-PARTITION BY genuskey, GBIF_EEARGCODE(5000, decimallatitude, decimallongitude, COALESCE(coordinateuncertaintyinmeters, 5000)), \"year\")) genuscount,
   COUNT(*) AS occurrences
 
 FROM occurrence
@@ -81,12 +77,12 @@ AND \"year\" >= 1975
   AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_OUT_OF_RANGE')
   AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_INVALID')
   AND NOT ARRAY_CONTAINS(issue, 'COUNTRY_COORDINATE_MISMATCH')
+  AND datasetKey IN ('271c444f-f8d8-4986-b748-e7367755c0c1')
   AND speciesKey IS NOT NULL
   AND decimalLatitude IS NOT NULL
   AND decimalLongitude IS NOT NULL
   AND occurrence.hasgeospatialissues = FALSE
   AND NOT GBIF_STRINGARRAYCONTAINS(occurrence.issue, 'TAXON_MATCH_FUZZY', TRUE)
-  AND (occurrence.taxonkey IN ('196', '220') OR occurrence.acceptedtaxonkey IN ('196',    '220') OR occurrence.kingdomkey IN ('196', '220') OR occurrence.phylumkey IN ('196',    '220') OR occurrence.classkey IN ('196', '220') OR occurrence.orderkey IN ('196',       '220') OR occurrence.familykey IN ('196', '220') OR occurrence.genuskey IN ('196',      '220') OR occurrence.specieskey IN ('196', '220'))
 
 
 GROUP BY
@@ -102,55 +98,134 @@ GROUP BY
       5000,
       decimallatitude,
       decimallongitude,
-      COALESCE(coordinateuncertaintyinmeters,5000)
+      0
   )
 "
 
 
-data_total_5km <- download_occ_cube(
-  sql_query = query_ang_5km,
+data_total_1km <- download_occ_cube(
+  sql_query = query_florabank_5km,
   file = "Angiosperm_data.csv",
   path = data_path,
   overwrite = TRUE
   )
 
 ```
+```
 
-We get a big dataframe with all occurrences.
 
 ```{r}
-# Explore dataframe
-glimpse(data_total_5km)
+Focus <- 'Florabank_data_Flanders_1km'
+
+#filter only data of Florabank before 2023!
+data <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
+
+
+
+
+data <- data%>%filter(year<=2023)
 ```
 
 ```{r}
-#read in native species in Flanders (Waarnemingen)
+#only maintain cells which are well surveyed
+data_filtered <- data %>%
+  group_by(eeacellcode, year) %>%            # groep per cel en jaar
+  filter(n_distinct(species) > 100) %>%     # enkel groepen met >100 unieke soorten
+  ungroup() 
 
-be_plants_native <-  read.csv('_preprocessing/data/interim/Waarnemingen_native_species.csv')
-# alternative cube waarbij enkel native soorten op observed plantlijst
-# Natuurpunt worden behouden
-cube_native <- data_total_5km[data_total_5km$specieskey %in%
-                              be_plants_native$acceptedUsageKey,]
 
-#add filter for temporal uncertainty
-cube_native <- cube_native%>%
-  filter(mintemporaluncertainty <= 315360000)
-
-```
-
-# Select Flanders grid cells
-
-```{r}
-FLANDERS_EEA_5km <- st_read('./_preprocessing/data/raw/spatial/EEA_5km_Flanders_union.geojson')
 ```
 
 ```{r}
-Cube_Angio_Flanders <- cube_native%>%
-  filter(eeacellcode %in% FLANDERS_EEA_5km$cellCode)
+library(dplyr)
+
+# Stel df_filtered is je dataset met enkel goed onderzochte hokken
+
+species_key <- 3089561
+
+# Per jaar berekenen
+presence_per_year <- data_filtered %>%
+  group_by(year, eeacellcode) %>%           # per hok per jaar
+  summarise(present = any(specieskey == species_key), .groups = "drop") %>%
+  group_by(year) %>%                        # per jaar samenvatten
+  summarise(
+    n_cells = n(),                          # totaal aantal goed onderzochte hokken
+    n_present = sum(present),               # aantal hokken waar de soort aanwezig is
+    perc_present = 100 * n_present / n_cells  # percentage
+  )
+
+ggplot(presence_per_year, aes(x = year, y = perc_present)) +
+  geom_point(color = "darkred", size = 3) +            # de bollen
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +  # smooth curve
+  labs(
+    title = "Percentage goed onderzochte hokken met soort 3089561 per jaar",
+    x = "Jaar",
+    y = "Percentage (%)"
+  ) +
+  theme_minimal(base_size = 14)
 ```
+
+
 
 ```{r}
-write.csv(Cube_Angio_Flanders,
-          '_preprocessing/data/raw/Angiosperm_data_Flanders_5km.csv')
+
+korenbloem <- data%>% filter(specieskey== 3089561)
+
+korenbloem_data_cube <- process_cube(korenbloem)
+
+#trend in aantal observaties over de tijd van korenbloem
+plot_ts(spec_occ_ts(korenbloem_data_cube))
 
 ```
+
+
+```{r}
+#trend in occupancy
+bezette_hokken_per_jaar <- korenbloem %>%
+  distinct(year, eeacellcode) %>%
+  group_by(year) %>%
+  summarise(aantal_eeacellcode = n())
+
+library(ggplot2)
+
+library(ggplot2)
+
+ggplot(bezette_hokken_per_jaar, aes(x = year, y = aantal_eeacellcode)) +
+  geom_point(size = 2) +                  # bolletjes
+  geom_smooth(method = "loess", se = TRUE) +  # smooth curve
+  labs(
+    title = "Occupancy of Centaurea cyanus",
+    x = "Year",
+    y = "Occupancy"
+  ) +
+  theme_minimal()
+```
+```{r}
+korensla <- data%>% filter(specieskey== 3087403)
+
+korensla_data_cube <- process_cube(korensla)
+
+#trend in aantal observaties over de tijd van korenbloem
+plot_ts(spec_occ_ts(korensla_data_cube))
+
+#trend in occupancy
+bezette_hokken_per_jaar <- korensla %>%
+  distinct(year, eeacellcode) %>%
+  group_by(year) %>%
+  summarise(aantal_eeacellcode = n())
+
+library(ggplot2)
+
+library(ggplot2)
+
+ggplot(bezette_hokken_per_jaar, aes(x = year, y = aantal_eeacellcode)) +
+  geom_point(size = 2) +                  # bolletjes
+  geom_smooth(method = "loess", se = TRUE) +  # smooth curve
+  labs(
+    title = "Occupancy of Arnoseris minima",
+    x = "Year",
+    y = "Occupancy"
+  ) +
+  theme_minimal()
+```
+
