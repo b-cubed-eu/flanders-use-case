@@ -1,0 +1,144 @@
+---
+title: "Calculate General Indicators with b3gbi and Florabank database on GBIF"
+output: html_document
+---
+
+#install packages
+
+```{r}
+library(b3gbi)
+library(rgbif)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+```{r}
+#more info about download here (focussing on dataset of Florabank): https://www.gbif.org/occurrence/download/0063040-260226173443078
+download_key <- "0063040-260226173443078"
+#download data
+dl <- occ_download_get(download_key, overwrite = TRUE)
+#import data
+dat <- occ_download_import(dl)
+
+
+#only data before 2023 is complete in GBIF for Florabank
+data <- dat%>%filter(year<2023)
+```
+
+
+
+
+
+```{r}
+#only maintain cells which are well surveyed according to methodology of Florabank (per year and per 1km gridcell more than 100 unique species observed)
+data_filtered <- data %>%
+  group_by(eeacellcode, year) %>%            # groep per cel en jaar
+  filter(n_distinct(species) > 100) %>%      # enkel groepen met >100 unieke soorten
+  ungroup() 
+
+
+```
+
+
+##Case study: Cornflower — this species has declined in occupancy due to the use of herbicides, but has recently become more abundant again thanks to its inclusion in seed mixes distributed by the agriculture and fisheries sector as a countermeasure.
+```{r}
+#specieskey van Korenbloem is 3089561 -> https://www.gbif.org/species/3089561
+
+species_key <- 3089561
+
+# Per jaar berekenen percentage van bezette hokken bezet door de soort en zet waarde naar 0 indien de soort niet aanwezig (dit is gerechtvaardigd aangezien goed onderzochte hoeken)
+presence_per_year <- data_filtered %>%
+  group_by(year, eeacellcode) %>%
+  summarise(present = any(specieskey == species_key), .groups = "drop") %>%
+  group_by(year) %>%
+  summarise(
+    n_cells = n(),
+    n_present = sum(present),
+    perc_present = mean(present) * 100
+  ) %>%
+  complete(
+    year = full_seq(year, 1),   # vult ontbrekende jaren op
+    fill = list(
+      n_cells = 0,
+      n_present = 0,
+      perc_present = 0
+    )
+  )
+
+grafiek <- ggplot(presence_per_year, aes(x = year, y = perc_present)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +
+  scale_y_continuous(limits = c(0, 100)) +   # 🔥 dit is wat je zoekt
+  labs(
+    title = "Relative occupancy of well serveyed cells",
+    x = "Year",
+    y = "Percentage (%)"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+
+```{r}
+#test with b3gbi of absolute occupancy
+korenbloem <- data_filtered%>% filter(specieskey== 3089561)
+
+korenbloem_data_cube <- process_cube(korenbloem)
+
+#trend in absolute occupancy over de tijd van korenbloem
+plot_ts(spec_range_ts(korenbloem_data_cube),
+        title = 'Absolute occupancy of well surveyed cells')
+
+```
+
+
+
+
+
+##Case study: Bee orchid — this species is becoming more abundant due to increasingly suitable climatic conditions driven by climate change.
+```{r}
+#specieskey bee orchid is 2792998-> https://www.gbif.org/species/3089561
+species_key <- 2792998
+presence_per_year <- data_filtered %>%
+  group_by(year, eeacellcode) %>%
+  summarise(present = any(specieskey == species_key), .groups = "drop") %>%
+  group_by(year) %>%
+  summarise(
+    n_cells = n(),
+    n_present = sum(present),
+    perc_present = mean(present) * 100
+  ) %>%
+  complete(
+    year = full_seq(year, 1),   # vult ontbrekende jaren op
+    fill = list(
+      n_cells = 0,
+      n_present = 0,
+      perc_present = 0
+    )
+  )
+
+b <- ggplot(presence_per_year, aes(x = year, y = perc_present)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +
+  scale_y_continuous(limits = c(0, 5)) +   # 🔥 dit is wat je zoekt
+  labs(
+    title = "Relative occupancy of well serveyed cells",
+    x = "Year",
+    y = "Percentage (%)"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+```{r}
+#test with b3gbi of absolute occupancy
+bijenorchis <- data_filtered%>% filter(specieskey== 2792998)
+
+bijenorchis_data_cube <- process_cube(bijenorchis)
+
+#trend in absolute occupancy over de tijd van korenbloem
+plot_ts(spec_range_ts(bijenorchis_data_cube),
+        title = 'Absolute occupancy of well surveyed cells')
+
+```
+

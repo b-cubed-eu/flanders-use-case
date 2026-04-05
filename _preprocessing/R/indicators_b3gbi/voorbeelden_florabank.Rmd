@@ -110,21 +110,23 @@ data_total_1km <- download_occ_cube(
   overwrite = TRUE
   )
 
+
+
+
+download_key <- "0063040-260226173443078"
+dl <- occ_download_get(download_key, overwrite = TRUE)
+dat <- occ_download_import(dl)
+
+
+#only data before 2023
+data <- dat%>%filter(year<=2023)
+
+
 ```
-```
-
-
-```{r}
-Focus <- 'Florabank_data_Flanders_1km'
-
-#filter only data of Florabank before 2023!
-data <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
 
 
 
 
-data <- data%>%filter(year<=2023)
-```
 
 ```{r}
 #only maintain cells which are well surveyed
@@ -136,6 +138,8 @@ data_filtered <- data %>%
 
 ```
 
+
+##Korenbloem
 ```{r}
 library(dplyr)
 
@@ -145,21 +149,30 @@ species_key <- 3089561
 
 # Per jaar berekenen
 presence_per_year <- data_filtered %>%
-  group_by(year, eeacellcode) %>%           # per hok per jaar
+  group_by(year, eeacellcode) %>%
   summarise(present = any(specieskey == species_key), .groups = "drop") %>%
-  group_by(year) %>%                        # per jaar samenvatten
+  group_by(year) %>%
   summarise(
-    n_cells = n(),                          # totaal aantal goed onderzochte hokken
-    n_present = sum(present),               # aantal hokken waar de soort aanwezig is
-    perc_present = 100 * n_present / n_cells  # percentage
+    n_cells = n(),
+    n_present = sum(present),
+    perc_present = mean(present) * 100
+  ) %>%
+  complete(
+    year = full_seq(year, 1),   # vult ontbrekende jaren op
+    fill = list(
+      n_cells = 0,
+      n_present = 0,
+      perc_present = 0
+    )
   )
 
-ggplot(presence_per_year, aes(x = year, y = perc_present)) +
-  geom_point(color = "darkred", size = 3) +            # de bollen
-  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +  # smooth curve
+b <- ggplot(presence_per_year, aes(x = year, y = perc_present)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +
+  scale_y_continuous(limits = c(0, 100)) +   # 🔥 dit is wat je zoekt
   labs(
-    title = "Percentage goed onderzochte hokken met soort 3089561 per jaar",
-    x = "Jaar",
+    title = "Relative occupancy of well serveyed cells",
+    x = "Year",
     y = "Percentage (%)"
   ) +
   theme_minimal(base_size = 14)
@@ -169,63 +182,131 @@ ggplot(presence_per_year, aes(x = year, y = perc_present)) +
 
 ```{r}
 
-korenbloem <- data%>% filter(specieskey== 3089561)
+korenbloem <- data_filtered%>% filter(specieskey== 3089561)
 
 korenbloem_data_cube <- process_cube(korenbloem)
 
-#trend in aantal observaties over de tijd van korenbloem
-plot_ts(spec_occ_ts(korenbloem_data_cube))
+#trend in absolute occupancy over de tijd van korenbloem
+plot_ts(spec_range_ts(korenbloem_data_cube),
+        title = 'Absolute occupancy of well surveyed cells')
 
 ```
 
 
+
+##Korensla 
 ```{r}
-#trend in occupancy
-bezette_hokken_per_jaar <- korenbloem %>%
-  distinct(year, eeacellcode) %>%
+# Per jaar berekenen
+
+species_key <- 3087403
+presence_per_year <- data_filtered %>%
+  group_by(year, eeacellcode) %>%
+  summarise(present = any(specieskey == species_key), .groups = "drop") %>%
   group_by(year) %>%
-  summarise(aantal_eeacellcode = n())
+  summarise(
+    n_cells = n(),
+    n_present = sum(present),
+    perc_present = mean(present) * 100
+  ) %>%
+  complete(
+    year = full_seq(year, 1),   # vult ontbrekende jaren op
+    fill = list(
+      n_cells = 0,
+      n_present = 0,
+      perc_present = 0
+    )
+  )
 
-library(ggplot2)
-
-library(ggplot2)
-
-ggplot(bezette_hokken_per_jaar, aes(x = year, y = aantal_eeacellcode)) +
-  geom_point(size = 2) +                  # bolletjes
-  geom_smooth(method = "loess", se = TRUE) +  # smooth curve
+b <- ggplot(presence_per_year, aes(x = year, y = perc_present)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +
+  scale_y_continuous(limits = c(0, 5)) +   # 🔥 dit is wat je zoekt
   labs(
-    title = "Occupancy of Centaurea cyanus",
+    title = "Relative occupancy of well serveyed cells",
     x = "Year",
-    y = "Occupancy"
+    y = "Percentage (%)"
   ) +
-  theme_minimal()
+  theme_minimal(base_size = 14)
+
+b <- ggplot(presence_per_year, aes(x = year, y = n_present)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +
+  scale_y_continuous(limits = c(0, 5)) +   # 🔥 dit is wat je zoekt
+  labs(
+    title = "Absolute occupancy of well serveyed cells",
+    x = "Year",
+    y = "Percentage (%)"
+  ) +
+  theme_minimal(base_size = 14)
 ```
+
 ```{r}
-korensla <- data%>% filter(specieskey== 3087403)
 
-korensla_data_cube <- process_cube(korensla)
+korenbloem <- data_filtered%>% filter(specieskey== 3087403)
 
-#trend in aantal observaties over de tijd van korenbloem
-plot_ts(spec_occ_ts(korensla_data_cube))
+korenbloem_data_cube <- process_cube(korenbloem)
 
-#trend in occupancy
-bezette_hokken_per_jaar <- korensla %>%
-  distinct(year, eeacellcode) %>%
+#trend in absolute occupancy over de tijd van korenbloem
+plot_ts(spec_occ_ts(korenbloem_data_cube),
+        title = 'Absolute number of occurences in well surveyed cells')
+
+```
+
+##bijenorchis
+```{r}
+# Per jaar berekenen
+
+species_key <- 2792998
+presence_per_year <- data_filtered %>%
+  group_by(year, eeacellcode) %>%
+  summarise(present = any(specieskey == species_key), .groups = "drop") %>%
   group_by(year) %>%
-  summarise(aantal_eeacellcode = n())
+  summarise(
+    n_cells = n(),
+    n_present = sum(present),
+    perc_present = mean(present) * 100
+  ) %>%
+  complete(
+    year = full_seq(year, 1),   # vult ontbrekende jaren op
+    fill = list(
+      n_cells = 0,
+      n_present = 0,
+      perc_present = 0
+    )
+  )
 
-library(ggplot2)
-
-library(ggplot2)
-
-ggplot(bezette_hokken_per_jaar, aes(x = year, y = aantal_eeacellcode)) +
-  geom_point(size = 2) +                  # bolletjes
-  geom_smooth(method = "loess", se = TRUE) +  # smooth curve
+b <- ggplot(presence_per_year, aes(x = year, y = perc_present)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +
+  scale_y_continuous(limits = c(0, 5)) +   # 🔥 dit is wat je zoekt
   labs(
-    title = "Occupancy of Arnoseris minima",
+    title = "Relative occupancy of well serveyed cells",
     x = "Year",
-    y = "Occupancy"
+    y = "Percentage (%)"
   ) +
-  theme_minimal()
+  theme_minimal(base_size = 14)
+
+b <- ggplot(presence_per_year, aes(x = year, y = n_present)) +
+  geom_point(color = "darkred", size = 3) +
+  geom_smooth(method = "loess", color = "steelblue", fill = "lightblue", se = TRUE) +
+  scale_y_continuous(limits = c(0, 5)) +   # 🔥 dit is wat je zoekt
+  labs(
+    title = "Absolute occupancy of well serveyed cells",
+    x = "Year",
+    y = "Percentage (%)"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+```{r}
+
+bijenorchis <- data_filtered%>% filter(specieskey== 2792998)
+
+korenbloem_data_cube <- process_cube(bijenorchis)
+
+#trend in absolute occupancy over de tijd van korenbloem
+plot_ts(spec_range_ts(korenbloem_data_cube),
+        title = 'Absolute occupancy of well surveyed cells')
+
 ```
 

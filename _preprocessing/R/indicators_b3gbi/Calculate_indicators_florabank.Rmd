@@ -23,14 +23,15 @@ library(here)
 #Define input file and directory of output files
 
 ```{r}
-Focus <- 'Florabank_data_Flanders_1km'
+Focus <- 'Florabank_data_Flanders_5km'
+Focus_1km <- 'Florabank_data_Flanders_1km'
 
 #filter only data of Florabank before 2023!
 data <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
-
+data_1km <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
 
 Angiosperm_data_cube <- process_cube(read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv')))
-
+Angiosperm_data_cube_1km <- process_cube(read.csv(paste0('./_preprocessing/data/raw/', Focus_1km, '.csv')))
 
 
 
@@ -51,6 +52,9 @@ str(Angiosperm_data_cube)
 'Observed richness is calculated by summing the number of unique species observed for each year or each cell. Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al., 2018), as well as the detectability of each species.'
 
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
+                            cell_size="grid")
+
+OSR_map_1km <- obs_richness_map(Angiosperm_data_cube_1km,
                             cell_size="grid")
 
 saveRDS(OSR_map, 
