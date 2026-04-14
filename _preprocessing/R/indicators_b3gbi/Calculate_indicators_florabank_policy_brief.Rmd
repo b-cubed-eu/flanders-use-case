@@ -29,7 +29,7 @@ Focus_B <- 'Angiosperm_data_Flanders_5km'
 
 #filter only data of Florabank before 2023!
 data <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
-data_1km <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
+data_1km <- read.csv(paste0('./_preprocessing/data/raw/', Focus_1km, '.csv'))
 data_B <- read.csv(paste0('./_preprocessing/data/raw/', Focus_B, '.csv'))
 
 
@@ -52,12 +52,18 @@ Angiosperm_data_cube_B_ts <- process_cube(read.csv(paste0('./_preprocessing/data
 OSR_map <- obs_richness_map(Angiosperm_data_cube_1km,
                             cell_size="grid")
 
-OSR_ts <- obs_richness_ts(Angiosperm_data_cube_5km, 
+OSR_ts <- obs_richness_ts(Angiosperm_data_cube_1km, 
                           cell_size="grid")
 
-a <-plot_ts(OSR_ts, min_year=)
+a <-plot_ts(OSR_ts)
 
 OSR_ts <- as.data.frame(OSR_ts$data)
+
+ggplot(data = OSR_map$data) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
 
 library(ggplot2)
 
@@ -68,26 +74,10 @@ b <- ggplot(OSR_ts, aes(x = year, y = diversity_val)) +
   theme_minimal() +
   labs(x = "Year", y = "Native angiosperm species richness")
 
-Angiosperm_data_cube_5km <- Angiosperm_data_cube_5km$data
 
-EEA_5km_union_Flanders <- read_sf('./_preprocessing/data/raw/spatial/EEA_5km_Flanders_union.geojson')
 ```
 
-```{r}
-#angiosperm_data_cube
-result <- Angiosperm_data_cube_5km$data %>%
-  select(year, taxonKey, cellCode) %>%
-  group_by(cellCode) %>%
-  summarise(n_taxa = n_distinct(taxonKey))
 
-#align new info with EEA_5km_union_Flanders
-output <- left_join(EEA_5km_union_Flanders, result)
-
- c <- ggplot(data = output) +
-  geom_sf(aes(fill = n_taxa), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +
-  theme_minimal()+
-  theme(legend.title = element_blank())
  
  https://www.gbif.org/occurrence/download/0051797-260226173443078
  GBIF Occurrence Download https://doi.org/10.15468/dl.r7kjgc Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2026-03-20
@@ -95,6 +85,4 @@ output <- left_join(EEA_5km_union_Flanders, result)
  GBIF Occurrence Download https://doi.org/10.15468/dl.y9hpfa Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2026-03-17
  
  
-```
-
 
