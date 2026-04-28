@@ -58,6 +58,20 @@ saveRDS(OSR_map,
 OSR_ts <- obs_richness_ts(Angiosperm_data_cube, 
                           cell_size="grid")
 
+a <-plot_ts(OSR_ts)
+
+OSR_ts <- as.data.frame(OSR_ts$data)
+
+OSR_ts <- OSR_ts %>% filter(year<= 2022)
+
+b <- ggplot(OSR_ts, aes(x = year, y = diversity_val)) +
+  geom_point() +
+  geom_smooth(method = "loess", se = FALSE) +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme_minimal() +
+  labs(x = "Year", y = "Native angiosperm species richness")
+
+
 plot_ts(OSR_ts, max_year = 2022)
 saveRDS(OSR_ts, 
         paste0(output_path, '/OSR_ts.rds'))
@@ -71,10 +85,15 @@ saveRDS(OSR_ts,
 
 gc()
 
-#TODO: lukt niet om schaal aan te passen naar 1 km
+
 TO_map <- total_occ_map(Angiosperm_data_cube,
                              cell_size="grid")
 
+ggplot(data = TO_map$data) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
 
 ggplot(data = TO_map$data) +
   geom_sf(aes(fill = diversity_val), color = NA) +
@@ -87,9 +106,11 @@ ggplot(data = TO_map$data) +
   theme_minimal() +
   theme(legend.title = element_blank())
 
-#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
+
 TO_ts <- total_occ_ts(Angiosperm_data_cube, 
                            cell_size="grid")
+
+plot_ts(TO_ts)
 
 saveRDS(TO_map, 
         paste0(output_path, '/TO_map.rds'))
@@ -100,51 +121,6 @@ saveRDS(TO_ts,
 
 
 #Bootstrapping ok
-```
-
-#8.3. Evenness
-
-```{r}
-"Species evenness is a commonly used indicator that measures how uniformly individuals are distributed across species in a region or over time. It provides a complement to richness by taking relative abundance into account. Although GBIF provides information about abundances as individual counts, the majority of entries lack this information. Hence, evenness can only be calculated using the proportions of observations rather than proportions of individuals. Strictly speaking, the evenness measures therefore indicate how uniformly species are represented in the respective data set rather than the true evenness of the ecological community."
-
-#bootstrapping ok
-
-gc()
-
-PEM_map <-  pielou_evenness_map(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-WEM_map <- williams_evenness_map(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-PEM_ts <-  pielou_evenness_ts(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-WEM_ts <- williams_evenness_ts(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-##export data to showcase in dashboard
-saveRDS(PEM_map, 
-        paste0(output_path, '/PEM_map.rds'))
-
-saveRDS(PEM_ts, 
-        paste0(output_path, '/PEM_ts.rds'))
-
-saveRDS(WEM_map, 
-        paste0(output_path, '/WEM_map.rds'))
-
-saveRDS(WEM_ts, 
-        paste0(output_path, '/WEM_ts.rds'))
-
-
 ```
 
 #8.4. Rarity
@@ -310,11 +286,18 @@ OD_map <- occ_density_map(Angiosperm_data_cube,
                             cell_size="grid")
 OD_map_plot <- plot(OD_map)
 
+ggplot(data = OD_map$data) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
+
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 OD_ts <- occ_density_ts(Angiosperm_data_cube,
                         cell_size="grid")
 OD_ts_plot <- plot(OD_ts)
 
+OD_ts_plot
 ##export data to showcase in dashboard
 saveRDS(OD_map, 
         paste0(output_path, '/OD_map.rds'))
@@ -422,11 +405,11 @@ gc()
 OT_ts <- occ_turnover_ts(Angiosperm_data_cube,
                          cell_size="grid")
 
-OT_ts_plot <- plot(OT_ts)
+OT_ts_plot <- plot(OT_ts, max_year=2022)
 
 ##export data to showcase in dashboard
 saveRDS(OT_ts, 
         paste0(output_path, '/OT_ts.rds'))
 
-
+OT_ts_plot
 ```

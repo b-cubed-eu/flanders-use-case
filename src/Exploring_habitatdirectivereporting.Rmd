@@ -1,0 +1,176 @@
+```{r}
+#2013-2018
+library(sf)
+library(dplyr)
+
+st_layers("C:/Users/jasmijn_hillaert/Downloads/art17_2013_2018_public.gpkg")
+
+data_habitats <- st_read("C:/Users/jasmijn_hillaert/Downloads/art17_2013_2018_public.gpkg", layer = "Art17_habitats_distribution_2013_2018_MS")
+
+habitats_be <-data_habitats%>%filter(country=="BE")
+
+data_species <- st_read("C:/Users/jasmijn_hillaert/Downloads/art17_2013_2018_public.gpkg", layer = "Art17_species_distribution_2013_2018_MS")
+
+species_be <-data_species%>%filter(country=="BE")
+
+#Oorspronkelijk epsg 3035
+
+species_be <- st_transform(species_be, crs=4326)
+
+Flanders <- st_read("~/GitHub/Flanders_use_case/_preprocessing/data/raw/spatial/Flanders.shp")
+
+species_be <- st_make_valid(species_be)
+
+species_fl_b3 <- st_intersection(species_be, Flanders)
+```
+```{r}
+library(leaflet)
+
+#test a map
+test_map <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=species_fl_b3)
+
+test_map
+
+test_map_species<-leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=(species_fl_b3%>%filter(speciescode==1014)))
+
+test_map_species
+```
+
+```{r}
+data_species_b2 <- st_read("C:/Users/jasmijn_hillaert/Downloads/art17_2007_2012_public.gpkg", layer = "Art17_species_distribution_2007_2012_MS")
+
+species_be_b2 <-data_species_b2%>%filter(country=="BE")
+
+#Oorspronkelijk epsg 3035
+
+species_be_b2 <- st_transform(species_be_b2, crs=4326)
+
+Flanders <- st_read("~/GitHub/Flanders_use_case/_preprocessing/data/raw/spatial/Flanders.shp")
+
+species_be_b2 <- st_make_valid(species_be_b2)
+
+species_fl_b2 <- st_intersection(species_be_b2, Flanders)
+```
+
+```{r}
+data_species_b1 <- st_read("C:/Users/jasmijn_hillaert/Downloads/art17_Species_Distribution.shp")
+
+species_be_b1 <-data_species_b1%>%filter(COUNTRY=="BE")
+
+#Oorspronkelijk epsg 3035
+
+species_be_b1 <- st_transform(species_be_b1, crs=4326)
+
+Flanders <- st_read("~/GitHub/Flanders_use_case/_preprocessing/data/raw/spatial/Flanders.shp")
+
+species_be_b1 <- st_make_valid(species_be_b1)
+
+species_fl_b1 <- st_intersection(species_be_b1
+                                 , Flanders)
+```
+```{r}
+names(species_fl_b1)
+```
+```{r}
+#2007- 2012
+names(species_fl_b2)
+
+mapping <- species_fl_b2%>%
+  select(species_name, speciescode)%>%
+  st_drop_geometry()%>%
+  distinct()
+
+mapping$speciescode <- as.integer(mapping$speciescode)
+
+Natura2000habitatrichtlijnsoorten <- read.csv("G:/.shortcut-targets-by-id/12pdXWi-vy6Y300P7eDBMXB1T0ZJS0Jy5/B-Cubed/WP6/Natura2000habitatrichtlijnsoorten.csv", sep=";", comment.char="#")
+
+species_fl_b3$speciescode <- as.integer(species_fl_b3$speciescode)
+
+species_fl_b3_t <- species_fl_b3%>%
+  left_join(Natura2000habitatrichtlijnsoorten, by=c("speciescode" = "Id") )
+
+species_fl_b3_t2 <- species_fl_b3_t%>%
+  left_join(mapping, by='speciescode')
+
+species_fl_b3_t2 <- species_fl_b3_t2 %>%
+  mutate(naam = coalesce(Wetenschappelijke.naam, species_name))
+
+
+ dissolved_b3 <- species_fl_b3_t2 %>%
+    filter(!is.na(naam))%>%
+    group_by(naam) %>%
+    summarise(geometry = st_union(geom))
+  
+ dissolved_b3 <- dissolved_b3 %>%
+  mutate(oppervlakte = st_area(geometry))
+ 
+ dissolved_b3 <- dissolved_b3%>%
+   mutate(periode='2013- 2018')%>%
+   mutate(oppervlakte= drop_units(oppervlakte))
+
+ 
+ check_leaflet <- leaflet()%>%
+   addTiles()%>%
+   addPolygons(data=dissolved_b3%>%filter(naam=="Mustela putorius"))
+ 
+ check_leaflet
+
+```
+
+```{r}
+names(species_fl_b1)
+
+species_f1_b1_t <- species_fl_b1 %>%
+  left_join(Natura2000habitatrichtlijnsoorten, by= c("ASSESMENT"="Wetenschappelijke.naam"))
+
+species_f1_b1_t <- st_make_valid(species_f1_b1_t)
+
+library(units)
+  
+  dissolved_b1 <- species_f1_b1_t %>%
+    filter(!is.na(Nederlandse.naam))%>%
+    group_by(ASSESMENT) %>%
+    summarise(geometry = st_union(geometry))
+  
+ dissolved_b1 <- dissolved_b1 %>%
+  mutate(oppervlakte = st_area(geometry))
+ 
+ dissolved_b1 <- dissolved_b1%>%
+   mutate(periode='2001- 2006')%>%
+   mutate(oppervlakte= drop_units(oppervlakte))
+
+ 
+ check_leaflet <- leaflet()%>%
+   addTiles()%>%
+   addPolygons(data=dissolved_b1%>%filter(ASSESMENT=="Mustela putorius"))
+ 
+ check_leaflet
+```
+```{r}
+names(species_fl_b2)
+
+ dissolved_b2 <- species_fl_b2 %>%
+    group_by(species_name) %>%
+    summarise(geometry = st_union(geom))
+  
+ dissolved_b2 <- dissolved_b2 %>%
+  mutate(oppervlakte = st_area(geometry))
+ 
+ dissolved_b2 <- dissolved_b2%>%
+   mutate(periode='2007- 2012')%>%
+   mutate(oppervlakte= drop_units(oppervlakte))
+
+ 
+ check_leaflet <- leaflet()%>%
+   addTiles()%>%
+   addPolygons(data=dissolved_b2%>%filter(species_name=="Mustela putorius"))
+ 
+ check_leaflet
+
+```
+
+
