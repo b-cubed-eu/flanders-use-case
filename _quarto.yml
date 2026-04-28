@@ -36,6 +36,8 @@ website:
            href: src/under_development.qmd
          - text: Focus on Natura2000
            href: src/under_development.qmd
+         - text: Alien Species Portal
+           href: src/alienspeciesportal.qmd
       - text: 'Comparing indicators'
         menu:
          - text: General indicators

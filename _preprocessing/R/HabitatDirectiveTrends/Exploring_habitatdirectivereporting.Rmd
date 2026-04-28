@@ -23,7 +23,6 @@ species_be <- st_make_valid(species_be)
 
 species_fl_b3 <- st_intersection(species_be, Flanders)
 ```
-
 ```{r}
 library(leaflet)
 
@@ -73,11 +72,9 @@ species_be_b1 <- st_make_valid(species_be_b1)
 species_fl_b1 <- st_intersection(species_be_b1
                                  , Flanders)
 ```
-
 ```{r}
 names(species_fl_b1)
 ```
-
 ```{r}
 #2007- 2012
 names(species_fl_b2)
@@ -153,7 +150,6 @@ library(units)
  
  check_leaflet
 ```
-
 ```{r}
 names(species_fl_b2)
 
@@ -176,3 +172,5 @@ names(species_fl_b2)
  check_leaflet
 
 ```
+
+
