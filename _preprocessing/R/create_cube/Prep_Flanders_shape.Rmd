@@ -127,3 +127,20 @@ EEA_Flanders_union_map_10km <- leaflet()%>%
 st_write(EEA_Flanders_union_10km, './_preprocessing/data/raw/spatial/EEA_10km_Flanders_union.geojson')
 
 ```
+
+```{r}
+Flanders_noholes <- read_sf('./_preprocessing/data/raw/spatial/flanders_noholes.geojson')
+
+EEA_overzicht_5km <- read_sf('./_preprocessing/data/raw/spatial/EEA-Reference-Grid-5km.gpkg')
+
+EEA_overzicht_5km <- st_transform(EEA_overzicht_5km, crs=4326)
+
+EEA_Flanders_union_5km <- st_intersection(EEA_overzicht_5km, Flanders_noholes)
+
+EEA_Flanders_union_map_5km <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=EEA_Flanders_union_5km)
+
+st_write(EEA_Flanders_union_5km, './_preprocessing/data/raw/spatial/EEA_5km_Flanders_union.geojson')
+```
+

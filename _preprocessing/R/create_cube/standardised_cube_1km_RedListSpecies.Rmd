@@ -1,0 +1,180 @@
+---
+title: "Download and prepare Angiosperm data"
+author: "Jasmijn Hillaert, Ward Langeraert"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, warning=FALSE, message=FALSE}
+# Load packages
+library(tidyverse) # Data wrangling and visualisation
+library(here)      # Relative paths
+library(sf)        # Work with spatial data
+library(rgbif)
+# Source
+source(here("_preprocessing/R/create_cube/download_occ_cube.R"))
+
+data_path <- here("_preprocessing","data", "raw")
+```
+
+# Goal
+
+Load and save structured data
+
+# Structured data
+
+## Occurrence data
+
+The zip file is stored under *./data/raw*.
+
+> GBIF.org (15 April 2025) GBIF Occurrence Download <https://doi.org/10.15468/dl.ddzhrc>
+
+```{r}
+library(rgbif)
+library(purrr)
+
+
+#'
+#' # Species Annex II habitat directive
+#' # https://www.gbif.org/dataset/2f845607-9b6a-4b31-b283-b87b89241e20
+
+#'
+#' # Allow synonyms
+#' dragon_flies <- name_backbone_gbif_checklist(datasetKey)
+#'
+#' # Check synonyms are included
+#' purrr::map(dragon_flies, ~ rgbif::name_usage(.x)$data) %>%
+#'   purrr::list_rbind() %>%
+#'   count(taxonomicStatus)
+#'
+#' # Get accepted taxa instead of synonyms
+#' dragon_flies_accepted <- name_backbone_gbif_checklist(
+#'   datasetKey,
+#'   allow_synonyms = FALSE
+#' )
+#'
+#' # Check synonyms are not included
+#' purrr::map(dragon_flies_accepted, ~ rgbif::name_usage(.x)$data) %>%
+#'   purrr::list_rbind() %>%
+#'   count(taxonomicStatus)
+name_backbone_gbif_checklist <- function(datasetKey, allow_synonyms = TRUE) {
+  checklist_taxa <- rgbif::name_usage(datasetKey = datasetKey, limit = 9999)$data %>%
+    dplyr::filter(origin == "SOURCE")
+  nub_keys <- checklist_taxa %>%
+    dplyr::pull(nubKey)
+  # Remove NAs (no taxon match) and return informative message
+  if (any(is.na(nub_keys))) {
+    n_no_match <- length(nub_keys[is.na(nub_keys)])
+    message(paste0(n_no_match, " taxa have no taxon match with the GBIF Backbone."))
+    nub_keys <- nub_keys[!is.na(nub_keys)]
+  }
+  nub_keys <- nub_keys %>%
+    unique()
+  if (allow_synonyms == TRUE) {
+    return(nub_keys)
+  } else {
+    nub_keys %>%
+      purrr::map(function(x) rgbif::name_usage(x)$data) %>%
+      purrr::list_rbind() %>%
+      # Choose the accepted taxa instead of synonyms
+      mutate(accepted_taxa = dplyr::coalesce(acceptedKey, key)) %>%
+      dplyr::pull(accepted_taxa) %>%
+      unique()
+  }
+}
+
+datasetKey <- "72aa797d-42a4-4176-9e19-5b3ddd551b79"
+
+species_RedListSpecies <- name_backbone_gbif_checklist(datasetKey)
+
+writeLines(paste(species_RedListSpecies, collapse = ", "), "_preprocessing/data/interim/species_RedListSpecies.csv")
+```
+
+```{r}
+query_RLS_1km <- paste(readLines("_preprocessing/data/interim/query_RedListSpecies.sql"), collapse = "\n")
+
+
+data_total_1km <- download_occ_cube(
+  sql_query = query_RLS_1km,
+  file = "RLS_data.csv",
+  path = data_path,
+  overwrite = TRUE
+  )
+
+download_key <- "0062140-260226173443078"
+dl <- occ_download_get(download_key, overwrite = TRUE)
+dat <- occ_download_import(dl)
+```
+
+We get a big dataframe with all occurrences.
+
+```{r}
+# Explore dataframe
+glimpse(data_total_1km)
+```
+
+# Select Flanders grid cells
+
+```{r}
+FLANDERS_EEA_1km <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+FLANDERS_EEA_1km_Natura2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.geojson')
+FLANDERS_EEA_1km_nonNatura2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_nonNatura2000.geojson')
+```
+
+```{r}
+Cube_Angio_Flanders <- data_total_1km%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km$CELLCODE)
+Cube_Angio_Flanders_Natura2000 <- data_total_1km%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km_Natura2000$CELLCODE)
+Cube_Angio_Flanders_nonNatura2000 <- data_total_1km%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km_nonNatura2000$CELLCODE)
+```
+
+```{r}
+write.csv(Cube_Angio_Flanders,
+          '_preprocessing/data/raw/HDAII_data_Flanders_1km.csv')
+write.csv(Cube_Angio_Flanders_Natura2000,
+          '_preprocessing/data/raw/HDAII_data_Flanders_Natura2000.csv')
+write.csv(Cube_Angio_Flanders_nonNatura2000,
+          '_preprocessing/data/raw/HDAII_data_Flanders_nonNatura2000.csv')
+```
+
+```{r}
+library(b3gbi)
+library(ggplot2)
+
+
+dat_correct <- dat %>%filter(year<2018) 
+
+Cube_Flanders <- dat_correct%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km$CELLCODE)
+
+
+dragonflies_cube <- process_cube(Cube_Flanders)
+
+OSR_map <- b3gbi::obs_richness_map(dragonflies_cube)
+OSR_ts <- b3gbi::obs_richness_ts(dragonflies_cube)
+
+ggplot(data = OSR_map$data) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
+
+plot_ts(OSR_ts)
+
+
+```
+
+```{r}
+
+```
+
+

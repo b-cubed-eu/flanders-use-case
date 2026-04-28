@@ -25,7 +25,7 @@ library(here)
 ```{r}
 Focus <- 'Flanders_1km'
 
-Angiosperm_data_cube <- process_cube(read.csv(paste0('./_preprocessing/data/raw/Angiosperm_data_', Focus, '.csv')))
+Angiosperm_data_cube <- process_cube("C:/Users/jasmijn_hillaert/Documents/GitHub/Flanders_use_case/_preprocessing/data/raw/Florabank_data_Flanders_5km.csv")
 
 output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)
 
