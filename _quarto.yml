@@ -30,10 +30,8 @@ website:
         menu:
          - text: Generate example Cube 
            href: src/under_development.qmd
-         - text: Results at 1 km resolution
-           href: src/under_development.qmd
-         - text: Results at 10 km resolution
-           href: src/under_development.qmd
+         - text: Target 6 indicator
+           href: src/b3alien_target6.qmd
          - text: Focus on Natura2000
            href: src/under_development.qmd
          - text: Alien Species Portal
