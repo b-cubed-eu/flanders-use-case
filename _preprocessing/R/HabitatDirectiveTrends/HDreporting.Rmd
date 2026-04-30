@@ -23,6 +23,7 @@ species_be <- st_make_valid(species_be)
 
 species_fl_b3 <- st_intersection(species_be, Flanders)
 ```
+
 ```{r}
 library(leaflet)
 
@@ -72,11 +73,14 @@ species_be_b1 <- st_make_valid(species_be_b1)
 species_fl_b1 <- st_intersection(species_be_b1
                                  , Flanders)
 ```
+
 ```{r}
 names(species_fl_b1)
 ```
+
 ```{r}
 #2007- 2012
+library(units)
 names(species_fl_b2)
 
 mapping <- species_fl_b2%>%
@@ -150,6 +154,7 @@ library(units)
  
  check_leaflet
 ```
+
 ```{r}
 names(species_fl_b2)
 
@@ -184,6 +189,9 @@ names(dissolved_b1)[3] <- 'Opp_period1'
 names(dissolved_b2)[3] <- 'Opp_period2'
 names(dissolved_b3)[3] <- 'Opp_period3'
 
+names(dissolved_b1)[1] <- 'species_name'
+names(dissolved_b3)[1] <- 'species_name'
+
 Total <- dissolved_b1 %>%
   st_drop_geometry()%>%
   select(species_name, Opp_period1)%>%
@@ -199,5 +207,6 @@ Total <- Total %>%
     )
   )
 
-```
+write.csv(Total, './_preprocessing/R/HabitatDirectiveTrends/reported_trends_per_species.csv')
 
+```
