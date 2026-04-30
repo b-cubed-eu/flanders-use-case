@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Flanders use case",
     "section": "",
-    "text": "This dashboard is still under development. The indicators displayed are not yet suitable for reporting, as they are still under revision.\n\n\n\nThis dashboard showcases developed workflows within the B-Cubed project for the region of Flanders, a region of Europe where species occurrence data are abundant.\nThe implemented indicators in this dashboard can be subdivided into:\n\nGeneral biodiversity indicators (based on b3gbi, for instance, cumulative species richness, relative species richness, etc.);\nPhylogenetic indicators (based on pdindicatoR);\nInvasive Alien Species indicators (based on impIndicator, TrIAS and b3alien)"
+    "text": "This dashboard is still under development. The indicators displayed are not yet suitable for reporting, as they are still under revision.\n\n\n\nThis dashboard showcases developed workflows within the B-Cubed project for the region of Flanders, a region of Europe where species occurrence data are abundant.\nThe implemented indicators in this dashboard can be subdivided into:\n\nGeneral biodiversity indicators (based on b3gbi, for instance, cumulative species richness, relative species richness, etc.);\nPhylogenetic indicators (based on pdindicatoR);\nInvasive Alien Species indicators (based on TrIAS and b3alien)"
   },
   {
     "objectID": "src/b3gbi_indicators_10km.html",
@@ -68,5 +68,59 @@
     "title": "Phylogenetic diversity 5km",
     "section": "",
     "text": "TipPhylogenetic diversity\n\n\n\n\n\nPhylogenetic diversity (PD) is a measure of biodiversity which takes evolution into account. It is calculated as the sum of the lengths of the phylogenetic tree branches representing the minimum tree-spanning path among a group of species. Phylogenetic diversity can be used in conservation planning to maximise a variety of features, meaning we do not aim to conserve specific features, but rather want to boost a diverse range of features. Conserving a variety of features could be particularly useful in light of the changing environmental conditions, as we can only guess which features will be important in the future.\n\n\n\n\n\n\n\n\n\nLoss map"
+    "objectID": "src/alienspeciesportal.html#a-title",
+    "href": "src/alienspeciesportal.html#a-title",
+    "title": "WP6: Flanders case study",
+    "section": "A title",
+    "text": "A title"
+  },
+  {
+    "objectID": "src/alienspeciesportal.html#alien-species-portal",
+    "href": "src/alienspeciesportal.html#alien-species-portal",
+    "title": "WP6: Flanders case study",
+    "section": "Alien Species Portal",
+    "text": "Alien Species Portal"
+  },
+  {
+    "objectID": "src/alienspeciesportal.html",
+    "href": "src/alienspeciesportal.html",
+    "title": "Alien Species Portal",
+    "section": "",
+    "text": "test"
+  },
+  {
+    "objectID": "src/b3alien_target6.html",
+    "href": "src/b3alien_target6.html",
+    "title": "b3alien: Target 6 indicator",
+    "section": "",
+    "text": "Indicator type\nindicator to evaluate policy\n\n\nExplanation\nThe CBD Target 6 headline indicator, calculated by applying b3alien, represents the rate of invasive alien species establishment.\n\n\nApplicability for policy\nTarget 6 of CBD is to ‘eliminate, minimize, reduce and or mitigate the impacts of invasive alien species on biodiversity and ecosystem services by identifying and managing pathways of the introduction of alien species, preventing the introduction and establishment of priority invasive alien species, reducing the rates of introduction and establishment of other known or potential invasive alien species by at least 50 per cent, by 2030, eradicating or controlling invasive alien species especially in priority sites, such as islands’.\n\n\nLimitations\nAs a headline indicator, it simplifies complex ecological processes into a single metric. It is sensitive to data gaps, uneven taxonomic and geographic coverage, and differences in monitoring effort across regions and over time. Aggregation may mask species-specific invasions or local impact hotspots that are important for management. It should therefore be interpreted alongside disaggregated indicators and expert ecological assessment.\n\n\n\nFigure 1: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive.\n\n\n\n\n\nFigure 2: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive or degree of establishment ais unknown.\n\n\n\n\n\nFigure 3: Target 6 indicator based on the GRIIS checklist,including all stages of establishment."
+  },
+  {
+    "objectID": "src/b3alien_target6.html#indicator-type",
+    "href": "src/b3alien_target6.html#indicator-type",
+    "title": "b3alien: Target 6 indicator",
+    "section": "",
+    "text": "indicator to evaluate policy test"
+  },
+  {
+    "objectID": "src/b3alien_target6.html#explanation",
+    "href": "src/b3alien_target6.html#explanation",
+    "title": "b3alien: Target 6 indicator",
+    "section": "Explanation",
+    "text": "Explanation\nThe CBD Target 6 headline indicator, calculated by applying b3alien, represents the rate of invasive alien species establishment."
+  },
+  {
+    "objectID": "src/b3alien_target6.html#applicability-for-policy",
+    "href": "src/b3alien_target6.html#applicability-for-policy",
+    "title": "b3alien: Target 6 indicator",
+    "section": "Applicability for policy",
+    "text": "Applicability for policy\nTarget 6 of CBD is to ‘eliminate, minimize, reduce and or mitigate the impacts of invasive alien species on biodiversity and ecosystem services by identifying and managing pathways of the introduction of alien species, preventing the introduction and establishment of priority invasive alien species, reducing the rates of introduction and establishment of other known or potential invasive alien species by at least 50 per cent, by 2030, eradicating or controlling invasive alien species especially in priority sites, such as islands’."
+  },
+  {
+    "objectID": "src/b3alien_target6.html#limitations",
+    "href": "src/b3alien_target6.html#limitations",
+    "title": "b3alien: Target 6 indicator",
+    "section": "Limitations",
+    "text": "Limitations\nAs a headline indicator, it simplifies complex ecological processes into a single metric. It is sensitive to data gaps, uneven taxonomic and geographic coverage, and differences in monitoring effort across regions and over time. Aggregation may mask species-specific invasions or local impact hotspots that are important for management. It should therefore be interpreted alongside disaggregated indicators and expert ecological assessment.\n\n\n\nFigure 1: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive.\n\n\n\n\n\nFigure 2: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive or degree of establishment ais unknown.\n\n\n\n\n\nFigure 3: Target 6 indicator based on the GRIIS checklist,including all stages of establishment."
   }
 ]

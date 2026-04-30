@@ -100,3 +100,29 @@ a {
 a:hover {
   color: #008777;
 }
+
+
+/* ----------------------------------
+   Headings (kleurgebaseerd, geen lijnen)
+---------------------------------- */
+
+h1 {
+  color: var(--bc-primary);
+  font-weight: 700;
+}
+
+h2 {
+  color: #0a7a6b; /* iets lichter / frisser dan primary */
+  font-weight: 650;
+}
+
+h3 {
+  color: var(--bc-accent);
+  font-weight: 600;
+}
+
+h4 {
+  color: #4fb3a8; /* subtiele lichtere variant van accent */
+  font-weight: 600;
+}
+
