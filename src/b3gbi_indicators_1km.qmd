@@ -17,7 +17,7 @@ library(ggplot2)
 ```
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-## Observed species richness 
+## Observed species richness
 
 Observed richness is calculated by summing the number of unique species observed for each year or each cell. Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al. in Journal of Applied Ecology, 2018), as well as the detectability of each species.
 
