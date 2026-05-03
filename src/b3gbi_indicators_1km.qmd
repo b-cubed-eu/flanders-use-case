@@ -20,19 +20,20 @@ library(ggplot2)
 ## Observed species richness
 
 ### Indicator type
-Estimating state / trend 
+
+Estimating state / trend
 
 ### Explanation
-Observed species richness is the number of different species found in a given place or year. 
+
+Observed species richness is the number of different species found in a given place or year.
 
 ### Applicability for policy
+
 Determining hotspots of biodiversity and tracing potential declines of biodiversity richness for specific species groups.
 
 ### Limitations
-Observed species richness depends a lot on how the data was collected. If some areas are studied more carefully or more often than others, they will usually appear to have more species—just because people looked more thoroughly.
-It also depends on the species themselves. Rare species, or those that are spread out, are harder to find and may be missed during surveys. In addition, some species are easier to detect than others, which can also affect the results.
 
-
+Observed species richness depends a lot on how the data was collected. If some areas are studied more carefully or more often than others, they will usually appear to have more species—just because people looked more thoroughly. It also depends on the species themselves. Rare species, or those that are spread out, are harder to find and may be missed during surveys. In addition, some species are easier to detect than others, which can also affect the results.
 
 ```{r, eval=FALSE}
 #load library
@@ -365,11 +366,10 @@ plot_ts(ComP_ts)
 ```
 :::
 
-
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Species Richness Density
 
-Density is calculated by dividing the total number of unique species per square kilometre for each cell or year. This provides similar information to observed species richness, but is adjusted for cell area. 
+Density is calculated by dividing the total number of unique species per square kilometre for each cell or year. This provides similar information to observed species richness, but is adjusted for cell area.
 
 ```{r, eval=FALSE}
 #load library
