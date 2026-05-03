@@ -1,0 +1,78 @@
+---
+title: "Exploring_Flanders_data"
+output: html_document
+---
+
+```{r}
+#read in data
+
+library(dplyr)
+
+data_all_Flanders <- read.csv("~/GitHub/Flanders_use_case/_preprocessing/data/raw/data_all_Flanders.csv")
+
+
+
+overzicht <- data_all_Flanders %>%
+  group_by(year) %>%
+  summarise(total_records = sum(`n_records`, na.rm = TRUE))
+
+library(ggplot2)
+
+overzicht$year <- as.numeric(as.character(overzicht$year))
+
+b <- ggplot(overzicht, aes(x = year, y = total_records)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_x_continuous(
+    breaks = seq(min(overzicht$year), max(overzicht$year), by = 10)
+  ) +
+  labs(
+    title = "Total Number of Records per Year",
+    y = "Number of Records"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+```{r}
+
+df <- data_all_Flanders
+
+df$year <- as.numeric(as.character(df$year))
+
+top_publishers <- df %>%
+  filter(year >= 2000) %>%
+  group_by(publisher) %>%
+  summarise(totaal = sum(`n_records`, na.rm = TRUE)) %>%
+  arrange(desc(totaal)) %>%
+  slice_head(n = 10) %>%
+  pull(publisher)
+
+df_top <- df %>%
+  filter(year >= 2000, publisher %in% top_publishers) %>%
+  group_by(year, publisher) %>%
+  summarise(totaal_records = sum(`n_records`, na.rm = TRUE)) %>%
+  ungroup()
+
+library(ggplot2)
+
+a <- ggplot(df_top, aes(x = year, y = totaal_records, fill = publisher)) +
+  geom_col() +
+  labs(
+    title = "Top 10 Publishers by Number of Records (Since 2000)",
+    x = "Year",
+    y = "Number of Records",
+    fill = "Publisher"
+  ) +
+  theme_minimal(base_size = 12)
+
+top_publishers <- df %>%
+  group_by(publisher) %>%
+  summarise(total_records = sum(`n_records`, na.rm = TRUE)) %>%
+  arrange(desc(total_records)) %>%
+  slice_head(n = 10)
+
+top_publishers
+
+write.csv("~/GitHub/Flanders_use_case/_preprocessing/data/raw/top_publishers.csv")
+```
+
