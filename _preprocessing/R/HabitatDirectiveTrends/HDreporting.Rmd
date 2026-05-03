@@ -210,3 +210,21 @@ Total <- Total %>%
 write.csv(Total, './_preprocessing/R/HabitatDirectiveTrends/reported_trends_per_species.csv')
 
 ```
+```{r}
+
+Total <- read.csv('./_preprocessing/R/HabitatDirectiveTrends/reported_trends_per_species.csv')
+Lina_input <- read_csv("_preprocessing/data/interim/HabitatDirective/habitats_directive_art_17_checklis+gbif.csv")
+View(Lina_input)
+
+Lina_input
+names(Lina_input)
+
+Lina_input <- Lina_input%>%
+  select('verbatimScientificName', 'kingdom', 'usageKey','acceptedUsageKey')
+
+Total_GBIFkey <- Total%>%
+  left_join(Lina_input, by=c(species_name = 'verbatimScientificName'))
+
+write.csv(Total_GBIFkey, './_preprocessing/R/HabitatDirectiveTrends/GBIF_key_per_species.csv')
+```
+

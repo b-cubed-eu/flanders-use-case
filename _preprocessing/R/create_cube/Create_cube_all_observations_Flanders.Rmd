@@ -1,0 +1,69 @@
+---
+title: "Download and prepare data"
+author: "Jasmijn Hillaert, Ward Langeraert"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, warning=FALSE, message=FALSE}
+# Load packages
+library(tidyverse) # Data wrangling and visualisation
+library(here)      # Relative paths
+library(sf)        # Work with spatial data
+library(rgbif)
+# Source
+source(here("_preprocessing/R/create_cube/download_occ_cube.R"))
+
+data_path <- here("_preprocessing","data", "raw")
+```
+
+# Goal
+
+Load and save structured data
+
+# Structured data
+
+## Occurrence data
+
+The zip file is stored under *./data/raw*.
+
+> GBIF.org (15 April 2025) GBIF Occurrence Download <https://doi.org/10.15468/dl.ddzhrc>
+
+```{r}
+
+query_all_Flanders <- "SELECT
+  \"year\",
+  publisher,
+  COUNT(*) AS n_records
+FROM
+   occurrence
+WHERE
+  countryCode = 'BE'
+  AND \"year\" IS NOT NULL
+  AND \"year\" >= 1975
+GROUP BY
+  \"year\",
+  publisher
+ORDER BY
+  \"year\",
+  n_records 
+" 
+
+
+data_all_Flanders <- download_occ_cube(
+  sql_query = query_all_Flanders,
+  file = "data_all_Flanders.csv",
+  path = data_path,
+  overwrite = TRUE
+  )
+
+```
+
+
