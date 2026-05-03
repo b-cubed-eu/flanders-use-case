@@ -1,0 +1,54 @@
+---
+title: "Testing_completeness_mask"
+output: html_document
+---
+
+```{r}
+OSR_map <- readRDS("./src/Flanders_1km/OSR_map.rds")$data
+
+ComP_map <- readRDS('./src/Flanders_1km/ComP_map.rds')$data
+
+visible <- ComP_map %>%
+  filter(diversity_val>0.5)
+
+OSR_map_masked_0.5 <- OSR_map%>%
+  filter(cellCode%in%visible$cellCode)
+
+ggplot(data = OSR_map_masked_0.5) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
+```
+```{r}
+
+visible <- ComP_map %>%
+  filter(diversity_val>0.8)
+
+OSR_map_masked_0.8 <- OSR_map%>%
+  filter(cellCode%in%visible$cellCode)
+
+ggplot(data = OSR_map_masked_0.8) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
+```
+
+
+```{r}
+
+visible <- ComP_map %>%
+  filter(diversity_val>0.2)
+
+OSR_map_masked_0.2 <- OSR_map%>%
+  filter(cellCode%in%visible$cellCode)
+
+ggplot(data = OSR_map_masked_0.2) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_minimal()+
+  theme(legend.title = element_blank())
+```
+```
+
