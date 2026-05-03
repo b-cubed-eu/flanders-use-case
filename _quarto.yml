@@ -17,10 +17,6 @@ website:
            href: src/preprocessing_general_indicators.qmd
          - text: Results at 1 km resolution
            href: src/b3gbi_indicators_1km.qmd
-         - text: Results at 10 km resolution
-           href: src/b3gbi_indicators_10km.qmd
-         - text: Focus on Natura2000
-           href: src/b3gbi_indicators_Natura2000.qmd
       - text: 'Phylogenetic indicators'
         menu:
          - text: Results at 1 km resolution

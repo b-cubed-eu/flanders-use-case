@@ -24,7 +24,7 @@ ggplot(data = pd_map) +
   theme(legend.title = element_blank())
 ```
 
-Loss map 
+Loss map
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
 library(sf)
