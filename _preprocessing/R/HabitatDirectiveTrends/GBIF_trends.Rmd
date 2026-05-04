@@ -1,0 +1,28 @@
+---
+title: "GBIF_trends"
+output: html_document
+---
+
+```{r}
+library(sf)
+#import trends gerapporteerd
+
+GBIF_per_species <- read.csv('./_preprocessing/R/HabitatDirectiveTrends/GBIF_key_per_species.csv', sep=";")
+
+periode1 <- read.csv('./_preprocessing/data/raw/HD_data_2002_2006.csv')
+
+periode2 <- read.csv('./_preprocessing/data/raw/HD_data_2007_2012.csv')
+
+periode3 <- read.csv('./_preprocessing/data/raw/HD_data_2013_2018.csv')
+
+data_species <- st_read("C:/Users/jasmijn_hillaert/Downloads/art17_2013_2018_public.gpkg", layer = "Art17_species_distribution_2013_2018_MS")
+```
+
+```{r}
+Occ_periode1 <- periode1 %>%
+  group_by(specieskey) %>%
+  summarise(n_unique_cellcodes = n_distinct(eeacellcode))
+
+
+```
+
