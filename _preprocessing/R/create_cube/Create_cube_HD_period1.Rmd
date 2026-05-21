@@ -285,4 +285,3 @@ test <- leaflet()%>%
   addPolygons(data=EEA_10km)%>%
   addPolygons(data=data_species_BE_100, color='red')
 ```
-
