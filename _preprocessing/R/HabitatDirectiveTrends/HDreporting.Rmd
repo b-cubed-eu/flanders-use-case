@@ -313,6 +313,8 @@ FINAL <- FINAL %>%
       trend != trend_GBIF ~ "FALSE"
     )
   )
+
+write.csv(FINAL, './_preprocessing/R/HabitatDirectiveTrends/Final_outcome_HDdirective.csv')
 ```
 
 

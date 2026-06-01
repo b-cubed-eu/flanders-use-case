@@ -22,9 +22,11 @@ library(here)
 #Define input file and directory of output files
 
 ```{r}
-Focus <- 'Flanders_Natura2000'
+Focus <- 'Insecta_data_Flanders_1km'
 
-Angiosperm_data_cube <- process_cube(read.csv(paste0("./_preprocessing/data/raw/Angiosperm_data_",Focus,".csv")))
+Angiosperm_data_cube <- process_cube(read.csv(paste0("./_preprocessing/data/raw/",Focus,".csv")))
+
+
 
 output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)
 
@@ -84,8 +86,6 @@ saveRDS(TO_ts,
 
 #Bootstrapping ok
 ```
-
-
 
 #8.4. Rarity
 

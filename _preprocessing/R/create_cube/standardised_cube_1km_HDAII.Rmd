@@ -95,7 +95,6 @@ species_HDAII <- name_backbone_gbif_checklist(datasetKey)
 writeLines(paste(species_HDAII, collapse = ", "), "_preprocessing/data/interim/species_HDAII.csv")
 ```
 
-
 ```{r}
 query_ang_1km <- paste(readLines("_preprocessing/data/interim/query_HDAII.sql"), collapse = "\n")
 
@@ -115,8 +114,6 @@ We get a big dataframe with all occurrences.
 # Explore dataframe
 glimpse(data_total_1km)
 ```
-
-
 
 # Select Flanders grid cells
 

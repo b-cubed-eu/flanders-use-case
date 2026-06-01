@@ -22,7 +22,7 @@ library(here)
 #Define input file and directory of output files
 
 ```{r}
-Focus <- 'Flanders_Natura2000'
+Focus <- 'Flanders_10km'
 
 Angiosperm_data_cube <- process_cube(read.csv(paste0("./_preprocessing/data/raw/Angiosperm_data_",Focus,".csv")))
 
