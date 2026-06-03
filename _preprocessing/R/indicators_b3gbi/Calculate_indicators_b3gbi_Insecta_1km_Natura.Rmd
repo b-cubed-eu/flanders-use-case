@@ -147,59 +147,59 @@ saveRDS(AbRM_ts,
 
 #gc()
 
-#SR_map <-  hill0_map(Angiosperm_data_cube,
-#                     spherical_geometry = FALSE,
-#                            cell_size="grid")
+SR_map <-  hill0_map(Angiosperm_data_cube,
+                     spherical_geometry = FALSE,
+                           cell_size="grid")
 
 #SR_map_plot <- plot(SR_map)
 
 #error
-#HSh_map <- hill1_map(Angiosperm_data_cube,
-#                     spherical_geometry = FALSE,
-#                            cell_size="grid")
+HSh_map <- hill1_map(Angiosperm_data_cube,
+                     spherical_geometry = FALSE,
+                            cell_size="grid")
 
 #HSh_map_plot <- plot(HSh_map)
 
-#HSi_map <- hill2_map(Angiosperm_data_cube,
-#                     spherical_geometry = FALSE,
-#                            cell_size="grid")
+HSi_map <- hill2_map(Angiosperm_data_cube,
+                     spherical_geometry = FALSE,
+                            cell_size="grid")
 
 #HSi_map_plot <- plot(HSi_map)
 
-#SR_ts <-  hill0_ts(Angiosperm_data_cube,
-#                            cell_size="grid")
+SR_ts <-  hill0_ts(Angiosperm_data_cube,
+                            cell_size="grid")
 
 #SR_ts_plot <- plot(SR_ts)
 
-#HSh_ts <- hill1_ts(Angiosperm_data_cube,
-#                            cell_size="grid")
+HSh_ts <- hill1_ts(Angiosperm_data_cube,
+                            cell_size="grid")
 
 #HSh_ts_plot <- plot(HSh_ts)
 
-#HSi_ts <- hill2_ts(Angiosperm_data_cube,
-#                            cell_size="grid")
+HSi_ts <- hill2_ts(Angiosperm_data_cube,
+                           cell_size="grid")
 
 #HSi_ts_plot <- plot(HSi_ts)
 
 ##export data to showcase in dashboard
-#saveRDS(SR_map,
-#        paste0(output_path, '/SR_map.rds'))
+saveRDS(SR_map,
+        paste0(output_path, '/SR_map.rds'))
 
-#saveRDS(SR_ts,
-#        paste0(output_path, '/SR_ts.rds'))
+saveRDS(SR_ts,
+        paste0(output_path, '/SR_ts.rds'))
 
 
-#saveRDS(HSh_map,
-#        paste0(output_path, '/HSh_map.rds'))
+saveRDS(HSh_map,
+        paste0(output_path, '/HSh_map.rds'))
 
-#saveRDS(HSh_ts,
-#       paste0(output_path, '/HSh_ts.rds'))
+saveRDS(HSh_ts,
+       paste0(output_path, '/HSh_ts.rds'))
 
-#saveRDS(HSi_map,
-#        paste0(output_path, '/HSi_map.rds'))
+saveRDS(HSi_map,
+        paste0(output_path, '/HSi_map.rds'))
 
-#saveRDS(HSi_ts,
-#        paste0(output_path, '/HSi_ts.rds'))
+saveRDS(HSi_ts,
+        paste0(output_path, '/HSi_ts.rds'))
 
 ```
 

@@ -41,3 +41,4 @@ _preprocessing/data/raw/*
 
 /.quarto/
 **/*.quarto_ipynb
+.positai
