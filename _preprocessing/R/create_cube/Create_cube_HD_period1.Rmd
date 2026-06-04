@@ -42,7 +42,7 @@ query_HD_periode1 <- "SELECT
   species,
   speciesKey,
   \"year\",
-  GBIF_EuroStatCode(
+  GBIF_EEARGCode(
       10000,
       decimalLatitude,
       decimalLongitude,
@@ -87,7 +87,7 @@ GROUP BY
   species,
   speciesKey,
   \"year\",
-  GBIF_EuroStatCode(
+  GBIF_EEARGCode(
       10000,
       decimalLatitude,
       decimalLongitude,
@@ -99,13 +99,12 @@ GROUP BY
 
 data_HD_periode1 <- download_occ_cube(
   sql_query = query_HD_periode1,
-  file = "HD_data_2002_2006.csv",
+  file = "HD_data_2001_2006.csv",
   path = data_path,
   overwrite = TRUE
   )
 
 ```
-
 
 ```{r}
 
@@ -113,7 +112,7 @@ query_HD_periode2 <- "SELECT
   species,
   speciesKey,
   \"year\",
-  GBIF_EuroStatCode(
+  GBIF_EEARGCode(
       10000,
       decimalLatitude,
       decimalLongitude,
@@ -158,7 +157,7 @@ GROUP BY
   species,
   speciesKey,
   \"year\",
-  GBIF_EuroStatCode(
+  GBIF_EEARGCode(
       10000,
       decimalLatitude,
       decimalLongitude,
@@ -183,7 +182,7 @@ query_HD_periode3 <- "SELECT
   species,
   speciesKey,
   \"year\",
-  GBIF_EuroStatCode(
+  GBIF_EEARGCode(
       10000,
       decimalLatitude,
       decimalLongitude,
@@ -228,7 +227,7 @@ GROUP BY
   species,
   speciesKey,
   \"year\",
-  GBIF_EuroStatCode(
+  GBIF_EEARGCode(
       10000,
       decimalLatitude,
       decimalLongitude,
@@ -245,4 +244,44 @@ data_HD_periode3 <- download_occ_cube(
   overwrite = TRUE
   )
 
+```
+
+```{r}
+#analysing surface per EEA gridcell
+
+#read in EEA 10 km gridcells
+
+#CELLCODE
+
+EEA_10km <- read_sf('./_preprocessing/data/raw/spatial/EEA_10km_Flanders_union.geojson')
+
+test <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=EEA_10km)
+
+data_species <- st_read("C:/Users/jasmijn_hillaert/Downloads/art17_2013_2018_public.gpkg", layer = "Art17_species_distribution_2013_2018_MS")
+
+data_species_BE_1001 <- data_species%>%
+  filter(country=="BE")%>%
+  filter(speciescode=="1014")
+
+b <- st_transform(data_species_BE_1001, crs=4326)
+
+b <- st_make_valid(b)
+
+test <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=EEA_10km)%>%
+  addPolygons(data=b, color='red')
+
+Flanders <- read_sf('./_preprocessing/data/raw/spatial/flanders_wgs84.geojson')
+
+data_species_BE_100 <- st_intersection(b, Flanders)
+
+
+
+test <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=EEA_10km)%>%
+  addPolygons(data=data_species_BE_100, color='red')
 ```

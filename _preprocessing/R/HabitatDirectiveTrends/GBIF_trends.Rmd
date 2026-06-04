@@ -26,3 +26,10 @@ Occ_periode1 <- periode1 %>%
 
 ```
 
+```{r}
+library(sf)
+
+pad <- "C:/Users/jasmijn_hillaert/Downloads/EEA-Reference-Grid-10km.gpkg"
+
+data <- st_read(pad)
+```

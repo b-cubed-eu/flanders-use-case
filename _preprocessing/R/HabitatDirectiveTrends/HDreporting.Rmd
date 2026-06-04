@@ -30,7 +30,7 @@ library(leaflet)
 #test a map
 test_map <- leaflet()%>%
   addTiles()%>%
-  addPolygons(data=species_fl_b3)
+  addPolygons(data=species_fl_b2)
 
 test_map
 
@@ -210,21 +210,111 @@ Total <- Total %>%
 write.csv(Total, './_preprocessing/R/HabitatDirectiveTrends/reported_trends_per_species.csv')
 
 ```
+
 ```{r}
 
 Total <- read.csv('./_preprocessing/R/HabitatDirectiveTrends/reported_trends_per_species.csv')
-Lina_input <- read_csv("_preprocessing/data/interim/HabitatDirective/habitats_directive_art_17_checklis+gbif.csv")
+Lina_input <- read.csv("_preprocessing/data/interim/HabitatDirective/habitats_directive_art_17_checklis+gbif.csv")
 View(Lina_input)
 
 Lina_input
 names(Lina_input)
 
 Lina_input <- Lina_input%>%
-  select('verbatimScientificName', 'kingdom', 'usageKey','acceptedUsageKey')
+  select('verbatimScientificName', 'kingdom', 'class', 'usageKey','acceptedUsageKey')
 
 Total_GBIFkey <- Total%>%
   left_join(Lina_input, by=c(species_name = 'verbatimScientificName'))
 
 write.csv(Total_GBIFkey, './_preprocessing/R/HabitatDirectiveTrends/GBIF_key_per_species.csv')
 ```
+
+```{r}
+library(units)
+HD_data_2013_2018 <- read.csv('./_preprocessing/data/raw/HD_data_2013_2018.csv')
+HD_data_2007_2012 <- read.csv('./_preprocessing/data/raw/HD_data_2007_2012.csv')
+HD_data_2001_2006 <- read.csv('./_preprocessing/data/raw/HD_data_2001_2006.csv')
+
+
+EEA_10km_Flanders <- st_read('./_preprocessing/data/raw/spatial/EEA_10km_Flanders_hole.geojson')
+
+EEA_10km_Flanders$OPP <-st_area(EEA_10km_Flanders)
+
+EEA_10km_Flanders$OPP <- drop_units(EEA_10km_Flanders$OPP)
+
+EEA_10km_Flanders <- EEA_10km_Flanders%>%
+  select(CELLCODE, OPP)
+
+
+HD_data_2013_2018 <- HD_data_2013_2018%>%
+  left_join(EEA_10km_Flanders, by=c("eeacellcode"="CELLCODE"))
+HD_data_2007_2012 <- HD_data_2007_2012%>%
+  left_join(EEA_10km_Flanders, by=c("eeacellcode"="CELLCODE"))
+HD_data_2001_2006 <- HD_data_2001_2006%>%
+  left_join(EEA_10km_Flanders, by=c("eeacellcode"="CELLCODE"))
+
+HD_data_2013_2018 <- HD_data_2013_2018%>%
+   filter(eeacellcode%in%EEA_10km_Flanders$CELLCODE)
+HD_data_2007_2012 <- HD_data_2007_2012%>%
+   filter(eeacellcode%in%EEA_10km_Flanders$CELLCODE)
+HD_data_2001_2006 <- HD_data_2001_2006%>%
+   filter(eeacellcode%in%EEA_10km_Flanders$CELLCODE)
+```
+
+
+```{r}
+names(HD_data_2013_2018)
+
+dissolved_b3 <- HD_data_2013_2018 %>%
+   st_drop_geometry()%>%
+   select(species, eeacellcode, OPP)%>%
+   distinct()%>%
+   group_by(species)%>%
+   summarize(Opp_periode3=sum(OPP))
+ 
+dissolved_b2 <- HD_data_2007_2012 %>%
+   st_drop_geometry()%>%
+   select(species, eeacellcode, OPP)%>%
+   distinct()%>%
+   group_by(species)%>%
+   summarize(Opp_periode2=sum(OPP))
+
+dissolved_b1 <- HD_data_2001_2006 %>%
+   st_drop_geometry()%>%
+   select(species, eeacellcode, OPP)%>%
+   distinct()%>%
+   group_by(species)%>%
+   summarize(Opp_periode1=sum(OPP))
+
+Total_GBIF <- dissolved_b1 %>%
+  st_drop_geometry()%>%
+  select(species, Opp_periode1)%>%
+  left_join(dissolved_b2%>%st_drop_geometry()%>%select(species, Opp_periode2))%>%
+  left_join(dissolved_b3%>%st_drop_geometry()%>%select(species, Opp_periode3))
+
+Total_GBIF <- Total_GBIF %>%
+  mutate(
+    trend_GBIF = case_when(
+      Opp_periode1 < Opp_periode2 & Opp_periode2 < Opp_periode3 ~ "increasing",
+      Opp_periode1 > Opp_periode2 & Opp_periode2 > Opp_periode3 ~ "decreasing",
+      TRUE ~ "unclear"
+    )
+  )
+
+
+FINAL <- Total_GBIFkey %>%
+  left_join(Total_GBIF, by=c("species_name"='species'))
+
+FINAL <- FINAL %>%
+  mutate(
+    result = case_when(
+      is.na(trend_GBIF) ~ "no data on GBIF",
+      trend == trend_GBIF ~ "TRUE",
+      trend != trend_GBIF ~ "FALSE"
+    )
+  )
+
+write.csv(FINAL, './_preprocessing/R/HabitatDirectiveTrends/Final_outcome_HDdirective.csv')
+```
+
 

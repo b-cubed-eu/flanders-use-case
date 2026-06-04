@@ -15,8 +15,16 @@ website:
         menu:
          - text: Generate example Cube 
            href: src/preprocessing_general_indicators.qmd
-         - text: Results at 1 km resolution
+         - text: Results Angiospermae 1km
            href: src/b3gbi_indicators_1km.qmd
+         - text: Results Angiospermae 10km
+           href: src/b3gbi_indicators_10km.qmd
+         - text: Results Insecta 1km
+           href: src/b3gbi_indicators_Insecta_1km.qmd
+         - text: Results Insecta 10km
+           href: src/b3gbi_indicators_Insecta_10km.qmd
+         - text: Results Insecta 1 km (no filters)
+           href: src/b3gbi_indicators_Insecta_1km_ALL.qmd
       - text: 'Phylogenetic indicators'
         menu:
          - text: Results at 1 km resolution
@@ -30,14 +38,13 @@ website:
            href: src/b3alien_target6.qmd
          - text: Alien Species Portal
            href: src/alienspeciesportal.qmd
-      - text: 'Comparing indicators'
+      - text: 'Natura2000'
         menu:
-         - text: General indicators
-           href: src/under_development.qmd
-         - text: Phylogenetic indicators
-           href: src/under_development.qmd
-         - text: IAS indicators
-           href: src/under_development.qmd
+         - text: Angiospermae 1km
+           href: src/b3gbi_indicators_Natura2000.qmd
+         - text: Insecta 1km 
+           href: src/b3gbi_indicators_Insecta_Natura2000.qmd
+
            
     right: 
       - icon: github

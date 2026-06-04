@@ -1,0 +1,483 @@
+---
+title:  >
+  <a href="https://github.com/b-cubed-eu/b3gbi" target="_blank">
+    <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;">
+  </a>General indicators Natura 2000 insecta
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+#load library
+library(b3gbi)
+library(ggplot2)
+library(dplyr)
+
+```
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Observed species richness
+
+This fundamental indicator quantifies the total number of unique species per year detected in Natura 2000 versus non Natura 2000 area. It provides a straightforward measure of detected biodiversity.
+
+**Not corrected for surface area**
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+OSR_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/OSR_ts.rds')
+
+
+OSR_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/OSR_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OSR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OSR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Observed species richness",
+       colour = "") +
+  theme_minimal() 
+
+
+```
+
+**Corrected for surface area**
+
+```{r}
+area_nat <- 4267
+area_non <- 10105
+
+df_nat <- df_nat%>%
+  mutate(richness_adj = diversity_val / area_nat)
+
+df_non <- df_non%>%
+  mutate(richness_adj = diversity_val / area_non)
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = richness_adj, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +
+  geom_point(alpha = 0.5) +
+  labs(x = "Year",
+       y = "Observed species richness (per km²)",
+       colour = "") +
+  theme_minimal()
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Total Occurrences
+
+This variable quantifies the overall number of species occurrence records per year in Natura2000 versus nonNatura2000 area. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.
+
+**Not corrected for surface area**
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+TO_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/TO_ts.rds')
+
+
+TO_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/TO_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(TO_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(TO_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+  # 👇 individuele bars rond elk punt
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    width = 0.25,
+    alpha = 0.7,
+    size = 0.6
+  ) +
+
+  labs(
+    x = "Year",
+    y = "Total occurences",
+    colour = "",
+    fill = ""
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+
+**Corrected for surface area**
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+area_nat <- 4267
+area_non <- 10105
+
+df_nat <- df_nat %>%
+  mutate(
+    occurrences_adj = diversity_val / area_nat,
+    ll_adj = ll / area_nat,
+    ul_adj = ul / area_nat
+  )
+
+df_non <- df_non %>%
+  mutate(
+    occurrences_adj = diversity_val / area_non,
+    ll_adj = ll / area_non,
+    ul_adj = ul / area_non
+  )
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both,
+       aes(x = year,
+           y = occurrences_adj,
+           colour = Group,
+           fill = Group)) +
+
+  geom_smooth(se = TRUE, linewidth = 1, alpha = 0.15) +
+
+  geom_point(alpha = 0.6, size = 2) +
+
+  geom_errorbar(
+    aes(ymin = ll_adj, ymax = ul_adj),
+    width = 0.25,
+    alpha = 0.7,
+    linewidth = 0.6
+  ) +
+
+  labs(
+    x = "Year",
+    y = "Total occurrences per km²",
+    colour = "",
+    fill = ""
+  ) +
+
+  theme_minimal() +
+  theme(legend.title = element_blank())
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Occurrence Density
+
+Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.
+
+```{r, echo=FALSE, warning = FALSE,message = FALSE}
+OD_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/OD_ts.rds')
+
+
+OD_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/OD_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OD_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OD_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+  # 👇 individuele bars rond elk punt
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    width = 0.25,
+    alpha = 0.7,
+    size = 0.6
+  ) +
+
+  labs(
+    x = "Year",
+    y = "Occurence density",
+    colour = "",
+    fill = ""
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Rarity
+
+Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity.
+
+### Abundance - Based Rarity
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+AbRM_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/AbRM_ts.rds')
+
+
+AbRM_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/AbRM_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(AbRM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(AbRM_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+  # 👇 individuele bars rond elk punt
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    width = 0.25,
+    alpha = 0.7,
+    size = 0.6
+  ) +
+
+  labs(
+    x = "Year",
+    y = "Abundance - Based Rarity",
+    colour = "",
+    fill = ""
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+
+### Area-based rarity
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+ArRM_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/ArRM_ts.rds')
+
+
+ArRM_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/ArRM_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(ArRM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(ArRM_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+  # 👇 individuele bars rond elk punt
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    width = 0.25,
+    alpha = 0.7,
+    size = 0.6
+  ) +
+
+  labs(
+    x = "Year",
+    y = "Area - Based Rarity",
+    colour = "",
+    fill = ""
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Estimated Hill Diversity
+
+Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the "effective number of species" and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.
+
+### Species richness (q=0)
+
+```{r, eval=FALSE, echo = FALSE, warning = FALSE,message = FALSE}
+SR_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/SR_ts.rds')
+
+
+SR_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/SR_ts.rds')
+
+ stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(SR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(SR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+  # individuele bars rond elk punt
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    width = 0.25,
+    alpha = 0.7,
+    size = 0.6
+  ) +
+
+  labs(
+    x = "Year",
+    y = "Species richness",
+    colour = "",
+    fill = ""
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+
+### Hill - Simpson (q=2)
+
+```{r, eval=FALSE, echo = FALSE, warning = FALSE,message = FALSE}
+HSi_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/HSi_ts.rds')
+
+
+HSi_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/HSi_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(HSi_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(HSi_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+  # 👇 individuele bars rond elk punt
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    width = 0.25,
+    alpha = 0.7,
+    size = 0.6
+  ) +
+
+  labs(
+    x = "Year",
+    y = "Hill - Simpson species richness index",
+    colour = "",
+    fill = ""
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Cumulative Species Richness
+
+This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+CR_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/CR_ts.rds')
+
+
+CR_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/CR_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(CR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(CR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Cumulative species richness",
+       colour = "") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Mean Year of Occurrence (Newness)
+
+This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+NN_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/NN_ts.rds')
+
+
+NN_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/NN_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(NN_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(NN_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Newness (Mean Year of Occurence)",
+       colour = "") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Occupancy turnover
+
+Occupancy Turnover measures the rate at which occupancy composition changes over time within a community, quantifying the balance between species "gains" and "losses" between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+OT_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/OT_ts.rds')
+
+
+OT_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/OT_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Occupancy turnover",
+       colour = "") +
+  theme_minimal() 
+```
+:::

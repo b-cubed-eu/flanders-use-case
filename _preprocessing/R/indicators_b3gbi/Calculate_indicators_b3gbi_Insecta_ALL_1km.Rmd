@@ -1,0 +1,371 @@
+---
+title: "Calculate General Indicators Flanders Case Study WP6"
+output: html_document
+---
+
+#install packages
+
+```{r}
+#install.packages("b3gbi", repos = #c("https://b-cubed-eu.r-universe.dev","https://cloud.r-project.org"))
+#b3gbi#install.packages("rnaturalearthdata")
+
+gc()
+library(b3gbi)
+library(sf)
+library(taxize)
+library(here)
+
+
+
+```
+
+#Define input file and directory of output files
+
+```{r}
+Focus <- "Insecta_data_Flanders_1km_ALL"
+
+Angiosperm_data_cube <- process_cube(read.csv(paste0("./_preprocessing/data/raw/",Focus,".csv")))
+
+
+
+output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)
+
+if (!dir.exists(output_path)) {
+  dir.create(output_path, recursive = TRUE)
+}
+#check resolution of file
+Angiosperm_data_cube
+
+
+str(Angiosperm_data_cube)
+```
+
+#Running b3gbi indicators ##8.1. Observed Species Richness \~ recorded richness
+
+```{r}
+'This fundamental indicator quantifies the total number of unique species detected within a given spatial unit (e.g., grid cell, for indicator_map) or temporal period (e.g., year, for indicator_ts). It provides a straightforward measure of detected biodiversity.'
+
+OSR_map <- obs_richness_map(Angiosperm_data_cube,
+                            cell_size="grid")
+
+saveRDS(OSR_map,
+        paste0(output_path, '/OSR_map.rds'))
+
+OSR_ts <- obs_richness_ts(Angiosperm_data_cube,
+                          cell_size="grid")
+
+saveRDS(OSR_ts,
+        paste0(output_path, '/OSR_ts.rds'))
+
+```
+
+##8.2. Total Occurrences
+
+```{r}
+'This variable quantifies the overall number of species occurrence records within a spatial unit or temporal period. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.'
+
+gc()
+
+#TODO: lukt niet om schaal aan te passen naar 1 km
+TO_map <- total_occ_map(Angiosperm_data_cube,
+                        cell_size="grid")
+
+
+
+#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
+TO_ts <- total_occ_ts(Angiosperm_data_cube,
+                           cell_size="grid")
+
+saveRDS(TO_map,
+        paste0(output_path, '/TO_map.rds'))
+
+saveRDS(TO_ts,
+        paste0(output_path, '/TO_ts.rds'))
+
+
+
+#Bootstrapping ok
+```
+
+#8.4. Rarity
+
+```{r}
+"Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity."
+
+#bootstrapping ok
+
+gc()
+
+ArRM_map <-  area_rarity_map(Angiosperm_data_cube,
+                             spherical_geometry = FALSE,
+                            cell_size="grid")
+
+ArRM_map_plot <- plot(ArRM_map)
+
+AbRM_map <- ab_rarity_map(Angiosperm_data_cube,
+                          spherical_geometry = FALSE,
+                            cell_size="grid")
+
+AbRM_map_plot <- plot(AbRM_map)
+
+ArRM_ts <-  area_rarity_ts(Angiosperm_data_cube,
+                            cell_size="grid")
+
+ArRM_ts_plot <- plot(ArRM_ts)
+
+AbRM_ts <- ab_rarity_ts(Angiosperm_data_cube,
+                            cell_size="grid")
+
+AbRM_ts_plot <- plot(AbRM_ts)
+
+##export data to showcase in dashboard
+saveRDS(ArRM_map,
+        paste0(output_path, '/arRM_map.rds'))
+
+saveRDS(ArRM_ts,
+        paste0(output_path, '/arRM_ts.rds'))
+
+
+saveRDS(AbRM_map,
+        paste0(output_path, '/abRM_map.rds'))
+
+saveRDS(AbRM_ts,
+        paste0(output_path, '/abRM_ts.rds'))
+
+```
+
+#8.5. Estimated Hill Diversity
+
+```{r}
+'Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the "effective number of species" and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.
+
+#SR: Species richness - hill0_map() and hill0_ts()
+
+#HSh: Hill-Shannon diversity - hill1_map() and hill1_ts()
+
+#HSi: Hill-Simpson diversity - hill2_map() and hill2_ts()'
+
+#gc()
+
+SR_map <-  hill0_map(Angiosperm_data_cube,
+                    spherical_geometry = FALSE,
+                            cell_size="grid")
+
+#SR_map_plot <- plot(SR_map)
+
+
+
+HSi_map <- hill2_map(Angiosperm_data_cube,
+                    spherical_geometry = FALSE,
+                            cell_size="grid")
+
+#HSi_map_plot <- plot(HSi_map)
+
+SR_ts <-  hill0_ts(Angiosperm_data_cube,
+                            cell_size="grid")
+
+#HSh_ts_plot <- plot(HSh_ts)
+
+HSi_ts <- hill2_ts(Angiosperm_data_cube,
+                          cell_size="grid")
+
+#HSi_ts_plot <- plot(HSi_ts)
+
+##export data to showcase in dashboard
+saveRDS(SR_map,
+        paste0(output_path, '/SR_map.rds'))
+
+saveRDS(SR_ts,
+        paste0(output_path, '/SR_ts.rds'))
+
+
+saveRDS(HSi_map,
+       paste0(output_path, '/HSi_map.rds'))
+
+saveRDS(HSi_ts,
+       paste0(output_path, '/HSi_ts.rds'))
+
+```
+
+#8.6. Cumulative Species Richness
+
+```{r}
+'This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).'
+
+gc()
+
+CR_ts <- cum_richness_ts(Angiosperm_data_cube,
+                         cell_size="grid")
+
+CR_ts_plot <- plot(CR_ts)
+
+##export data to showcase in dashboard
+
+saveRDS(CR_ts,
+        paste0(output_path, '/CR_ts.rds'))
+
+```
+
+#8.7. Mean Year of Occurrence (Newness)
+
+```{r}
+'This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.'
+
+#bootstrapping ok
+
+gc()
+
+
+
+#TODO: lukt niet om schaal aan te passen naar 1 km
+NN_map <- newness_map(Angiosperm_data_cube,
+                      spherical_geometry = FALSE,
+                            cell_size="grid")
+
+NN_map_plot <- plot(NN_map)
+
+#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
+NN_ts <- newness_ts(Angiosperm_data_cube,
+                          cell_size="grid")
+NN_ts_plot <- plot(NN_ts)
+
+##export data to showcase in dashboard
+saveRDS(NN_map,
+        paste0(output_path, '/NN_map.rds'))
+
+saveRDS(NN_ts,
+        paste0(output_path, '/NN_ts.rds'))
+
+```
+
+#8.8. Occurrence Density
+
+```{r}
+'Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes. It can be displayed as a map (indicator_map) illustrating areas with higher concentrations of records, or as a time series (indicator_ts) showing changes in the rate of recording over time for the study area.'
+
+#bootstrapping ok
+
+gc()
+
+#TODO: lukt niet om schaal aan te passen naar 1 km
+OD_map <- occ_density_map(Angiosperm_data_cube,
+                          spherical_geometry = FALSE,
+                            cell_size="grid")
+OD_map_plot <- plot(OD_map)
+
+#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
+OD_ts <- occ_density_ts(Angiosperm_data_cube,
+                        cell_size="grid")
+OD_ts_plot <- plot(OD_ts)
+
+##export data to showcase in dashboard
+saveRDS(OD_map,
+        paste0(output_path, '/OD_map.rds'))
+
+saveRDS(OD_ts,
+        paste0(output_path, '/OD_ts.rds'))
+```
+
+#8.11. Taxonomic Distinctness
+
+```{r, eval=FALSE}
+
+'Taxonomic Distinctness measures the average taxonomic distance between any two randomly chosen species in a sample, incorporating their phylogenetic or taxonomic relatedness. A higher value indicates a broader representation of evolutionary history within the community. It can highlight areas on a map (indicator_map) or show trends over time (indicator_ts) where species are, on average, more distantly related.'
+
+gc()
+
+#print
+#TODO: lukt niet om schaal aan te passen naar 1 km
+TD_map <- tax_distinct_map(Angiosperm_data_cube,
+                           spherical_geometry = FALSE,
+                            cell_size="grid")
+TD_map_plot <- plot(TD_map)
+
+#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
+TD_ts <- tax_distinct_ts(Angiosperm_data_cube,
+                         cell_size="grid")
+
+TD_ts_plot <- plot(TD_ts)
+
+##export data to showcase in dashboard
+saveRDS(TD_map,
+        paste0(output_path, '/TD_map.rds'))
+
+saveRDS(TD_ts,
+        paste0(output_path, '/TD_ts.rds'))
+
+```
+
+#8.12. Species Turnover -\> possibly renamed Occupancy turnover?
+
+```{r}
+'Species Turnover measures the rate at which species composition changes over time within a community, quantifying the balance between species "gains" and "losses" between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).'
+
+
+gc()
+
+OT_ts <- occ_turnover_ts(Angiosperm_data_cube,
+                         cell_size="grid")
+
+OT_ts_plot <- plot(OT_ts)
+
+##export data to showcase in dashboard
+saveRDS(OT_ts,
+        paste0(output_path, '/OT_ts.rds'))
+
+
+```
+
+#8.13 completeness
+
+```{r}
+'This function calculates the completeness of biodiversity data over a gridded map or as a time series using the Sample Coverage metric from the iNEXT package.'
+
+
+gc()
+
+ComP_ts <-completeness_ts(Angiosperm_data_cube,
+                         cell_size="grid",
+                         gridded_average=TRUE)
+
+ComP_map <-completeness_map(Angiosperm_data_cube,
+                            spherical_geometry = FALSE,
+                         cell_size="grid")
+
+
+##export data to showcase in dashboard
+saveRDS(ComP_ts,
+        paste0(output_path, '/ComP_ts.rds'))
+
+##export data to showcase in dashboard
+saveRDS(ComP_map,
+        paste0(output_path, '/ComP_map.rds'))
+
+
+```
+
+#8.14 spec_richness_density
+
+```{r}
+'This function calculates the density of unique species over a gridded map or as a time series (see Details for more information).'
+
+
+gc()
+
+SRD_ts <-spec_richness_density_ts(Angiosperm_data_cube,
+                         cell_size="grid")
+SRD_map <-spec_richness_density_map(Angiosperm_data_cube,
+                        spherical_geometry = FALSE,
+                         cell_size="grid")
+
+
+##export data to showcase in dashboard
+saveRDS(SRD_ts,
+        paste0(output_path, '/SRD_ts.rds'))
+
+##export data to showcase in dashboard
+saveRDS(SRD_map,
+        paste0(output_path, '/SRD_map.rds'))
+
+
+```
