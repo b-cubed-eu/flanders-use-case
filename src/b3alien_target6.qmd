@@ -5,21 +5,26 @@ format:
     code-fold: false
 ---
 
-#### Indicator type 
+#### Indicator type
+
 indicator to evaluate policy
 
-#### Explanation 
-The [CBD Target 6](https://www.cbd.int/gbf/targets/6) headline indicator, calculated by applying b3alien, represents the rate of invasive alien species establishment. 
+#### Explanation
 
-#### Applicability for policy  
-[Target 6 of CBD](https://www.cbd.int/gbf/targets/6) is to 'eliminate, minimize, reduce and or mitigate the impacts of invasive alien species on biodiversity and ecosystem services by identifying and managing pathways of the introduction of alien species, preventing the introduction and establishment of priority invasive alien species, reducing the rates of introduction and establishment of other known or potential invasive alien species by at least 50 per cent, by 2030, eradicating or controlling invasive alien species especially in priority sites, such as islands'.
+This headline indicator, calculated by applying the b3alien package, estimates the actual rate at which new invasive alien species (IAS) successfully establish permanent populations within a region. It screens wildlife observations against international alien checklists to track the speed of biological invasions:
 
-#### Limitations 
-As a headline indicator, it simplifies complex ecological processes into a single metric. It is sensitive to data gaps, uneven taxonomic and geographic coverage, and differences in monitoring effort across regions and over time. Aggregation may mask species-specific invasions or local impact hotspots that are important for management. It should therefore be interpreted alongside disaggregated indicators and expert ecological assessment.
+ - A fast-rising establishment rate implies that more non-native species are successfully breeding, surviving, and setting up permanent populations in the area. 
+ - A low or decreasing establishment rate indicates that fewer new alien species are managing to gain a permanent foothold in the local ecosystem.
 
-![Figure 1: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive. ](Target6/Figure_target6_indicator_heavily_filtering.png)
 
-![Figure 2: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive or degree of establishment ais unknown. ](Target6/Figure_target6_indicator_weakly_filtering.png)
+#### Applicability for policy
+This metric serves as the official CBD Headline Indicator to monitor global and national progress toward Target 6 of the Kunming-Montreal Global Biodiversity Framework. Its direct policy goal is to reduce the introduction and establishment rates of known invasive species by at least 50% by 2030. Especially looking at this at longer time scales (as is suggested in the CBD documentation) can provide some insight in the effectiveness of policies. 
 
-![Figure 3: Target 6 indicator based on the GRIIS checklist,including all stages of establishment. ](Target6/Figure_target6_indicator_no_filtering.png)
+#### Limitations
+As a high-level headline indicator, it simplifies highly complex ecological processes into a single, generic number. It is highly sensitive to regional data gaps and uneven mapping across different species groups. Therefore, this metric must always be interpreted alongside local maps and expert ecological assessments. Importantly, basic measures for observation effort and special bias can also be retrieved from the package b3alien. 
 
+![Figure 1: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive.](Target6/Figure_target6_indicator_heavily_filtering.png)
+
+![Figure 2: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive or degree of establishment ais unknown.](Target6/Figure_target6_indicator_weakly_filtering.png)
+
+![Figure 3: Target 6 indicator based on the GRIIS checklist,including all stages of establishment.](Target6/Figure_target6_indicator_no_filtering.png)

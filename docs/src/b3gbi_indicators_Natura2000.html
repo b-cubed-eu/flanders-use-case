@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>  General indicators Natura 2000 – WP6: Flanders case study</title>
+<title>  General indicators Natura 2000 angiospermae – WP6: Flanders case study</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -109,15 +109,23 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results at 1 km resolution</span></a>
+ <span class="dropdown-text">Results Angiospermae 1km</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_10km.qmd">
- <span class="dropdown-text">Results at 10 km resolution</span></a>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
+ <span class="dropdown-text">Results Angiospermae 10km</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Natura2000.html">
- <span class="dropdown-text">Focus on Natura2000</span></a>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
+ <span class="dropdown-text">Results Insecta 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
+ <span class="dropdown-text">Results Insecta 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
+ <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
   </li>  
     </ul>
   </li>
@@ -152,21 +160,17 @@ ul.task-list li input[type="checkbox"] {
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-comparing-indicators" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Comparing indicators</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-natura2000" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Natura2000</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-comparing-indicators">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-natura2000">    
         <li>
-    <a class="dropdown-item" href="../src/under_development.html">
- <span class="dropdown-text">General indicators</span></a>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Natura2000.html">
+ <span class="dropdown-text">Angiospermae 1km</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../src/under_development.html">
- <span class="dropdown-text">Phylogenetic indicators</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/under_development.html">
- <span class="dropdown-text">IAS indicators</span></a>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_Natura2000.html">
+ <span class="dropdown-text">Insecta 1km</span></a>
   </li>  
     </ul>
   </li>
@@ -196,7 +200,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators Natura 2000</p></h1>
+<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators Natura 2000 angiospermae</p></h1>
 </div>
 
 
@@ -294,15 +298,15 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Evenness
+<span class="screen-reader-only">Tip</span>Rarity
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Evenness measures how uniformly individuals (or observations in GBIF data) are distributed among species within a given area or over time. It complements species richness by providing insight into community structure. b3gbi supports Pielou’s Evenness and Williams’ Evenness, displaying their values spatially on maps (indicator_map) or as trends over time (indicator_ts).</p>
-<section id="pielous-evenness" class="level3">
-<h3 class="anchored" data-anchor-id="pielous-evenness">Pielou’s Evenness</h3>
+<p>Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species’ proportional occurrences) and Area-Based Rarity (based on species’ spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity.</p>
+<section id="abundance---based-rarity" class="level3">
+<h3 class="anchored" data-anchor-id="abundance---based-rarity">Abundance - Based Rarity</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -313,8 +317,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="williams-evenness" class="level3">
-<h3 class="anchored" data-anchor-id="williams-evenness">Williams’ Evenness</h3>
+<section id="area-based-rarity" class="level3">
+<h3 class="anchored" data-anchor-id="area-based-rarity">Area-based rarity</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -334,36 +338,21 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Rarity
+<span class="screen-reader-only">Tip</span>Estimated Hill Diversity
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species’ proportional occurrences) and Area-Based Rarity (based on species’ spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity.</p>
-<section id="abundance---based-rarity" class="level3">
-<h3 class="anchored" data-anchor-id="abundance---based-rarity">Abundance - Based Rarity</h3>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<p>Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the “effective number of species” and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.</p>
+<section id="species-richness-q0" class="level3">
+<h3 class="anchored" data-anchor-id="species-richness-q0">Species richness (q=0)</h3>
 </section>
-<section id="area-based-rarity" class="level3">
-<h3 class="anchored" data-anchor-id="area-based-rarity">Area-based rarity</h3>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="hill---shanon-q1" class="level3">
+<h3 class="anchored" data-anchor-id="hill---shanon-q1">Hill - Shanon (q=1)</h3>
+</section>
+<section id="hill---simpson-q2" class="level3">
+<h3 class="anchored" data-anchor-id="hill---simpson-q2">Hill - Simpson (q=2)</h3>
 </section>
 </div>
 </div>
@@ -374,27 +363,13 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Estimated Hill Diversity
+<span class="screen-reader-only">Tip</span>Cumulative Species Richness
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the “effective number of species” and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.</p>
-<section id="species-richness-q0" class="level3">
-<h3 class="anchored" data-anchor-id="species-richness-q0">Species richness (q=0)</h3>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="hill---shanon-q1" class="level3">
-<h3 class="anchored" data-anchor-id="hill---shanon-q1">Hill - Shanon (q=1)</h3>
+<p>This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -404,19 +379,6 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-</section>
-<section id="hill---simpson-q2" class="level3">
-<h3 class="anchored" data-anchor-id="hill---simpson-q2">Hill - Simpson (q=2)</h3>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
 </div>
 </div>
 </div>
@@ -426,18 +388,18 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Cumulative Species Richness
+<span class="screen-reader-only">Tip</span>Mean Year of Occurrence (Newness)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).</p>
+<p>This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -451,43 +413,18 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Mean Year of Occurrence (Newness)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
 <span class="screen-reader-only">Tip</span>Occupancy turnover
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Occupancy Turnover measures the rate at which occupancy composition changes over time within a community, quantifying the balance between species “gains” and “losses” between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

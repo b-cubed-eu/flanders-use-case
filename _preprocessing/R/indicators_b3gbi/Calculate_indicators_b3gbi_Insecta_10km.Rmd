@@ -136,7 +136,7 @@ saveRDS(AbRM_ts,
 
 #8.5. Estimated Hill Diversity
 
-```{r}
+```{r, eval=FALSE}
 'Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the "effective number of species" and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.
 
 #SR: Species richness - hill0_map() and hill0_ts()
@@ -284,7 +284,7 @@ saveRDS(OD_ts,
 
 #8.11. Taxonomic Distinctness
 
-```{r}
+```{r, eval=FALSE}
 
 'Taxonomic Distinctness measures the average taxonomic distance between any two randomly chosen species in a sample, incorporating their phylogenetic or taxonomic relatedness. A higher value indicates a broader representation of evolutionary history within the community. It can highlight areas on a map (indicator_map) or show trends over time (indicator_ts) where species are, on average, more distantly related.'
 

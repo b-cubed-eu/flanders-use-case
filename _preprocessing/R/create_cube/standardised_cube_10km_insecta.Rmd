@@ -114,24 +114,26 @@ data_total_10km <- download_occ_cube(
   overwrite = TRUE
   )
 
-#id: 
+file <- occ_download_get("0026642-260519110011954")
+data_total_1km<- occ_download_import(file)
 ```
 
 We get a big dataframe with all occurrences.
 
 ```{r}
 # Explore dataframe
-glimpse(data_total_10km)
+glimpse(data_total_1km)
 ```
 
 ```{r}
 #read in native species in Flanders (Waarnemingen)
 
-be_animalia_native <-  read.csv('_preprocessing/data/interim/be_animalia_native.csv')
-# alternative cube waarbij enkel native soorten op observed plantlijst
-# Natuurpunt worden behouden
-cube_native <- data_total_10km[data_total_10km$specieskey %in%
-                              be_animalia_native$acceptedUsageKey,]
+GRIIS_Flanders <- read.csv('./_preprocessing/data/raw/GRIIS_Flanders.csv')
+
+
+#remove aliens
+cube_native <- data_total_1km%>%
+  filter(!specieskey%in%GRIIS_Flanders$speciesid)
 
 #add filter for temporal uncertainty
 cube_native <- cube_native%>%

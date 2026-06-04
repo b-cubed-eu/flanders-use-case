@@ -284,7 +284,7 @@ saveRDS(OD_ts,
 
 #8.11. Taxonomic Distinctness
 
-```{r}
+```{r, eval = FALSE}
 
 'Taxonomic Distinctness measures the average taxonomic distance between any two randomly chosen species in a sample, incorporating their phylogenetic or taxonomic relatedness. A higher value indicates a broader representation of evolutionary history within the community. It can highlight areas on a map (indicator_map) or show trends over time (indicator_ts) where species are, on average, more distantly related.'
 

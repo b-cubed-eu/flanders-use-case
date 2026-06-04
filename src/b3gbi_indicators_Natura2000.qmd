@@ -2,7 +2,7 @@
 title:  >
   <a href="https://github.com/b-cubed-eu/b3gbi" target="_blank">
     <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;">
-  </a>General indicators Natura 2000 
+  </a>General indicators Natura 2000 angiospermae
 format:
   html:
     code-fold: true
@@ -141,98 +141,6 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 :::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-## Evenness
-
-Evenness measures how uniformly individuals (or observations in GBIF data) are distributed among species within a given area or over time. It complements species richness by providing insight into community structure. b3gbi supports Pielou's Evenness and Williams' Evenness, displaying their values spatially on maps (indicator_map) or as trends over time (indicator_ts).
-
-### Pielou's Evenness
-
-```{r, echo = FALSE, warning = FALSE,message = FALSE}
-PEM_ts_Natura2000 <- readRDS('./Flanders_Natura2000/PEM_ts.rds')
-
-
-PEM_ts_nonNatura2000 <- readRDS('.//Flanders_nonNatura2000/PEM_ts.rds')
-
-# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(PEM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(PEM_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
-
-df_both <- bind_rows(df_nat, df_non)
-
-ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
-
-  # groeps-trend
-  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
-
-  # ruwe punten
-  geom_point(alpha = 0.6, size = 2) +
-
-  # 👇 individuele bars rond elk punt
-  geom_errorbar(
-    aes(ymin = ll, ymax = ul),
-    width = 0.25,
-    alpha = 0.7,
-    size = 0.6
-  ) +
-
-  labs(
-    x = "Year",
-    y = "Pielou's Evenness",
-    colour = "",
-    fill = ""
-  ) +
-
-  theme(
-    legend.title = element_blank()
-  )+
-  theme_minimal() 
-```
-
-### Williams' Evenness
-
-```{r, echo = FALSE, warning = FALSE,message = FALSE}
-WEM_ts_Natura2000 <- readRDS('./Flanders_Natura2000/WEM_ts.rds')
-
-
-WEM_ts_nonNatura2000 <- readRDS('.//Flanders_nonNatura2000/WEM_ts.rds')
-
-# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(WEM_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(WEM_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
-
-df_both <- bind_rows(df_nat, df_non)
-
-ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
-
-  # groeps-trend
-  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
-
-  # ruwe punten
-  geom_point(alpha = 0.6, size = 2) +
-
-  # 👇 individuele bars rond elk punt
-  geom_errorbar(
-    aes(ymin = ll, ymax = ul),
-    width = 0.25,
-    alpha = 0.7,
-    size = 0.6
-  ) +
-
-  labs(
-    x = "Year",
-    y = "Williams' Evenness",
-    colour = "",
-    fill = ""
-  ) +
-
-  theme(
-    legend.title = element_blank()
-  )+
-  theme_minimal() 
-```
-:::
-
-::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Rarity
 
 Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity.
@@ -331,7 +239,7 @@ Hill Diversity provides a unified framework for various diversity measures, allo
 
 ### Species richness (q=0)
 
-```{r, echo = FALSE, warning = FALSE,message = FALSE}
+```{r, eval=FALSE, echo = FALSE, warning = FALSE,message = FALSE}
 SR_ts_Natura2000 <- readRDS('./Flanders_Natura2000/SR_ts.rds')
 
 
@@ -374,7 +282,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 
 ### Hill - Shanon (q=1)
 
-```{r, echo = FALSE, warning = FALSE,message = FALSE}
+```{r, eval=FALSE, echo = FALSE, warning = FALSE,message = FALSE}
 HSh_ts_Natura2000 <- readRDS('./Flanders_Natura2000/HSh_ts.rds')
 
 
@@ -417,7 +325,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 
 ### Hill - Simpson (q=2)
 
-```{r, echo = FALSE, warning = FALSE,message = FALSE}
+```{r, eval=FALSE, echo = FALSE, warning = FALSE,message = FALSE}
 HSi_ts_Natura2000 <- readRDS('./Flanders_Natura2000/HSi_ts.rds')
 
 

@@ -9,7 +9,24 @@ format:
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Phylogenetic diversity
 
-Phylogenetic diversity (PD) is a measure of biodiversity which takes evolution into account. It is calculated as the sum of the lengths of the phylogenetic tree branches representing the minimum tree-spanning path among a group of species. Phylogenetic diversity can be used in conservation planning to maximise a variety of features, meaning we do not aim to conserve specific features, but rather want to boost a diverse range of features. Conserving a variety of features could be particularly useful in light of the changing environmental conditions, as we can only guess which features will be important in the future.
+### Indicator type
+
+State Indicator / Evolutionary Diversity Variable.
+
+### Explanation
+
+This indicator, calculated using the pdindicatoR package, takes into account the evolutionary relatedness of species by calculating the sum of the branch lenghts (representing the accumulated genetic changes) of the evolutionary tree of life that connect all the species found in a specific area. Instead of just counting the number of different species (species richness), it calculates the minimum path length needed to span across those species on a phylogenetic tree.
+
+- High value: The area contains species that are far apart on the tree of life (for example, it includes species ofancient lineages that have evolved seperately from most other modern species). This means a wide variety of evolutionary features and distinct genetic traits are probably present in that ecosystem.
+- Low value: The species in the area are very closely related and clumped together on the same or a few related branches of the tree of life, meaning the ecosystem has a comparatively low variety of distinct evolutionary features.
+
+### Applicability for policy
+
+This metric is highly valuable for long-term conservation planning and climate change adaptation policies. Because we can only guess which biological traits and features will be crucial for species survival in changing future environments, protecting a wide variety of features—rather than just the number of species—maximizes the overall adaptability and resilience of the ecosystem.
+
+### Limitations
+
+The indicator is highly dependent on having an accurate and complete phylogenetic tree with reliable branch lenghts for the taxonomic group being analyzed. If the evolutionary relationships are poorly mapped behind the scenes, the calculated tree-spanning path can become skewed, potentially over- or underestimating the true evolutionary value of the area.
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
 library(sf)
@@ -24,7 +41,24 @@ ggplot(data = pd_map) +
   theme(legend.title = element_blank())
 ```
 
-Loss map 
+## Phylogenetic Diversity loss map
+
+### Indicator type:
+
+Spatial Planning / Risk and Vulnerability Indicator.
+
+###Explanation: This indicator calculates exactly how much evolutionary history we stand to lose if threatened species disappear from a specific grid cell. Species are considered ‘threatened’ when classified as Critically Endangered (CR), Endangered (EN) or Vulnerable (VU) according to the local IUCN Red List. The total Phylogenetic Diversity is then once calculated with all species present; and second, without the threatened species. The difference between these two scores equals the Expected PD Loss.
+
+- High value (High Expected Loss): If the threatened species in this grid cell go extinct, a substantial chunk of the evolutionary tree of life and the feature diversity associated with it for this region will vanish. This happens because these endangered species have no close relatives in these cells that share their evolutionary history and evolved traits.
+- Low value (Low Expected Loss): The threatened species in this cell are either close cousins to other commonpecies (meaning their disappearance won't completely delete that branch of the tree of life), or there are few threatened species present in the area.
+
+### Applicability for policy
+
+This indicator provides a "triage map" for policymakers and conservation agencies that highlights the areas where the loss of evolutionary heritage is expected to be greatest. Rather than just looking at decline in species richness alone, it also considers the variety of features across the evolutionary tree of life. Resources can then be allocated towards high priority areas, for example to expand protected areas to include hotspots of evolutionary heritage.
+
+### Limitations
+
+This indicator treats all "threatened" categories (CR, EN, VU) with equal weight when calculating the expected loss, and therefore it does notdifferentiate between a species that is on the brink of extinction versus one that is vulnerable. Furthermore, it relies on the up-to-date accuracy of regional Red Lists and therefore the potential loss of aa species that has become threatened but is not officially assessed yet, will not be factored in.
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
 library(sf)
@@ -38,5 +72,4 @@ ggplot(data = pd_map) +
   theme_minimal()+
   theme(legend.title = element_blank())
 ```
-
 :::

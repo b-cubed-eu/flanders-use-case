@@ -28,8 +28,8 @@ This dashboard showcases developed workflows within [the B-Cubed project](https:
 
 The implemented indicators in this dashboard can be subdivided into:
 
--   General biodiversity indicators (based on [b3gbi](https://github.com/b-cubed-eu/b3gbi), for instance, cumulative species richness, relative species richness, etc.);
+- General biodiversity indicators (based on [b3gbi](https://github.com/b-cubed-eu/b3gbi), for instance, cumulative species richness, relative species richness, etc.);
 
--   Phylogenetic indicators (based on [pdindicatoR](https://github.com/b-cubed-eu/pdindicator));
+- Phylogenetic indicators (based on [pdindicatoR](https://github.com/b-cubed-eu/pdindicator));
 
--   Invasive Alien Species indicators (based on [TrIAS](https://trias-project.github.io/indicators/) and [b3alien](https://pypi.org/project/b3alien/))
+- Invasive Alien Species indicators (based on [TrIAS](https://trias-project.github.io/indicators/) and [b3alien](https://pypi.org/project/b3alien/))
