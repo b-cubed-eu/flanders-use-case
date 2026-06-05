@@ -1,0 +1,20 @@
+## Total Occurrences
+
+### Indicator type
+
+Data quality indicator.
+
+### Explanation
+
+This metric represents the total number of occurrences (independent of species) within a specific grid cell or year. 
+
+- High value: This usually signalsa hotspot for human outdoor activity or nature reporting.
+- Low value: Very few or zero records have been submitted, potentially indicating a data "blind spot."
+
+### Applicability for policy
+
+This metric serves two important administrative functions. First, it measures citizen science engagement. Second, it helps to interpret other metrics more correctly as it highlights biases in survey effort over time and space.
+
+### Limitations
+
+It primarily maps where people like to walk, near roads and towns, rather than actual conservation value.

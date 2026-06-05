@@ -1,0 +1,22 @@
+
+
+## Observed species richness
+
+### Indicator type
+
+State / Trend Indicator (Alpha Diversity).
+
+### Explanation
+
+Observed species richness represents the total number of unique species discovered and recorded within a given geographic area or specific year:
+
+- High value: A high number of unique species, indicating a diverse local community.
+- Low value: A low numbere of unique species, signaling a species-poor habitat or an area which has been rarely surveyed.
+
+### Applicability for policy
+
+This metric is a necessary for determining biodiversity hotspots and tracing potential declines in species richness across specific taxonomic groups. It provides the initial baseline data needed to justify local protection zones, evaluate regional habitat health, and track broad, long-term shifts in community composition over the years.
+
+### Limitations
+
+Observed species richness is highly sensitive to sampling bias and human observation effort. If certain grid cells are studied more carefully or visited more frequently by volunteers than others, they will artificially appear to have more species. Furthermore, results are skewed by species detectability. Rare or widely dispersed species are easily missed during casual surveys, whereas highly conspicuous or easy-to-find species will often be reported.

@@ -1,0 +1,19 @@
+### Area-based rarity
+
+#### Indicator type
+
+State Indicator.
+
+#### Explanation
+
+This indicator measures rarity based on geographic distribution across the entire study area. It sums the occupancy-based rarity values of all species present in a grid cell or year. 
+
+ - A high indicator value demonstrates that the grid cell contains many species that have a highly restricted geographic range.
+ - A low value reveals that the grid cell contains only widespread species that can easily be found at other locations.
+
+#### Applicability for policy
+
+This metric is critical for spatial planning and the design of protected area networks? For instance, it highlights irreplaceable grid cells containing range-restricted species that cannot be compensated for by protecting other locations (in case of Natura2000 area). Additionally, it helps identify unique ecological niches, vulnerable ecosystems, or highly fragmented habitats that host geographically isolated species at high risk of regional extinction.
+
+#### Limitations
+The outcome is strongly depending on survey effort. Moreover, another limitation is that the score is strictly dependent on the chosen spatial scale and grid cell size of the analyzed data cube. A species might appear highly rare and range-restricted simply because it only occurs in one cell within your specific project borders, even though it might be widely distributed just outside the artificial boundaries of the analyzed cube.

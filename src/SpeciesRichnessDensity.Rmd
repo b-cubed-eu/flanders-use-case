@@ -1,0 +1,19 @@
+### Indicator type
+
+State / Trend Indicator.
+
+### Explanation
+
+This indicator measures local biodiversity by dividing the total number of unique species by the surface area, specifically calculating the number of unique species found per square kilometer for each grid cell or year.
+
+- High value: The grid cell contains a high concentration of unique species.
+- Low value: The area contains a low concentraion of unique species.
+
+### Applicability for policy:
+
+- Allowing comparison across scales: Cubes with different grid sizes can easily be compared.
+- Identifying hotspots of biodiversity.
+
+### Limitations
+
+It is largely affected by biases in survey effort.

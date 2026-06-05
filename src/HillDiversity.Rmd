@@ -1,0 +1,30 @@
+## Estimated Hill Diversity
+
+### Indicator type
+
+State Indicator.
+
+### Explanation
+
+This indicator measures the overall health, balance, and variety of nature by shifting the analytical focus along a smooth mathematical gradient using three standard values—Hill-0, Hill-1, and Hill-2. This gradient allows policymakers to see exactly how balanced an ecosystem's community structure is:
+
+- Hill-0: the effective number of species (species richness). This measure reveals how many species are present.
+- Hill-1: the effective number of typical species, balancing rare and common species. This measure indicates how evenly biodiversity is distributed across species.
+- Hill-2: the effective number of dominant species, emphasizing common species. This indicator reveals whether biodiversity is dominated by a few common species.
+
+Large differences between the three values indicate that biodiversity is concentrated in a small number of dominant species, whereas similar values indicate a more even and balanced community.
+
+### Applicability for policy
+
+Comparing Hill-0, Hill-1, and Hill-2 provides insight into both species richness and community structure. 
+
+An example illustrating how the scores can be combined to provide an accurate picture of ecosystem composition:
+
+- The Scenario: A policymaker compares two forests, Forest A and Forest B. Both forests have a total count of ten species, meaning they score equally high on Hill-0.
+  - Forest A (Healthy Balance): Contains exactly one hundred trees per species. Because of this perfect distribution, its Hill-1 and Hill-2 values remain very high, signaling a highly resilient habitat.
+  - Forest B (Degraded Monoculture): Contains one thousand trees of a single invasive plant and only one individual tree for each of the other nine species. In this case, its Hill-1 score will plummet and its Hill-2 score will hit an extremely low level.
+
+
+### Limitations
+
+The raw numbers generated along this entire gradient are highly vulnerable to uneven sampling efforts and data collection biases within the GBIF data cube. 

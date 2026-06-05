@@ -1,0 +1,19 @@
+### Indicator type
+
+Data quality indicator.
+
+### Explanation
+
+This indicator estimates how complete our knowledge of an ecological community is by calculating "Sample Coverage" (a concept originally developed by Turing and Good, and popularized by Chao and Jost). Instead of just counting the raw number of observations, it calculates the proportion of all individuals in the actual community that belong to the species we have already detected in our sample:
+
+- High value (Value of 1.0 or 100%): The sample is perfectly complete. This indicates that all species living in that area have been successfully found and recorded, meaning no new species are expected to be uncovered through further fieldwork or searching.
+- Low value (Value of 0.2 or 20%, for example): The sample is incomplete. This suggests that while you have found some species, an estimated 80% of the remaining individuals in that community belong to species that have not yet been detected or logged in the database.
+
+### Applicability for policy
+
+- An important indicator of data quality: This indicator is an absolute prerequisite for reliable, data-driven policymaking. If completeness is high, it ensurs that any differences are real ecological trends rather than just reflections of uneven sampling sizes.
+- Tracing “blind spots”: This indicator allows environmental agencies to identify gaps in data coverage. A low completeness score in a given region signals the need for increased monitoring efforts.
+
+### Limitations
+
+Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat. 

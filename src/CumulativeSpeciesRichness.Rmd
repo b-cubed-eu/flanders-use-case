@@ -1,0 +1,20 @@
+
+### Indicator type:
+
+Data Quality / Trend Indicator.
+
+### Explanation:
+
+While standard Species Richness simply represents the total number of species found in a single year, Cumulative Richness keeps a running total over time. Every time a new, unique species is observed that has never been recorded in previous years within that grid cell, it is added to a cumulative sum.
+
+- High or fast-rising value: Each year, many "new" species are still being discovered for the first time in that region. While this could theoretically mean an influx of new climate-migrants or invasive alien species, in most cases it simply means the historical dataset is incomplete and we are still catching up on mapping what is actually there.
+- Low or flattening value: The curve is flattening out, meaning almost no new species are being added to the historical list anymore. This indicates that the dataset for this region has become highly comprehensive and mature.
+
+### Applicability for policy:
+
+- Data Completeness Check: If the cumulative richness line is steep and rising fast, it warns the government that the current data is an underestimate and too incomplete to base hard policy decisions on.
+- Tracking New Arrivals: In highly monitored regions where data is already complete, a sudden new bump in cumulative richness can serve as a leading indicator for the arrival of invasive alien species or climate-driven species shifts.
+
+### Limitations
+
+This metric is poorly suited to measuring rapid, negative biodiversity changes or current habitat degradation. Because it is a cumulative sum, the value never decreases. If a local extinction occurs or if common species crash in numbers, cumulative richness will completely ignore it and remain at its historic maximum. 

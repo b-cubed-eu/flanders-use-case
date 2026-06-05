@@ -1,0 +1,20 @@
+
+### Indicator type
+
+Data Quality.
+
+### Explanation
+
+This indicator calculates the average (mean) year of all nature records within a specific grid cell, providing a quick look at how recent or historical the data in that cell is.
+
+- High value (recent mean year): The vast majority of the data in the grid cell was collected very recently. This is often driven by citizen science data from people using smartphones and apps over the last few years.
+- Low value (older mean year): This indicates that a large portion of the dataset consists of older museum collections, historical surveys, or long-running monitoring programs from previous decades.
+
+### Applicability for policy
+
+- Data Freshness Check: It serves as a vital metadata check for policymakers to ensure they are not basing current conservation laws on outdated information. If a grid cell has a very low mean year, this indicates that the area needs urgent re-surveying.
+- Monitoring history: It helps environmental agencies map out how data collection methods have evolved across different provinces.
+
+### Limitations
+
+A recent mean year does not infer high data quality. A region with a low (older) mean year might actually have a much higher data quality because it has been conducting flawless, highly comprehensive, and structured professional monitoring for forty years. 

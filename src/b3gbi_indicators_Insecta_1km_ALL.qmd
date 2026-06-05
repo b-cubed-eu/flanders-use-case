@@ -19,26 +19,8 @@ library(sf)
 ```
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-## Observed species richness
 
-### Indicator type
-
-State / Trend Indicator (Alpha Diversity).
-
-### Explanation
-
-Observed species richness represents the total number of unique species discovered and recorded within a given geographic area or specific year:
-
-- High value: A high headcount of different species, indicating a diverse local community where rare and common species are treated with equal weight in the total sum.
-- Low value: A low headcount of unique species, signaling a species-poor habitat or an area where very few organisms are managing to survive.
-
-### Applicability for policy
-
-This metric is a foundational tool for determining biodiversity hotspots and tracing potential declines in species richness across specific taxonomic groups. It provides the initial baseline data needed to justify local protection zones, evaluate regional habitat health, and track broad, long-term shifts in community composition over the years.
-
-### Limitations
-
-Observed species richness is highly sensitive to sampling bias and human observation effort. If certain grid cells are studied more carefully or visited more frequently by volunteers than others, they will artificially appear to have more species simply because people looked more thoroughly. Furthermore, results are skewed by species detectability; rare, elusive, or widely dispersed species are easily missed during casual surveys, whereas highly conspicuous or easy-to-find species will consistently dominate the count.
+{{< include ObservedSpeciesRichness.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -105,26 +87,7 @@ plot(OSR_ts)
 :::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-## Total Occurrences
-
-### Indicator type
-
-Measurement of human activity and data collection (Input / Effort Indicator).
-
-### Explanation
-
-This is the most basic metric on the dashboard. It is a simple sum of every single validated nature record (observation) added together within a specific grid cell or year. It counts the total volume of data collected, regardless of what species were seen:
-
-- High value: A massive pile of data records has been submitted for this area, usually signaling a hotspot for human outdoor activity and nature reporting.
-- Low value: Very few or zero records have been submitted, meaning the area is currently a data "blind spot."
-
-### Applicability for policy
-
-This metric serves two important administrative functions. First, it measures Citizen Science Engagement, showing governments how active the public is in using nature apps and participating in community monitoring. Second, it acts as an Effort Baseline to verify scientific truth. It helps policymakers figure out if a sudden green spike on a map means an ecosystem is genuinely recovering, or if it simply looks better because a highly active local nature club spent the weekend logging everything they could find in that specific spot.
-
-### Limitations
-
-This metric is ecologically meaningless on its own. A grid cell with 10,000 occurrences might look impressive, but it could be completely dominated by a single hyper-common or invasive species (like thousands of geese in a city park). Meanwhile, a quiet cell with only 50 occurrences might actually be a pristine, highly sensitive habitat home to 50 rare species. It primarily maps where people like to walk, near roads and towns, rather than actual conservation value.
+{{< include TotalOccurrences.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -161,23 +124,7 @@ plot(TO_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Rarity
 
-### Abundance - Based Rarity
-
-#### Indicator type
-
-State / Conservation Priority Indicator.
-
-#### Explanation
-
-This indicator measures rarity based on the total number of records within the dataset by summing the abundance-based rarity values of all species present in a grid cell or year. A high indicator value means the grid cell contains many species that are locally scarce or have very low population counts, whereas a low value indicates that the grid cell is dominated by a few species that are highly common and frequently recorded.
-
-#### Applicability for policy
-
-This metric is highly valuable for conservation prioritization because it highlights specific geographic areas that harbor disproportionately high numbers of locally scarce species, providing a strong scientific justification for establishing targeted local protection zones. Furthermore, when monitored over time, a rising trend in abundance-based rarity can serve as an early warning signal or policy trigger, indicating that previously common species are declining in numbers due to emerging environmental threats or habitat degradation.
-
-#### Limitations
-
-The primary limitation is its extreme sensitivity to sampling bias and the absolute volume of total occurrences in the data cube. If a common species is under-reported by citizens, its calculated rarity will artificially increase, while a single rare but highly charismatic species that is heavily targeted and recorded by wildlife enthusiasts will falsely cause the abundance-based rarity score to drop.
+{{< include AbundanceBasedRarity.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -210,23 +157,7 @@ AbRM_ts <- readRDS('./Insecta_data_Flanders_1km_ALL/AbRM_ts.rds')
 plot_ts(AbRM_ts)
 ```
 
-### Area-based rarity
-
-#### Indicator type
-
-State / Conservation Priority Indicator.
-
-#### Explanation
-
-This indicator measures rarity based on geographic distribution across the entire study area by summing the occupancy-based rarity values of all species present in a grid cell or year. A high indicator value demonstrates that the grid cell contains many species that have a highly restricted geographic range, are unique, or are endemic to just a few locations, while a low value reveals that the grid cell contains only widespread species that can easily be found in almost every other grid cell.
-
-#### Applicability for policy
-
-This metric is critical for spatial planning and the design of protected area networks like Natura 2000, as it highlights irreplaceable grid cells containing range-restricted species that cannot be compensated for by protecting other locations. Additionally, it helps policymakers identify unique ecological niches, vulnerable ecosystems, or highly fragmented habitats that host geographically isolated species at high risk of regional extinction.
-
-#### Limitations
-
-The main limitation is that the score is strictly dependent on the chosen spatial scale and grid cell size of the analyzed data cube. A species might appear highly rare and range-restricted simply because it only occurs in one cell within your specific project borders, even though it might be widely distributed just outside the artificial boundaries of the analyzed cube.
+{{< include AreaBasedRarity.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -261,38 +192,7 @@ plot_ts(ArRM_ts)
 :::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-## Estimated Hill Diversity
-
-### Indicator type
-
-State Indicator / Alpha and Structural Diversity.
-
-### Explanation
-
-This indicator measures the overall health, balance, and variety of nature by shifting the analytical focus along a smooth mathematical gradient using three standard values—Hill-0, Hill-1, and Hill-2. This gradient allows policymakers to see exactly how balanced an ecosystem's community structure is:
-
-- Hill-0 (Species Richness): Acts as a simple headcount that counts the total number of different species discovered in an area, without looking at their individual populations.
-  - High value: The area has a high total headcount of different species, where rare and common species are counted equally.
-  - Low value: The area is species-poor; very few organisms manage to survive there.
-- Hill-1 (Shannon Diversity): Measures the actual balance and evenness of the community by treating common and rare species with exact mathematical proportionality.
-  - High value: The community is beautifully balanced and rare species are successfully holding their ground without being crowded out.
-  - Low value: The natural balance is tipping and a small group of species is beginning to dominate the area.
-- Hill-2 (Simpson Diversity): Completely ignores rare species and focuses exclusively on the most abundant, dominant species to check for dangerous monopolies.
-  - High value: The ecosystem is safe, stable, and healthy, showing a good mixture of common species with no single group taking over.
-  - Low value (Policy Alarm Phase): The habitat has been dangerously overwhelmed, colonized, or suffocated by just one or two hyper-dominant species or invasive pests.
-
-### Applicability for policy
-
-This gradient is exceptionally valuable for green policies and statutory reporting because comparing the scores of 0, 1, and 2 tells a complete, diagnostic story about an ecosystem's structural stability that a simple species count could never reveal. Consider the following practical example:
-
-- The Scenario: A policymaker compares two forests, Forest A and Forest B. Both forests have a total count of ten species, meaning they score equally high on Hill-0.
-  - Forest A (Healthy Balance): Contains exactly one hundred trees per species. Because of this perfect distribution, its Hill-1 and Hill-2 values remain very high, signaling a highly resilient habitat.
-  - Forest B (Degraded Monoculture): Contains one thousand trees of a single invasive plant and only one individual tree for each of the other nine species. In this case, its Hill-1 score will plummet and its Hill-2 score will hit an extremely low level.
-  - Policy Outcome: This diagnostic gradient instantly alerts environmental agencies that despite having the same species count, Forest B is a degraded monoculture that requires urgent habitat restoration and targeted funding.
-
-### Limitations
-
-The primary limitation is that the raw numbers generated along this entire gradient are highly vulnerable to uneven sampling efforts and data collection biases within the GBIF data cube. You cannot reliably compare the diversity gradient of a heavily visited urban park with a remote, quiet nature reserve because the well-visited park will artificially appear much healthier on the gradient, meaning the data must be rigorously cleaned and corrected using coverage-based standardization before it can be used for official policy decisions.
+{{< include HillDiversity.Rmd >}}
 
 ### Species richness (Hill-0)
 
@@ -364,25 +264,7 @@ plot_ts(HSi_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Cumulative Species Richness
 
-### Indicator type:
-
-Data Quality / Trend Indicator.
-
-### Explanation:
-
-While standard Species Richness simply counts the total number of species found in a single year, Cumulative Richness keeps a running total over time. Every time a new, unique species is observed that has never been recorded in previous years within that grid cell, it is added to a cumulative sum.
-
-- High or fast-rising value: Each year, many "new" species are still being discovered for the first time in that region. While this could theoretically mean an influx of new climate-migrants or invasive alien species, in most cases it simply means the historical dataset is incomplete and we are still catching up on mapping what is actually there.
-- Low or flattening value: The curve is flattening out, meaning almost no new species are being added to the historical list anymore. This indicates that the dataset for this region has become highly comprehensive and mature.
-
-### Applicability for policy:
-
-- Data Completeness Check: This is an essential diagnostic tool for policymakers before they use biodiversity charts to justify new environmental laws. If the cumulative richness line is steep and rising fast, it warns the government that the current data is an underestimate and too incomplete to base hard policy decisions on.
-- Tracking New Arrivals: In highly monitored regions where data is already complete, a sudden new bump in cumulative richness can serve as a leading indicator for the arrival of invasive alien species or climate-driven species shifts, allowing agencies to act before these species establish permanent populations.
-
-### Limitations
-
-This metric is poorly suited to measuring rapid, negative biodiversity changes or current habitat degradation. Because it is a cumulative sum, the value never decreases. If a local extinction occurs or if common species crash in numbers, cumulative richness will completely ignore it and remain at its historic maximum, which can create a false sense of ecological security if not interpreted alongside abundance data.
+{{< include CumulativeSpeciesRichness.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -404,25 +286,7 @@ plot_ts(CR_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Mean Year of Occurrence (Newness)
 
-### Indicator type
-
-Data Quality / Temporal Distribution Indicator.
-
-### Explanation
-
-This indicator calculates the average (mean) year of all nature records within a specific grid cell, providing a quick look at how recent or historical the data in that cell is.
-
-- High value (Recent mean year): The vast majority of the data in the grid cell was collected very recently. This is often driven by a sudden, massive influx of modern citizen science data from people using smartphones and apps over the last few years.
-- Low value (Older mean year): The data in the grid cell heavily leans towards historical records. This indicates that a large portion of the dataset consists of older museum collections, historical surveys, or long-running monitoring programs from previous decades.
-
-### Applicability for policy
-
-- Data Freshness Check: It serves as a vital metadata check for policymakers to ensure they are not basing current conservation laws on outdated information. If a grid cell has a very low mean year, a minister knows that the area needs urgent re-surveying to verify if those species are still there today.
-- Monitoring Evolution Tracker: It helps environmental agencies map out how data collection methods have evolved across different provinces, allowing them to spot where traditional monitoring has stopped and where modern citizen science has suddenly boomed.
-
-### Limitations
-
-A recent mean year is not a direct stamp of data quality. A region with a low (older) mean year might actually have a much higher data quality because it has been conducting flawless, highly comprehensive, and structured professional monitoring for forty years. Conversely, a cell with a very high (recent) mean year might look modern, but could just be a chaotic boom of unstructured, one-off citizen science photos that lacks historical context or long-term scientific consistency.
+{{< include Newness.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -461,25 +325,7 @@ plot_ts(NN_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occurrence Density
 
-### Indicator type
-
-Input / Effort Indicator.
-
-### Explanation:
-
-This metric calculates the total number of biodiversity occurrences divided by the surface area, specifically summing the number of records per square kilometer for each grid cell or year. It provides very similar baseline information to Total Occurrences, but with an essential geometric adjustment:
-
-- High value: The grid cell has a massive concentration of data points packed into a relatively small geographic space.
-- Low value: The records are sparse and thinly spread out over a large geographic area.
-
-### Applicability for policy:
-
-- Fair Comparison of Search Effort: This is a vital baseline tool for regional planning because it allows policymakers to fairly compare human observation activity between differently sized administrative regions or custom-drawn nature reserves.
-- Standardized Citizen Engagement: It helps governments evaluate the true density of citizen science engagement, showing exactly which square kilometers are heavily monitored by the public and which square kilometers remain digital gaps, regardless of how large or small the overall grid cell is.
-
-### Limitations:
-
-Just like Total Occurrences, this metric is ecologically meaningless when looked at in isolation. A high density score does not automatically mean a high-quality ecosystem; it might just mean that thousands of people took photos of the exact same common duck in a small city pond. It primarily reflects localized human search effort and infrastructure (like a popular walking path or a nature center) rather than the actual conservation value of the environment.
+{{< include OccurrenceDensity.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -511,26 +357,7 @@ plot_ts(OD_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occupancy turnover
 
-### Indicator type:
-
-Trend / Pressure Indicator.
-
-### Explanation:
-
-This indicator measures how the species composition within a specific area shifts over time, tracking the exact rate at which species appear or disappear between two periods. Using the Jaccard dissimilarity index, the system compares the historical list of species against the modern list and scores the turnover on a scale from 0 to 1:
-
-- High value (Closer to 1): The area is experiencing rapid and dramatic community restructuring. Old species are vanishing and entirely new species are taking their place, meaning the two time periods look completely different from each other.
-- Low value (Closer to 0): The ecosystem is highly stable and static. The exact same species that lived in the area years ago are still present today, showing zero or very little change in local wildlife composition.
-
-### Applicability for policy:
-
-- Ecosystem Stability & Stress Testing: This is a vital tool for assessing how ecosystems respond to large-scale pressures like climate change, habitat fragmentation, or nitrogen deposition. A sudden spike in turnover tells policymakers that a rapid reshuffling is happening under their feet.
-- Evaluating Management Success: It allows governments to see if nature restoration policies are actually working. For example, if a province creates a new wetland, a controlled increase in turnover proves that the targeted wetland species are successfully moving in.
-- Invasive Species Tracking: High turnover can serve as a red flag for biological invasions, warning conservation boards that native species are being aggressively pushed out by incoming alien species.
-
-### Limitations
-
-The metric shows that change is happening, but it cannot tell you why or whether the change is ecologically good or bad. A high turnover score could mean a heavily degraded forest is being ruined by invasive weeds, or it could mean a barren piece of land is successfully transforming into a rich wildflower meadow. It must always be combined with rarity or taxonomic indices to understand the true nature of the shift.
+{{< include OccupancyTurnover.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -553,25 +380,7 @@ plot_ts(OT_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Completeness
 
-### Indicator type
-
-Data Quality / Methodological Baseline Indicator.
-
-### Explanation
-
-This indicator estimates how complete our knowledge of an ecological community is by calculating "Sample Coverage" (a concept originally developed by Turing and Good, and popularized by Chao and Jost). Instead of just counting the raw number of observations, it calculates the proportion of all individuals in the actual community that belong to the species we have already detected in our sample:
-
-- High value (Value of 1.0 or 100%): The sample is perfectly complete. This indicates that all species living in that area have been successfully found and recorded, meaning no new species are expected to be uncovered through further fieldwork or searching.
-- Low value (Value of 0.8 or 80%, for example): The sample is incomplete. This suggests that while you have found some species, an estimated 20% of the remaining individuals in that community belong to species that have not yet been detected or logged in the database.
-
-### Applicability for policy
-
-- The Golden Prerequisite for Comparisons: This indicator is an absolute prerequisite for reliable, data-driven policymaking. It allows governments to safely compare biodiversity across completely different provinces or time periods, ensuring that any differences are real ecological trends rather than just reflections of uneven sampling sizes.
-- Directing Fieldwork Budgets: It tells environmental agencies exactly where their data "blind spots" are. If a specific region shows a very low completeness score, the government knows it must deploy monitoring budgets or professional ecologists to that specific area to get an accurate picture before making hard land-use decisions.
-
-### Limitations
-
-Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package; it measures the reliability and maturity of the dataset, not the actual nature quality of the habitat. A grid cell can have a perfect completeness score of 1.0, which simply means we have perfectly mapped everything there, even if the habitat itself is highly degraded and contains only a handful of common species.
+{{< include Completeness.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library
@@ -610,25 +419,7 @@ plot_ts(ComP_ts)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Species Richness Density
 
-### Indicator type
-
-State / Effort-Adjusted Diversity Indicator.
-
-### Explanation
-
-This indicator measures local biodiversity by dividing the total number of unique species by the surface area, specifically calculating the number of unique species found per square kilometer for each grid cell or year. It provides very similar ecological information to standard Species Richness, but introduces an essential geometric correction:
-
-- High value: The grid cell has a massive concentration of different unique species packed tightly into a relatively small geographic space.
-- Low value: The area is species-poor, meaning very few unique species are spread out over a large geographic territory.
-
-### Applicability for policy:
-
-- Fair Regional Comparisons: This is an essential tool for spatial planning because it allows policymakers to fairly compare biodiversity between differently sized administrative regions, municipalities, or custom-drawn nature reserves without larger areas automatically winning the comparison.
-- Identifying Compact Hotspots: It helps governments locate dense "pocket habitats"—small urban parks, roadside verges, or tiny woodlands—that hold a surprisingly high concentration of unique species per square kilometer and are highly worthy of local protection.
-
-### Limitations
-
-Like standard species richness, bootstrapped confidence intervals are not calculated for this indicator because they are statistically inappropriate at the indicator level, meaning policymakers cannot use standard error margins to judge the data's statistical variance. Additionally, while it adjusts for area, it does not adjust for human search effort; a small, heavily visited city park with thousands of citizen science contributions will still show an artificially higher species density than a large, unvisited natural marshland.
+{{< include SpeciesRichnessDensity.Rmd >}}
 
 ```{r, eval=FALSE}
 #load library

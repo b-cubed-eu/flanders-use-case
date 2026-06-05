@@ -1,0 +1,20 @@
+### Abundance - Based Rarity
+
+#### Indicator type
+
+State Indicator.
+
+#### Explanation
+
+This indicator measures rarity based on the total number of records within the dataset by summing the abundance-based rarity values of all species present in a grid cell or year.
+
+- A high indicator value means the grid cell contains many species that are locally scarce or have very low population numbers.
+- A low value indicates that the grid cell is dominated by a few species that are highly common and frequently recorded.
+
+#### Applicability for policy
+
+This metric is highly valuable for conservation prioritization because it highlights specific geographic areas that harbor disproportionately high numbers of locally scarce species. This provides a strong scientific justification for establishing targeted local protection zones. Furthermore, shifts in rarety can results from changes in community composition and can serve as an early warning signal.
+
+#### Limitations
+
+The primary limitation is its extreme sensitivity to sampling bias and the absolute volume of total occurrences in the data cube. For instance, a common species that is under-reported will artificially increase rarety. Instead, a single rare but highly charismatic species that is often recorded by wildlife enthusiasts will falsely cause the abundance-based rarity score to drop.
