@@ -1,0 +1,19 @@
+### Indicator type
+
+Data quality indicator.
+
+### Explanation:
+
+This metric calculates the total number of biodiversity occurrences divided by the surface area, specifically summing the number of records per square kilometer for each grid cell or year. 
+
+- High value: The grid cell contains a high concentration of occurrences.
+- Low value: The records are sparse and thinly spread out over a large geographic area.
+
+### Applicability for policy:
+
+- Allowing comparison of survey effort: This is a vital baseline tool for regional planning because it allows to fairly compare human observation activity
+- Estimating citizen science engagement: It helps governments evaluate the true density of citizen science engagement.
+
+### Limitations:
+
+Just like Total Occurrences, this metric is ecologically meaningless when looked at in isolation. It primarily reflects localized human search effort (like a popular walking path or a nature center) rather than the actual conservation value of the environment.

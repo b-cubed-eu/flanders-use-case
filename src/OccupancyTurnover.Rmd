@@ -1,0 +1,20 @@
+### Indicator type:
+
+Trend / Pressure Indicator.
+
+### Explanation:
+
+This indicator measures how the species composition within a specific area shifts over time, tracking the exact rate at which species appear or disappear between two periods. Using the Jaccard dissimilarity index, the system compares the historical list of species against the modern list and scores the turnover on a scale from 0 to 1:
+
+- High value (closer to 1): The area is experiencing rapid and community restructuring. Old species are disappearing and entirely new species are taking their place, meaning the two time periods look completely different from each other.
+- Low value (closer to 0): The ecosystem is highly stable and static. The exact same species that lived in the area years ago are still present today.
+
+### Applicability for policy:
+
+- Ecosystem stability & Stress Testing: This is a vital tool for assessing how ecosystems respond to large-scale pressures like climate change, habitat fragmentation, or nitrogen deposition. 
+- Evaluating management success: It allows governments to see if nature restoration policies are actually working. For example, if a province creates a new wetland, a controlled increase in turnover proves that the targeted wetland species are successfully moving in.
+- Invasive species tracking: High turnover can serve as a red flag for biological invasions, warning conservation boards that native species are potentially being replaced by incoming alien species.
+
+### Limitations
+
+The metric shows that change is happening, but it cannot tell you why or whether the change is ecologically good or bad. A high turnover score could mean a heavily degraded forest is being invaded by invasive weeds, or it could mean a barren piece of land is successfully transforming into a rich wildflower meadow. It must always be combined with rarity or taxonomic indices to understand the true nature of the shift.
