@@ -2,7 +2,7 @@
 title:  >
   <a href="https://github.com/b-cubed-eu/b3gbi" target="_blank">
     <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;">
-  </a>General indicators for Angiosperms at 10 km resolution
+  </a>General indicators for insecta at 1km resolution (no filters)
 format:
   html:
     code-fold: true
