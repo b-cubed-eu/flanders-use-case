@@ -65,5 +65,3 @@ data_all_Flanders <- download_occ_cube(
   )
 
 ```
-
-

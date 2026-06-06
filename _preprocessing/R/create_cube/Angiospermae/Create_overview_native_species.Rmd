@@ -19,7 +19,6 @@ library(httr)
 library(jsonlite)
 ```
 
-
 ```{r}
 
 # read in all observed species in Belgium (natuurpunt)
@@ -119,7 +118,6 @@ be_plants_native <- be_plants_native[be_plants_native$matchType %in%
                                        c("EXACT", "FUZZY"), ]
 
 ```
-
 
 ```{r}
 write.csv(be_plants_native,
