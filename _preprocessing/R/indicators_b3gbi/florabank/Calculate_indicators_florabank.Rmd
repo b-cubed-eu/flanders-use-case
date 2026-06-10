@@ -23,16 +23,19 @@ library(here)
 #Define input file and directory of output files
 
 ```{r}
-Focus <- 'Florabank_data_Flanders_5km'
-Focus_1km <- 'Florabank_data_Flanders_1km'
+#more info about download here (focussing on dataset of Florabank): https://www.gbif.org/occurrence/download/0051756-260226173443078
+download_key <- "0051756-260226173443078"
+#download data
+dl <- occ_download_get(download_key, overwrite = TRUE)
+#import data
+dat <- occ_download_import(dl)
 
-#filter only data of Florabank before 2023!
-data <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
-data_1km <- read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv'))
 
-Angiosperm_data_cube <- process_cube(read.csv(paste0('./_preprocessing/data/raw/', Focus, '.csv')))
-Angiosperm_data_cube_1km <- process_cube(read.csv(paste0('./_preprocessing/data/raw/', Focus_1km, '.csv')))
+#only data before 2023 is complete in GBIF for Florabank
+data <- dat%>%filter(year<2023)
 
+
+Focus <- 'Flanders_Florabank_1km'
 
 
 output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)
@@ -41,7 +44,7 @@ if (!dir.exists(output_path)) {
   dir.create(output_path, recursive = TRUE)
 }
 #check resolution of file
-Angiosperm_data_cube 
+Angiosperm_data_cube <- process_cube(data)
 
 str(Angiosperm_data_cube)
 ```
@@ -52,9 +55,6 @@ str(Angiosperm_data_cube)
 'Observed richness is calculated by summing the number of unique species observed for each year or each cell. Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al., 2018), as well as the detectability of each species.'
 
 OSR_map <- obs_richness_map(Angiosperm_data_cube,
-                            cell_size="grid")
-
-OSR_map_1km <- obs_richness_map(Angiosperm_data_cube_1km,
                             cell_size="grid")
 
 saveRDS(OSR_map, 
@@ -94,51 +94,6 @@ saveRDS(TO_ts,
 
 
 #Bootstrapping ok
-```
-
-#8.3. Evenness
-
-```{r}
-"Species evenness is a commonly used indicator that measures how uniformly individuals are distributed across species in a region or over time. It provides a complement to richness by taking relative abundance into account. Although GBIF provides information about abundances as individual counts, the majority of entries lack this information. Hence, evenness can only be calculated using the proportions of observations rather than proportions of individuals. Strictly speaking, the evenness measures therefore indicate how uniformly species are represented in the respective data set rather than the true evenness of the ecological community."
-
-#bootstrapping ok
-
-gc()
-
-PEM_map <-  pielou_evenness_map(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-WEM_map <- williams_evenness_map(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-PEM_ts <-  pielou_evenness_ts(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-WEM_ts <- williams_evenness_ts(Angiosperm_data_cube,
-                             cell_size="grid")
-
-
-
-##export data to showcase in dashboard
-saveRDS(PEM_map, 
-        paste0(output_path, '/PEM_map.rds'))
-
-saveRDS(PEM_ts, 
-        paste0(output_path, '/PEM_ts.rds'))
-
-saveRDS(WEM_map, 
-        paste0(output_path, '/WEM_map.rds'))
-
-saveRDS(WEM_ts, 
-        paste0(output_path, '/WEM_ts.rds'))
-
-
 ```
 
 #8.4. Rarity
@@ -203,8 +158,8 @@ SR_map <-  hill0_map(Angiosperm_data_cube,
                             cell_size="grid")
 
 
-HSh_map <- hill1_map(Angiosperm_data_cube,
-                            cell_size="grid")
+#HSh_map <- hill1_map(Angiosperm_data_cube,
+#                            cell_size="grid")
 
 
 HSi_map <- hill2_map(Angiosperm_data_cube,
@@ -215,8 +170,8 @@ SR_ts <-  hill0_ts(Angiosperm_data_cube,
                             cell_size="grid")
 
 
-HSh_ts <- hill1_ts(Angiosperm_data_cube,
-                            cell_size="grid")
+#HSh_ts <- hill1_ts(Angiosperm_data_cube,
+#                            cell_size="grid")
 
 
 HSi_ts <- hill2_ts(Angiosperm_data_cube,
@@ -228,14 +183,14 @@ saveRDS(SR_map,
         paste0(output_path, '/SR_map.rds'))
 
 saveRDS(SR_ts, 
-        paste0(output_path, '/SR_ts.rds'))
+       paste0(output_path, '/SR_ts.rds'))
 
 
-saveRDS(HSh_map, 
-        paste0(output_path, '/HSh_map.rds'))
+#saveRDS(HSh_map, 
+#        paste0(output_path, '/HSh_map.rds'))
 
-saveRDS(HSh_ts, 
-        paste0(output_path, '/HSh_ts.rds'))
+#saveRDS(HSh_ts, 
+#       paste0(output_path, '/HSh_ts.rds'))
 
 saveRDS(HSi_map, 
         paste0(output_path, '/HSi_map.rds'))
@@ -327,22 +282,22 @@ saveRDS(OD_ts,
 gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
-SO_map <- spec_occ_map(Angiosperm_data_cube,
-                            cell_size="grid")
-SO_map_plot <- plot(SO_map)
+#SO_map <- spec_occ_map(Angiosperm_data_cube,
+#                           cell_size="grid")
+#SO_map_plot <- plot(SO_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
-SO_ts <- spec_occ_ts(Angiosperm_data_cube, 
-                     cell_size="grid")
+#SO_ts <- spec_occ_ts(Angiosperm_data_cube, 
+#                     cell_size="grid")
 
-SO_ts_plot <- plot(SO_ts)
+#SO_ts_plot <- plot(SO_ts)
 
 ##export data to showcase in dashboard
-saveRDS(SO_map, 
-        paste0(output_path, '/SO_map.rds'))
+#saveRDS(SO_map, 
+#        paste0(output_path, '/SO_map.rds'))
 
-saveRDS(SO_ts, 
-        paste0(output_path, '/SO_ts.rds'))
+#saveRDS(SO_ts, 
+#        paste0(output_path, '/SO_ts.rds'))
 
 
 ```
@@ -354,25 +309,25 @@ saveRDS(SO_ts,
 
 #bootstrapping ok
 
-gc()
+#gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
-SRa_map <- spec_range_map(Angiosperm_data_cube,
-                            cell_size="grid")
-SRa_map_plot <- plot(SRa_map)
+#SRa_map <- spec_range_map(Angiosperm_data_cube,
+#                           cell_size="grid")
+#SRa_map_plot <- plot(SRa_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
-SRa_ts <- spec_range_ts(Angiosperm_data_cube, 
-                        cell_size="grid")
+#SRa_ts <- spec_range_ts(Angiosperm_data_cube, 
+#                       cell_size="grid")
 
-SRa_ts_plot <- plot(SRa_ts)
+#SRa_ts_plot <- plot(SRa_ts)
 
 ##export data to showcase in dashboard
-saveRDS(SRa_map, 
-        paste0(output_path, '/SRa_map.rds'))
+#saveRDS(SRa_map, 
+#        paste0(output_path, '/SRa_map.rds'))
 
-saveRDS(SRa_ts, 
-        paste0(output_path, '/SRa_ts.rds'))
+#saveRDS(SRa_ts, 
+#        paste0(output_path, '/SRa_ts.rds'))
 
 
 ```
@@ -383,25 +338,25 @@ saveRDS(SRa_ts,
 
 'Taxonomic Distinctness measures the average taxonomic distance between any two randomly chosen species in a sample, incorporating their phylogenetic or taxonomic relatedness. A higher value indicates a broader representation of evolutionary history within the community. It can highlight areas on a map (indicator_map) or show trends over time (indicator_ts) where species are, on average, more distantly related.'
 
-gc()
+#gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
-TD_map <- tax_distinct_map(Angiosperm_data_cube,
-                            cell_size="grid")
-TD_map_plot <- plot(TD_map)
+#TD_map <- tax_distinct_map(Angiosperm_data_cube,
+#                           cell_size="grid")
+#TD_map_plot <- plot(TD_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
-TD_ts <- tax_distinct_ts(Angiosperm_data_cube,
-                         cell_size="grid")
+#TD_ts <- tax_distinct_ts(Angiosperm_data_cube,
+#                         cell_size="grid")
 
-TD_ts_plot <- plot(TD_ts)
+#TD_ts_plot <- plot(TD_ts)
 
 ##export data to showcase in dashboard
-saveRDS(TD_map, 
-        paste0(output_path, '/TD_map.rds'))
+#saveRDS(TD_map, 
+#        paste0(output_path, '/TD_map.rds'))
 
-saveRDS(TD_ts, 
-        paste0(output_path, '/TD_ts.rds'))
+#saveRDS(TD_ts, 
+#        paste0(output_path, '/TD_ts.rds'))
 
 ```
 
@@ -421,6 +376,60 @@ OT_ts_plot <- plot(OT_ts)
 ##export data to showcase in dashboard
 saveRDS(OT_ts, 
         paste0(output_path, '/OT_ts.rds'))
+
+
+```
+
+#8.13 completeness
+
+```{r}
+'This function calculates the completeness of biodiversity data over a gridded map or as a time series using the Sample Coverage metric from the iNEXT package.'
+
+
+gc()
+
+ComP_ts <-completeness_ts(Angiosperm_data_cube,
+                         cell_size="grid",
+                         gridded_average=TRUE)
+
+ComP_map <-completeness_map(Angiosperm_data_cube,
+                            spherical_geometry = FALSE,
+                         cell_size="grid")
+
+
+##export data to showcase in dashboard
+saveRDS(ComP_ts,
+        paste0(output_path, '/ComP_ts.rds'))
+
+##export data to showcase in dashboard
+saveRDS(ComP_map,
+        paste0(output_path, '/ComP_map.rds'))
+
+
+```
+
+#8.14 spec_richness_density
+
+```{r}
+'This function calculates the density of unique species over a gridded map or as a time series (see Details for more information).'
+
+
+gc()
+
+SRD_ts <-spec_richness_density_ts(Angiosperm_data_cube,
+                         cell_size="grid")
+SRD_map <-spec_richness_density_map(Angiosperm_data_cube,
+                        spherical_geometry = FALSE,
+                         cell_size="grid")
+
+
+##export data to showcase in dashboard
+saveRDS(SRD_ts,
+        paste0(output_path, '/SRD_ts.rds'))
+
+##export data to showcase in dashboard
+saveRDS(SRD_map,
+        paste0(output_path, '/SRD_map.rds'))
 
 
 ```

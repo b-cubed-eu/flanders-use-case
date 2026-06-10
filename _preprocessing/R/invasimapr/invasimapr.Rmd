@@ -1,0 +1,191 @@
+---
+
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+#install packages
+
+#install.packages("remotes")
+#remotes::install_github("b-cubed-eu/invasimapr")
+
+#suppressPackageStartupMessages({
+#    need = c("dplyr","tidyr","purrr","tibble","stringr","ggplot2","Matrix","glmnet#","rlang", "glmmTMB",
+#    "performance", "vegan", "cluster", "matrixStats", "sf", "MASS", "factoextra", #"viridis", "pheatmap")
+#    to_install = need[!sapply(need, requireNamespace, quietly = TRUE)]
+#     if (length(to_install)) install.packages(to_install)
+#     lapply(need, library, character.only = TRUE)
+#   })
+
+deps = c("dplyr","tidyr","purrr","tibble","stringr", "forcats",
+  "ggplot2",
+  # Modelling / stats
+  "glmmTMB","performance","Matrix","glmnet","MASS","vegan","cluster","matrixStats",
+  # Spatial
+  "sf",
+  # Viz helpers used in later steps
+  "viridis","pheatmap","factoextra")
+  
+library(rlang)
+
+  is_installed = vapply(deps, requireNamespace, logical(1), quietly = TRUE)
+missing = deps[!is_installed]
+
+cat("### Dependency check\n\n")
+if (length(missing) == 0) {
+  cat("- All recommended packages are available.\n")
+} else {
+  cat("- Missing packages (install before running the full workflow):\n")
+  cat(paste0("  - ", missing, collapse = "\n"), "\n")
+}
+)
+
+```
+
+## Data access and preparation
+
+```{r}
+# Ensure the package is loaded
+ install.packages("remotes")
+ remotes::install_github("b-cubed-eu/dissmapr")
+
+# Ensure the package is loaded
+if (!requireNamespace("dissmapr", quietly = TRUE)) {
+  knitr::knit_exit()
+}
+# Optional: report package version
+packageVersion("dissmapr")
+```
+
+```{r}
+angio_data = dissmapr::get_occurrence_data(
+    source_type = "gbif",
+  gbif_zip_url= "https://api.gbif.org/v1/occurrence/download/request/0049575-260519110011954.zip"
+
+)
+
+
+
+```
+
+```{r}
+library(dplyr)
+
+angio_data <- angio_data%>%
+  filter(!is.na(y))%>%
+  filter(!is.na(year))%>%
+  filter(!is.na(verbatimScientificName))%>%
+  filter(!is.na(pa))
+
+angio_data_test <- angio_data[1:1000000,]
+
+angio_result = dissmapr::format_df(
+  data        = angio_data_test, # A `data.frame` of biodiversity records
+  species_col = "verbatimScientificName", # Name of species column (required for `"long"`)
+  value_col   = "pa", # Name of value column (e.g. presence/abundance; for `"long"`)
+  extra_cols  = NULL, # Character vector of other columns to keep
+  format      = "long" # Either`"long"` or `"wide"`
+)
+
+
+# Check `bfly_result` structure
+str(angio_result, max.level = 1)
+
+# Optional: Create new objects from list items
+site_obs = angio_result$site_obs
+site_spp = angio_result$site_spp
+
+# Check results
+dim(site_obs)
+head(site_obs)
+
+dim(site_spp)
+head(site_spp[, 1:6])
+
+#### Get parameters from processed data to use later
+# Number of species
+(n_sp = dim(site_spp)[2] - 3)
+
+# Species names
+sp_cols = names(site_spp)[-c(1:3)]
+sp_cols[1:10]
+```
+
+```{r}
+# Load the national boundary
+rsa = sf::st_read('./_preprocessing/data/raw/spatial/flanders_noholes.geojson')
+
+# Choose a working resolution
+res = 0.1 # decimal degrees° (≈ 55 km at the equator)
+
+# Convert the AoI to a 'terra' vector
+rsa_vect = terra::vect(rsa)
+
+# Initialise a blank raster template
+grid = terra::rast(rsa_vect, resolution = res, crs = terra::crs(rsa_vect))
+
+# Populate the raster with placeholder values
+terra::values(grid) = 1
+
+# Clip the raster to the AoI
+grid_masked = terra::mask(grid, rsa_vect)
+
+# Generate a 0.5° grid summary for the point dataset `site_spp`
+grid_list = dissmapr::generate_grid(
+  data          = site_spp, # point data with x/y + species columns
+  x_col         = "x", # longitude column
+  y_col         = "y", # latitude  column
+  grid_size     = 0.1, # cell size in degrees
+  sum_cols      = names(site_spp)[4:ncol(site_spp)],
+  # columns to aggregate * could also use `names(site_spp)[4:ncol(site_spp)]`
+  crs_epsg      = 4326 # WGS84
+)
+
+# Inspect the returned list
+str(grid_list, max.level = 1)
+
+# (Optional) Promote list items to named objects
+grid_r = grid_list$grid_r$grid_id # raster
+grid_sf = grid_list$grid_sf # polygons for mapping or joins
+grid_spp = grid_list$grid_spp # tabular summary per cell
+grid_spp_pa = grid_list$grid_spp_pa # presence/absence summary
+
+# Quick checks
+dim(grid_sf) # ; head(grid_sf)
+dim(grid_spp) # ; head(grid_spp[, 1:8])
+dim(grid_spp_pa) # ; head(grid_spp_pa[, 1:8])
+
+```
+
+### Data access and preparation using `invasimapr`
+
+This section sets up data needed by all downstream wrappers: site locations, environmental covariates, resident community matrices, and species traits. It also shows how to enrich traits with metadata, and how to simulate invader trait tables for later steps.
+
+#### Retrieve and link trait and metadata for each species
+
+`get_trait_data()` provides an automated pipeline for extracting and joining both biological trait data and rich metadata for any focal species. Many analyses benefit from curated trait columns, short taxonomy summaries, and links to images. `get_trait_data()` consolidates these per species from local trait tables and optional online sources, returning a single tidy row per species for frictionless joins.
+
+:hourglass_flowing_sand: **What it does**: Given a species name, the function looks up traits in a local table (or [TRY](https://www.try-db.org/TryWeb/Home.php)-style database), performs tolerant name matching, optionally scrapes a short [Wikipedia](https://www.wikipedia.org/) description and taxonomy, and can extract a compact image-based colour palette for visual summaries, as follows:
+
+1.  **Trait Table Lookup**: Retrieves species' trait data from a local trait table (CSV) or a [TRY](https://www.try-db.org/TryWeb/Home.php) (Kattge et al 2020) style database, using fuzzy matching to ensure robust linkage even when there are minor naming inconsistencies.
+2.  **Wikipedia Metadata Scraping**: Optionally augments each species entry with a taxonomic summary, higher taxonomy, and representative images scraped directly from [Wikipedia](https://www.wikipedia.org/).
+3.  **Image-based Color Palette Extraction**: If enabled, downloads and processes public domain images to extract the most frequent colors, optionally removing green/white backgrounds to focus on diagnostic features.
+4.  **Flexible Output**: Returns a single-row tibble with the species name, trait data, taxonomic metadata, image URL, and color palette - all harmonized for downstream analyses or visualization.
+
+:information_source: **Why this matters**: Having a consistent, analysis-ready trait table avoids downstream NA cascades, eases plotting, and ensures that residents and invaders share identical column definitions.
+
+:warning: **Practical checks and tips**: Keep resident and invader trait column names identical; prefer factors for categorical traits with explicit levels; store provenance for any scraped fields for reproducibility.
+
+\`\`\`{r get-traits} \# Fetch local trait data.frame btfly_traits = read.csv(system.file("extdata", "species_traits.csv", package = "invasimapr"))
+
+str(btfly_traits)
+
+# Retrieve and join trait/metadata for all species in the observation set
+
+spp_traits = purrr::map_dfr( unique(grid_obs$species), # unique(longDF$species), \~ invasimapr::get_trait_data( species = .x, n_palette = 5, preview = FALSE, do_summary = TRUE, do_taxonomy = TRUE, do_image = TRUE, do_palette = TRUE, local_trait_df = btfly_traits, local_species_col = "species", max_dist = 1 ) ) \# The final output combines trait data, taxonomic info, Wikipedia summary, images, and color palette for each species. \# This integrated dataset supports multi-faceted biodiversity, trait, and visualization analyses.
+
+# Check output
+
+str(spp_traits, 1) head(spp_traits\[1:5,1:5\])

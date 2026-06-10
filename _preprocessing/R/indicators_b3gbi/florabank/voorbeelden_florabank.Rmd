@@ -124,10 +124,6 @@ data <- dat%>%filter(year<=2023)
 
 ```
 
-
-
-
-
 ```{r}
 #only maintain cells which are well surveyed
 data_filtered <- data %>%
@@ -138,8 +134,8 @@ data_filtered <- data %>%
 
 ```
 
-
 ##Korenbloem
+
 ```{r}
 library(dplyr)
 
@@ -178,8 +174,6 @@ b <- ggplot(presence_per_year, aes(x = year, y = perc_present)) +
   theme_minimal(base_size = 14)
 ```
 
-
-
 ```{r}
 
 korenbloem <- data_filtered%>% filter(specieskey== 3089561)
@@ -192,9 +186,8 @@ plot_ts(spec_range_ts(korenbloem_data_cube),
 
 ```
 
+##Korensla
 
-
-##Korensla 
 ```{r}
 # Per jaar berekenen
 
@@ -253,6 +246,7 @@ plot_ts(spec_occ_ts(korenbloem_data_cube),
 ```
 
 ##bijenorchis
+
 ```{r}
 # Per jaar berekenen
 
@@ -309,4 +303,3 @@ plot_ts(spec_range_ts(korenbloem_data_cube),
         title = 'Absolute occupancy of well surveyed cells')
 
 ```
-

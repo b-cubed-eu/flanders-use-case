@@ -1,0 +1,46 @@
+Florabank 5 km met randomisatie: https://www.gbif.org/occurrence/download/0051797-260226173443078
+
+Florabank 1 km met randomisatie: https://www.gbif.org/occurrence/download/0051756-260226173443078
+
+Florabank 5 km zonder randomisatie: https://www.gbif.org/occurrence/download/0063040-260226173443078
+
+Angiospermen 5 km: https://www.gbif.org/occurrence/download/0043784-260226173443078
+
+Angiospermen 1 km: https://www.gbif.org/occurrence/download/0042254-260226173443078
+
+Angiospermen 10 km: https://www.gbif.org/occurrence/download/0025604-260519110011954
+
+
+Insecta
+
+Doi extra run (geen restricties): https://www.gbif.org/occurrence/download/0035593-260519110011954 -> 
+Doi Insecta 1-km: https://www.gbif.org/occurrence/download/0026651-260519110011954
+Doi Insecta 10-km: https://www.gbif.org/occurrence/download/0026642-260519110011954
+
+Florabank alle data
+
+https://www.gbif.org/occurrence/download/0020997-260519110011954
+
+
+HabitatDirectiveReporting
+
+periode3: https://www.gbif.org/occurrence/download/0006872-260430073515954
+periode2: https://www.gbif.org/occurrence/download/0006842-260430073515954
+periode1: https://www.gbif.org/occurrence/download/0006812-260430073515954
+
+
+Allemaal België
+
+https://www.gbif.org/occurrence/download/0005289-260430073515954
+
+Rodelijst libellen 
+
+https://www.gbif.org/occurrence/download/0062328-260226173443078
+
+checklist habitatrichtlijnsoorten
+
+https://www.gbif.org/occurrence/download/0051856-260226173443078
+
+
+
+

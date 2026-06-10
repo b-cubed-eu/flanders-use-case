@@ -77,12 +77,4 @@ b <- ggplot(OSR_ts, aes(x = year, y = diversity_val)) +
 
 ```
 
-
- 
- https://www.gbif.org/occurrence/download/0051797-260226173443078
- GBIF Occurrence Download https://doi.org/10.15468/dl.r7kjgc Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2026-03-20
- https://www.gbif.org/occurrence/download/0043784-2602261734430787
- GBIF Occurrence Download https://doi.org/10.15468/dl.y9hpfa Accessed from R via rgbif (https://github.com/ropensci/rgbif) on 2026-03-17
- 
- 
-
+<https://www.gbif.org/occurrence/download/0051797-260226173443078> GBIF Occurrence Download <https://doi.org/10.15468/dl.r7kjgc> Accessed from R via rgbif (<https://github.com/ropensci/rgbif>) on 2026-03-20 <https://www.gbif.org/occurrence/download/0043784-2602261734430787> GBIF Occurrence Download <https://doi.org/10.15468/dl.y9hpfa> Accessed from R via rgbif (<https://github.com/ropensci/rgbif>) on 2026-03-17
