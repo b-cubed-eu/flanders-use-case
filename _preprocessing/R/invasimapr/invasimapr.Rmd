@@ -137,7 +137,7 @@ grid_list = dissmapr::generate_grid(
   data          = site_spp, # point data with x/y + species columns
   x_col         = "x", # longitude column
   y_col         = "y", # latitude  column
-  grid_size     = 0.1, # cell size in degrees
+  grid_size     = 0.5, # cell size in degrees
   sum_cols      = names(site_spp)[4:ncol(site_spp)],
   # columns to aggregate * could also use `names(site_spp)[4:ncol(site_spp)]`
   crs_epsg      = 4326 # WGS84
@@ -157,6 +157,122 @@ dim(grid_sf) # ; head(grid_sf)
 dim(grid_spp) # ; head(grid_spp[, 1:8])
 dim(grid_spp_pa) # ; head(grid_spp_pa[, 1:8])
 
+```
+```{r}
+# Read in target species list
+species = read.csv(system.file("extdata",
+  "rsa_butterfly_species_names_n27_100plus.csv",
+  package = "invasimapr"
+), stringsAsFactors = FALSE)$species
+
+# Filter `grid_spp` and convert to long-format
+grid_obs = grid_spp |>
+  dplyr::select(-mapsheet) |> # Drop mapsheet metadata
+  tidyr::pivot_longer(
+    cols = -c(grid_id, centroid_lon, centroid_lat, obs_sum, spp_rich), # Keep core metadata columns only
+    names_to = "species",
+    values_to = "count",
+    values_drop_na = TRUE
+  ) |>
+  dplyr::filter(
+    # obs_sum > 100, # Only high-observation sites
+    count > 0,# Remove absent species
+    .data$species %in% .env$species# Keep only target species
+    ) |>
+  dplyr::rename(
+    site_id = grid_id, # Change 'grid_id' to 'site_id'
+    x = centroid_lon, # Change 'centroid_lon' to 'x'
+    y = centroid_lat # Change 'centroid_lat' to 'y'
+  ) |>
+  dplyr::relocate(site_id, x, y, obs_sum, spp_rich, species, count)
+
+dim(grid_obs)
+head(grid_obs)
+length(unique(grid_obs$species))
+length(unique(grid_obs$site))
+
+# Reshape site-by-species matrix to wide format and clean
+grid_spp = grid_obs |>
+  tidyr::pivot_wider(
+    names_from = species,
+    values_from = count,
+    values_fill = 0 # Replace missing counts with 0
+  )
+
+dim(grid_spp)
+# head(grid_spp)
+```
+
+
+```{r}
+# Retrieve 19 bioclim layers (≈10-km, WorldClim v2.1) for all grid centroids
+data_path = "_data" # cache folder for rasters
+enviro_list = dissmapr::get_enviro_data(
+  data       = grid_spp, # centroids + obs_sum + spp_rich
+  buffer_km  = 10, # pad the AOI slightly
+  source     = "geodata", # WorldClim/SoilGrids interface
+  var        = "bio", # bioclim variable set
+  res        = 5, # 5-arc-min ≈ 10 km
+  grid_r     = grid_r, # To set resampling resolution, if necessary
+  path       = data_path,
+  sp_cols    = 7:ncol(grid_spp), # ignore species columns
+  ext_cols   = c("obs_sum", "spp_rich") # carry effort & richness through
+)
+
+# Quick checks
+str(enviro_list, max.level = 1)
+
+# (Optional) Assign concise layer names for readability
+# Find names here https://www.worldclim.org/data/bioclim.html
+names_env = c(
+  "temp_mean", "mdr", "iso", "temp_sea", "temp_max", "temp_min",
+  "temp_range", "temp_wetQ", "temp_dryQ", "temp_warmQ",
+  "temp_coldQ", "rain_mean", "rain_wet", "rain_dry",
+  "rain_sea", "rain_wetQ", "rain_dryQ", "rain_warmQ", "rain_coldQ"
+)
+names(enviro_list$env_rast) = names_env
+
+# (Optional) Promote frequently-used objects
+env_r = enviro_list$env_rast # cropped climate stack
+env_df = enviro_list$env_df # site × environment data-frame
+
+# Quick checks
+env_r
+dim(env_df)
+head(env_df)
+
+# Build the final site × environment table
+grid_env = env_df |>
+  dplyr::select(
+    site_id, x, y,
+    obs_sum, spp_rich, dplyr::everything()
+  ) |>
+  dplyr::mutate(across(
+    .cols = -c(site_id, x, y, obs_sum, spp_rich), # all other columns
+    .fns = ~ as.numeric(scale(.x)), # Scale bio
+    .names = "{.col}" # keep same names
+  ))
+
+str(grid_env, max.level = 1)
+head(grid_env)
+```
+
+```{r}
+# # (Optional) Rename BIO
+# names(env_df) = c("grid_id", "centroid_lon", "centroid_lat", names_env, "obs_sum", "spp_rich")
+#
+# # Run the filter and compare dimensions
+# # Filter environmental predictors for |r| > 0.70
+# env_vars_reduced = dissmapr::rm_correlated(
+#   data       = env_df[, 4:23],  # drop ID + coord columns
+#   cols       = NULL,                  # infer all numeric cols
+#   threshold  = 0.70,
+#   plot       = TRUE                   # show heat-map of retained vars
+# )
+#
+# # Before vs after
+# c(original = ncol(env_df[, c(4, 6:24)]),
+#   reduced  = ncol(env_vars_reduced))
 ```
 
 ### Data access and preparation using `invasimapr`
