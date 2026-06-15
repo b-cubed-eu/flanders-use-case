@@ -34,17 +34,33 @@ dat <- occ_download_import(dl)
 #only data before 2023 is complete in GBIF for Florabank
 data <- dat%>%filter(year<2023)
 
+#read in native species in Flanders (Waarnemingen)
+
+be_plants_native <-  read.csv('_preprocessing/data/interim/Waarnemingen_native_species.csv')
+# alternative cube waarbij enkel native soorten op observed plantlijst
+# Natuurpunt worden behouden
+cube_native <- data[data$specieskey %in%
+                              be_plants_native$acceptedUsageKey,]
+
+#add filter for temporal uncertainty
+cube_native <- cube_native%>%
+  filter(mintemporaluncertainty <= 315360000)
+
+FLANDERS_EEA_1km <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
 
 Focus <- 'Flanders_Florabank_1km'
 
+Cube_Angio_Flanders <- cube_native%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km$CELLCODE)
 
 output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)
 
 if (!dir.exists(output_path)) {
   dir.create(output_path, recursive = TRUE)
 }
+
 #check resolution of file
-Angiosperm_data_cube <- process_cube(data)
+Angiosperm_data_cube <- process_cube(Cube_Angio_Flanders)
 
 str(Angiosperm_data_cube)
 ```

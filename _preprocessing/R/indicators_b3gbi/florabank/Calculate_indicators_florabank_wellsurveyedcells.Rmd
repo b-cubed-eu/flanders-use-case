@@ -34,14 +34,32 @@ dat <- occ_download_import(dl)
 #only data before 2023 is complete in GBIF for Florabank
 data <- dat%>%filter(year<2023)
 
+
+be_plants_native <-  read.csv('_preprocessing/data/interim/Waarnemingen_native_species.csv')
+# alternative cube waarbij enkel native soorten op observed plantlijst
+# Natuurpunt worden behouden
+cube_native <- data[data$specieskey %in%
+                              be_plants_native$acceptedUsageKey,]
+
+#add filter for temporal uncertainty
+cube_native <- cube_native%>%
+  filter(mintemporaluncertainty <= 315360000)
+
+
 #only maintain cells which are well surveyed according to methodology of Florabank (per year and per 1km gridcell more than 100 unique species observed)
-data_filtered <- data %>%
+cube_native <- cube_native %>%
   group_by(eeacellcode, year) %>%            # groep per cel en jaar
   filter(n_distinct(species) > 100) %>%      # enkel groepen met >100 unieke soorten
   ungroup() 
 
 
 
+FLANDERS_EEA_1km <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+
+Focus <- 'Flanders_Florabank_1km'
+
+Cube_Angio_Flanders <- cube_native%>%
+  filter(eeacellcode %in% FLANDERS_EEA_1km$CELLCODE)
 Focus <- 'Flanders_Florabank_1km_well_surveyed_cells'
 
 
@@ -102,7 +120,6 @@ saveRDS(TO_ts,
 
 #Bootstrapping ok
 ```
-
 
 #8.4. Rarity
 
@@ -387,6 +404,7 @@ saveRDS(OT_ts,
 
 
 ```
+
 #8.13 completeness
 
 ```{r}

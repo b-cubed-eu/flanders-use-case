@@ -15,7 +15,6 @@ library(b3gbi)
 library(ggplot2)
 library(dplyr)
 library(sf)
-
 ```
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
@@ -45,7 +44,7 @@ OSR_map <- readRDS("./Flanders_10km/OSR_map.rds")$data
 ggplot(data = OSR_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal()+
+  theme_void()+
   theme(legend.title = element_blank())
 ```
 
@@ -74,14 +73,16 @@ OSR_masked <- OSR_map %>%
 ggplot(data = OSR_masked) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal()+
+  theme_void()+
   theme(legend.title = element_blank())
 
 ```
 
 ```{r, echo = FALSE}
 OSR_ts <- readRDS('./Flanders_10km/OSR_ts.rds')
-plot(OSR_ts)
+plot_ts(OSR_ts,
+        y_label ='Total observed species richness in Flanders',
+        max_year=2022)
 ```
 :::
 
@@ -110,13 +111,13 @@ TO_map <- readRDS('./Flanders_10km/TO_map.rds')$data
 ggplot(data = TO_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
 TO_ts <- readRDS('./Flanders_10km/TO_ts.rds')
-plot(TO_ts)
+plot(TO_ts, y_label='Number of total occurrences in Flanders',max_year=2022)
 ```
 :::
 
@@ -147,7 +148,7 @@ AbRM_map <- readRDS('./Flanders_10km/AbRM_map.rds')$data
 ggplot(data = AbRM_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
@@ -170,7 +171,7 @@ ArRM_ts <-  area_rarity_ts(Angiosperm_data_cube,
 
 plot_map(ArRM_map, visible_gridlines = FALSE)
 
-plot_ts(ArRM_ts)
+plot_ts(ArRM_ts, y_label='Total area based rarity in Flanders',max_year=2022))
 
 ```
 
@@ -180,13 +181,13 @@ ArRM_map <- readRDS('./Flanders_10km/ArRM_map.rds')$data
 ggplot(data = ArRM_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
 ArRM_ts <- readRDS('./Flanders_10km/ArRM_ts.rds')
-plot_ts(ArRM_ts)
+plot_ts(ArRM_ts, y_label='Total area based rarity in Flanders', max_year=2022)
 ```
 :::
 
@@ -217,13 +218,13 @@ SR_map <- readRDS('./Flanders_10km/SR_map.rds')$data
 ggplot(data = SR_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
 SR_ts <- readRDS('./Flanders_10km/SR_ts.rds')
-plot_ts(SR_ts)
+plot_ts(SR_ts, max_year=2022)
 ```
 
 ### Simpson diversity (Hill-2)
@@ -250,13 +251,13 @@ HSi_map <- readRDS('./Flanders_10km/HSi_map.rds')$data
 ggplot(data = HSi_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
 HSi_ts <- readRDS('./Flanders_10km/HSi_ts.rds')
-plot_ts(HSi_ts)
+plot_ts(HSi_ts, max_year=2022)
 ```
 :::
 
@@ -278,7 +279,7 @@ plot_ts(CR_ts)
 
 ```{r, echo = FALSE}
 CR_ts <- readRDS('./Flanders_10km/CR_ts.rds')
-plot_ts(CR_ts)
+plot_ts(CR_ts, max_year=2022)
 ```
 :::
 
@@ -311,13 +312,13 @@ NN_map <- readRDS('./Flanders_10km/NN_map.rds')$data
 ggplot(data = NN_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
 NN_ts <- readRDS('./Flanders_10km/NN_ts.rds')
-plot_ts(NN_ts)
+plot_ts(NN_ts, max_year=2022)
 ```
 :::
 
@@ -343,13 +344,13 @@ OD_map <- readRDS('./Flanders_10km/OD_map.rds')$data
 ggplot(data = OD_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
 OD_ts <- readRDS('./Flanders_10km/OD_ts.rds')
-plot_ts(OD_ts)
+plot_ts(OD_ts, max_year=2022)
 ```
 :::
 
@@ -372,7 +373,7 @@ plot_ts(OT_ts)
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 OT_ts <- readRDS('./Flanders_10km/OT_ts.rds')
-plot_ts(OT_ts)
+plot_ts(OT_ts, max_year=2022)
 ```
 :::
 
@@ -405,13 +406,13 @@ ComP_map <- readRDS('./Flanders_10km/ComP_map.rds')$data
 ggplot(data = ComP_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
 ```{r, echo = FALSE}
 ComP_ts <- readRDS('./Flanders_10km/ComP_ts.rds')
-plot_ts(ComP_ts)
+plot_ts(ComP_ts, max_year=2022)
 ```
 :::
 
@@ -444,12 +445,13 @@ SRD_map <- readRDS('./Flanders_10km/SRD_map.rds')$data
 ggplot(data = SRD_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal() +
+  theme_void() +
   theme(legend.title = element_blank())
 ```
 
-```{r, echo = FALSE}
-SRD_ts <- readRDS('./Flanders_10km/SRD_ts.rds')
-plot_ts(OSR_ts)
+```{r, eval=FALSE, echo = FALSE}
+SRD_ts <- readRDS('./Flanders_10km/SRD_ts.rds', 
+                  max_year=2022)
+plot_ts(SRD_ts)
 ```
 :::

@@ -144,23 +144,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_1km_no_outliers.qmd">
+ <span class="dropdown-text">Results flowering plants 1km no outliers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_1km_no_outliers_filter_completeness.qmd">
+ <span class="dropdown-text">Results flowering plants 1km no outliers and filter completeness</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 1 km (no filters)</span></a>
   </li>  
     </ul>
   </li>
@@ -273,7 +285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Observed species richness represents the total number of unique species discovered and recorded within a given geographic area or specific year:</p>
 <ul>
 <li>High value: A high number of unique species, indicating a diverse local community.</li>
-<li>Low value: A low numbere of unique species, signaling a species-poor habitat or an area which has been rarely surveyed.</li>
+<li>Low value: A low number of unique species, signaling a species-poor habitat or an area which has been rarely surveyed.</li>
 </ul>
 </section>
 <section id="applicability-for-policy" class="level3">
@@ -511,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(ArRM_map, <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(ArRM_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(ArRM_ts, <span class="at">y_label=</span><span class="st">'Total area based rarity in Flanders'</span>,<span class="at">max_year=</span><span class="dv">2022</span>)<span class="er">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
@@ -1052,6 +1064,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(SRD_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="b3gbi_indicators_1km_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 </div>
