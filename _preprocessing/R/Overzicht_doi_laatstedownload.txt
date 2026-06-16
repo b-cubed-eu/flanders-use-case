@@ -4,9 +4,9 @@ Florabank 1 km met randomisatie: https://www.gbif.org/occurrence/download/005175
 
 Florabank 5 km zonder randomisatie: https://www.gbif.org/occurrence/download/0063040-260226173443078
 
-Angiospermen 5 km: https://www.gbif.org/occurrence/download/0043784-260226173443078
+Angiospermen 5 km: https://www.gbif.org/occurrence/download/0043784-260226173443078, 
 
-Angiospermen 1 km: https://www.gbif.org/occurrence/download/0042254-260226173443078
+Angiospermen 1 km: https://www.gbif.org/occurrence/download/0042254-260226173443078, 
 
 Angiospermen 10 km: https://www.gbif.org/occurrence/download/0025604-260519110011954
 
