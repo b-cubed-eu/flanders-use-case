@@ -76,11 +76,7 @@ WHERE
 AND \"year\" >= 1975
   AND occurrenceStatus = 'PRESENT'
   AND (coordinateUncertaintyInMeters <= 1000 OR coordinateUncertaintyInMeters IS NULL)
-  AND NOT occurrence.basisofrecord IN ('FOSSIL_SPECIMEN', 'LIVING_SPECIMEN')
-  AND NOT ARRAY_CONTAINS(issue, 'ZERO_COORDINATE')
   AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_OUT_OF_RANGE')
-  AND NOT ARRAY_CONTAINS(issue, 'COORDINATE_INVALID')
-  AND NOT ARRAY_CONTAINS(issue, 'COUNTRY_COORDINATE_MISMATCH')
   AND datasetKey IN ('271c444f-f8d8-4986-b748-e7367755c0c1')
   AND speciesKey IS NOT NULL
   AND decimalLatitude IS NOT NULL

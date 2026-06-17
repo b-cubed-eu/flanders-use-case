@@ -18,6 +18,44 @@ library(sf)
 ```
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+{{< include TotalOccurrences.Rmd >}}
+
+```{r, eval=FALSE}
+#load library
+library(b3gbi)
+
+TO_map <- total_occ_map(Angiosperm_data_cube,
+                            cell_size="grid")
+
+TO_ts <- total_occ_ts(Angiosperm_data_cube, 
+                          cell_size="grid")
+
+plot_map(TO_map, 
+         visible_gridlines = FALSE)
+
+plot_ts(TO_ts)
+```
+
+```{r, eval=FALSE, echo = FALSE}
+TO_map <- readRDS('./Flanders_10km/TO_map.rds')$data
+
+ggplot(data = TO_map) +
+  geom_sf(aes(fill = diversity_val), color = NA) +
+  scale_fill_viridis_c(na.value = NA) +
+  theme_void() +
+  theme(legend.title = element_blank())
+```
+
+```{r, echo = FALSE}
+TO_ts <- readRDS('./Flanders_10km/TO_ts.rds')
+TO_ts_data <- TO_ts$data
+plot_ts(TO_ts, 
+     y_label='Number of total occurrences in Flanders',
+     max_year=2022)
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 {{< include ObservedSpeciesRichness.Rmd >}}
 
 ```{r, eval=FALSE}
@@ -38,7 +76,7 @@ plot_map(OSR_map,
 plot_ts(OSR_ts)
 ```
 
-```{r, echo = FALSE}
+```{r, eval=FALSE, echo = FALSE}
 OSR_map <- readRDS("./Flanders_10km/OSR_map.rds")$data
 
 ggplot(data = OSR_map) +
@@ -50,7 +88,7 @@ ggplot(data = OSR_map) +
 
 The map below displays observed species richness in Flanders, but only where completeness is larger than 0.5. The regions which are not displayed, are undersampled.
 
-```{r, echo = FALSE}
+```{r, eval=FALSE, echo = FALSE}
 completeness_map <- readRDS("./Flanders_10km/ComP_map.rds")$data
 
 
@@ -84,182 +122,20 @@ plot_ts(OSR_ts,
         y_label ='Total observed species richness in Flanders',
         max_year=2022)
 ```
-:::
 
-::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-{{< include TotalOccurrences.Rmd >}}
-
-```{r, eval=FALSE}
-#load library
-library(b3gbi)
-
-TO_map <- total_occ_map(Angiosperm_data_cube,
-                            cell_size="grid")
-
-TO_ts <- total_occ_ts(Angiosperm_data_cube, 
-                          cell_size="grid")
-
-plot_map(TO_map, 
-         visible_gridlines = FALSE)
-
-plot_ts(TO_ts)
-```
-
+In the graph below, observed species richness is corrected for total occurrences.
 ```{r, echo = FALSE}
-TO_map <- readRDS('./Flanders_10km/TO_map.rds')$data
-
-ggplot(data = TO_map) +
-  geom_sf(aes(fill = diversity_val), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +
-  theme_void() +
-  theme(legend.title = element_blank())
-```
-
-```{r, echo = FALSE}
-TO_ts <- readRDS('./Flanders_10km/TO_ts.rds')
-plot(TO_ts, y_label='Number of total occurrences in Flanders',max_year=2022)
+#OSR corrected for TO
+OSR_ts$data$TO<- TO_ts_data$diversity_val
+OSR_ts$data$diversity_val <- OSR_ts$data$diversity_val/OSR_ts$data$TO
+plot_ts(OSR_ts,
+        y_label ='Total observed species / Total occurrences',
+        max_year=2022)
 ```
 :::
 
-::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-## Rarity
-
-{{< include AbundanceBasedRarity.Rmd >}}
-
-```{r, eval=FALSE}
-#load library
-library(b3gbi)
-
-AbRM_map <- ab_rarity_map(Angiosperm_data_cube,
-                            cell_size="grid")
-
-AbRM_ts <- ab_rarity_ts(Angiosperm_data_cube,
-                            cell_size="grid")
-
-plot_map(AbRM_map)
-
-plot_ts(AbRM_ts)
-
-```
-
-```{r, echo = FALSE}
-AbRM_map <- readRDS('./Flanders_10km/AbRM_map.rds')$data
-
-ggplot(data = AbRM_map) +
-  geom_sf(aes(fill = diversity_val), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +
-  theme_void() +
-  theme(legend.title = element_blank())
-```
-
-```{r, echo = FALSE}
-AbRM_ts <- readRDS('./Flanders_10km/AbRM_ts.rds')
-plot_ts(AbRM_ts)
-```
-
-{{< include AreaBasedRarity.Rmd >}}
-
-```{r, eval=FALSE}
-#load library
-library(b3gbi)
-
-ArRM_map <-  area_rarity_map(Angiosperm_data_cube,
-                            cell_size="grid")
-
-ArRM_ts <-  area_rarity_ts(Angiosperm_data_cube,
-                           cell_size="grid")
-
-plot_map(ArRM_map, visible_gridlines = FALSE)
-
-plot_ts(ArRM_ts, y_label='Total area based rarity in Flanders',max_year=2022))
-
-```
-
-```{r, echo = FALSE}
-ArRM_map <- readRDS('./Flanders_10km/ArRM_map.rds')$data
-
-ggplot(data = ArRM_map) +
-  geom_sf(aes(fill = diversity_val), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +
-  theme_void() +
-  theme(legend.title = element_blank())
-```
-
-```{r, echo = FALSE}
-ArRM_ts <- readRDS('./Flanders_10km/ArRM_ts.rds')
-plot_ts(ArRM_ts, y_label='Total area based rarity in Flanders', max_year=2022)
-```
-:::
-
-::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-{{< include HillDiversity.Rmd >}}
-
-### Species richness (Hill-0)
-
-```{r, eval=FALSE}
-#load library
-library(b3gbi)
-
-#Execute preprocessing step
-SR_map <-  hill0_map(Angiosperm_data_cube,
-                            cell_size="grid")
-
-SR_ts <- hill0_ts(Angiosperm_data_cube,
-                            cell_size="grid")
-
-plot_map(SR_map, visible_gridlines = FALSE)
-plot_ts(SR_ts)
-
-```
-
-```{r, echo = FALSE}
-SR_map <- readRDS('./Flanders_10km/SR_map.rds')$data
-
-ggplot(data = SR_map) +
-  geom_sf(aes(fill = diversity_val), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +
-  theme_void() +
-  theme(legend.title = element_blank())
-```
-
-```{r, echo = FALSE}
-SR_ts <- readRDS('./Flanders_10km/SR_ts.rds')
-plot_ts(SR_ts, max_year=2022)
-```
-
-### Simpson diversity (Hill-2)
-
-```{r, eval=FALSE}
-#load library
-library(b3gbi)
-
-#Execute preprocessing step
-Sim_map <-  hill2_map(Angiosperm_data_cube,
-                            cell_size="grid")
-Sim_ts <- hill2_ts(Angiosperm_data_cube,
-                   cell_size="grid")
 
 
-plot_map(Sim_map, visible_gridlines = FALSE)
-plot_ts(Sim_ts)
-
-```
-
-```{r, echo = FALSE}
-HSi_map <- readRDS('./Flanders_10km/HSi_map.rds')$data
-
-ggplot(data = HSi_map) +
-  geom_sf(aes(fill = diversity_val), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +
-  theme_void() +
-  theme(legend.title = element_blank())
-```
-
-```{r, echo = FALSE}
-HSi_ts <- readRDS('./Flanders_10km/HSi_ts.rds')
-plot_ts(HSi_ts, max_year=2022)
-```
-:::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Cumulative Species Richness
@@ -279,7 +155,9 @@ plot_ts(CR_ts)
 
 ```{r, echo = FALSE}
 CR_ts <- readRDS('./Flanders_10km/CR_ts.rds')
-plot_ts(CR_ts, max_year=2022)
+plot_ts(CR_ts, 
+        y_label ='Cumulative number of species observed in Flanders',
+        max_year=2022)
 ```
 :::
 
@@ -306,7 +184,7 @@ plot_map(NN_map,
 plot_ts(NN_ts)
 ```
 
-```{r, echo = FALSE}
+```{r, eval=FALSE, echo = FALSE}
 NN_map <- readRDS('./Flanders_10km/NN_map.rds')$data
 
 ggplot(data = NN_map) +
@@ -318,7 +196,9 @@ ggplot(data = NN_map) +
 
 ```{r, echo = FALSE}
 NN_ts <- readRDS('./Flanders_10km/NN_ts.rds')
-plot_ts(NN_ts, max_year=2022)
+plot_ts(NN_ts, 
+        y_label ='Average year of recording',
+        max_year=2022)
 ```
 :::
 
@@ -339,7 +219,7 @@ plot_map(OD_map,
          visible_gridlines = FALSE)
 ```
 
-```{r, echo = FALSE}
+```{r, eval=FALSE, echo = FALSE}
 OD_map <- readRDS('./Flanders_10km/OD_map.rds')$data
 ggplot(data = OD_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
@@ -350,7 +230,9 @@ ggplot(data = OD_map) +
 
 ```{r, echo = FALSE}
 OD_ts <- readRDS('./Flanders_10km/OD_ts.rds')
-plot_ts(OD_ts, max_year=2022)
+plot_ts(OD_ts, 
+        y_label ='Occurrence density',
+        max_year=2022)
 ```
 :::
 
@@ -373,7 +255,9 @@ plot_ts(OT_ts)
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
 OT_ts <- readRDS('./Flanders_10km/OT_ts.rds')
-plot_ts(OT_ts, max_year=2022)
+plot_ts(OT_ts, 
+         y_label ='Jaccard dissimilarity (turnover) index',
+        max_year=2022)
 ```
 :::
 
@@ -399,7 +283,7 @@ plot_map(ComP_map,
 plot_ts(ComP_ts)
 ```
 
-```{r, echo = FALSE}
+```{r, eval=FALSE, echo = FALSE}
 
 ComP_map <- readRDS('./Flanders_10km/ComP_map.rds')$data
 
@@ -412,7 +296,9 @@ ggplot(data = ComP_map) +
 
 ```{r, echo = FALSE}
 ComP_ts <- readRDS('./Flanders_10km/ComP_ts.rds')
-plot_ts(ComP_ts, max_year=2022)
+plot_ts(ComP_ts,
+        y_label ='Completeness',
+        max_year=2022)
 ```
 :::
 
@@ -438,7 +324,7 @@ plot_map(SRD_map,
 plot_ts(SRD_ts)
 ```
 
-```{r, echo = FALSE}
+```{r, eval=FALSE, echo = FALSE}
 
 SRD_map <- readRDS('./Flanders_10km/SRD_map.rds')$data
 
@@ -449,9 +335,10 @@ ggplot(data = SRD_map) +
   theme(legend.title = element_blank())
 ```
 
-```{r, eval=FALSE, echo = FALSE}
-SRD_ts <- readRDS('./Flanders_10km/SRD_ts.rds', 
+```{r, echo = FALSE}
+SRD_ts <- readRDS('./Flanders_10km/SRD_ts.rds')
+plot_ts(SRD_ts,
+        y_label ='Species richness density',
                   max_year=2022)
-plot_ts(SRD_ts)
 ```
 :::

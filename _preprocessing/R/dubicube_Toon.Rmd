@@ -1,0 +1,209 @@
+---
+title: "B3_filter_angio"
+author: "Toon Van Daele"
+date: "2026-06-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dubicube)
+library(dplyr)
+library(ggplot2)
+```
+
+## load cube
+
+```{r }
+angioGBIF <- read.csv("c:/Thuiswerk_c/Angiosperm_data_Flanders_1km.csv")
+```
+
+### check for zero's and NoData
+
+```{r}
+angioGBIF %>%
+  filter(occurrences == 0)
+
+angioGBIF %>%
+  filter(is.na(occurrences))
+
+```
+
+No NA's, no zero occurrences
+
+## Pre-process Cube
+
+```{r }
+angio_p <- b3gbi::process_cube(angioGBIF)
+```
+
+## general check with dubicube
+
+```{r}
+diagnose_cube(angio_p)
+```
+
+```{r}
+basic_cube_rules()
+```
+
+```{r}
+rule_spatial_min_cells()
+```
+
+# Check distribution of observations among cells
+
+## total occurences
+
+```{r}
+table(is.na(angio_p$data$obs))
+```
+
+```{r}
+angio_p$data %>%
+  group_by(xcoord, ycoord, cellCode) %>%
+  summarize(sum_obs = sum(obs)) %>%
+  ggplot(aes(x = xcoord, y = ycoord, colour = sum_obs)) + geom_point() +
+  coord_equal()
+```
+
+The locations with outliers or nodata are not visible because the points inµ the plot overlap.
+
+## Zoom to problematic region
+
+```{r}
+angio_p$data %>%
+  group_by(xcoord, ycoord, cellCode) %>%
+  summarize(sum_obs = sum(obs)) %>%
+  dplyr::filter(xcoord > 3820000 & xcoord < 3860000 &
+                ycoord > 3105000 & ycoord < 3121000) %>%
+  ggplot(aes(x = xcoord, y = ycoord, colour = sum_obs)) + geom_point()
+```
+
+```{r}
+angio_p$data %>%
+  group_by(xcoord, ycoord, cellCode) %>%
+  summarize(sum_obs = sum(obs)) %>%
+  dplyr::filter(xcoord > 3820000 & xcoord < 3860000 &
+                ycoord > 3105000 & ycoord < 3121000)
+```
+
+The eea gridcells with 0 occurences (or no data) are not exported? These locations are not outliers, nor NA. The grid locations are not exported. -\> Seems to be an issue for the GBIF export.
+
+## Distribution of total observations by gridcell
+
+```{r}
+angio_p$data %>%
+  group_by(cellCode) %>%
+  summarize(sum_obs = sum(obs)) %>%
+  dplyr::arrange(desc(sum_obs)) %>%
+  ggplot(aes(x = sum_obs)) + geom_histogram()
+```
+
+It's very strong skewed to the right, to be expected for a variable 'number of observations'.
+
+```{r}
+angio_p_log <- angio_p$data %>%
+  group_by(cellCode, xcoord, ycoord) %>%
+  summarize(log_sum_obs = log(sum(obs)), .groups = "drop")
+```
+
+Log transformation -\> in the log scale the variable is normal distributed
+
+red = normal distribution black = density function of the actual distribution in the log scale)
+
+```{r}
+ggplot(angio_p_log, aes(x = log_sum_obs)) + 
+  geom_density() +
+  stat_function(fun = dnorm, colour = "red",
+                args = list(mean = mean(angio_p_log$log_sum_obs),
+                            sd = sd(angio_p_log$log_sum_obs)))
+```
+
+Solution for visualization -\> a legend in the log scale?
+
+# option 1: linear legend, but adapted color gradient
+
+```{r}
+df_plot <- angio_p$data %>%
+  group_by(xcoord, ycoord, cellCode) %>%
+  summarize(sum_obs = sum(obs))
+
+ggplot(df_plot, aes(x = xcoord, y = ycoord, colour = sum_obs)) + geom_point() +
+  coord_equal() +
+  scale_colour_viridis_c(option = "D",
+                         values = c(0, 0.01, 0.05, 0.1, 1))
+# values can be adjusted manually
+```
+
+# option 2: legend in the log scale
+
+```{r}
+ggplot(df_plot, aes(x = xcoord, y = ycoord, colour = sum_obs)) + geom_point() +
+  coord_equal() +
+  scale_colour_viridis_c(option = "D",
+                         transform = "log10",
+                         breaks = c(1, 10, 100, 1000, 10000))
+```
+
+## Are there outliers in the log scale?
+
+-\> IQR \> 1.5
+
+```{r}
+ggplot(angio_p_log, aes(y = log_sum_obs)) +
+  geom_boxplot()
+```
+
+Location on the map:
+
+```{r}
+#IQR(angio_p_log$log_sum_obs)
+
+angio_stats <- boxplot.stats(angio_p_log$log_sum_obs)
+
+angio_outl <- angio_stats$out
+
+
+angio_p_log <- angio_p_log %>%
+  mutate(outl = case_when(log_sum_obs < angio_stats$stats[1] ~ "lower",
+                          log_sum_obs > angio_stats$stats[5] ~ "upper",
+                          .default = NA))
+
+ggplot(angio_p_log, aes(x = xcoord, y = ycoord)) + geom_point(aes(colour = log_sum_obs)) +
+  coord_equal() +
+  scale_colour_viridis_c(option = "D") +
+  geom_point(data = angio_p_log %>%
+               dplyr::filter(outl %in% c("upper", "lower")),
+             aes(shape = outl))
+
+# Maybe the MAD (mean absolute deviation) is a better alternative (to be cheked)
+```
+
+Still outliers, but not so many
+
+```{r}
+table(angio_p_log$outl)
+```
+
+## Possible workflows for a more generic check for outliers
+
+use a gamma distribution -\> more flexible (to be checked)
+
+- fit a gamma model (group by op cellen of op cellen+year)
+- get shape & scale values
+- transform data with the alpha parameter (Wilson Hilferty transformation)
+- IQR boxplot \> 1.5 of 3 of onder bepaalde probability threshold p \< 0.0001
+- ofwel vernieuwende aanpak: <https://www.mdpi.com/2075-1680/12/2/107>
+
+# Check publication time-lag
+
+```{r}
+ts <- angio_p$data %>%
+  group_by(year) %>%
+  summarize(sum_obs = sum(obs))
+
+gam_ts <- mgcv::gam(sum_obs ~ s(year), data = ts)
+
+plot(gam_ts)
+```

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>  General indicators for Angiosperms at 1 km resolution (no outliers, filter completeness) – WP6: Flanders case study</title>
+<title>  General indicators for florabank at 1 km resolution – WP6: Flanders case study</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators for Angiosperms at 1 km resolution (no outliers, filter completeness)</p></h1>
+<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators for florabank at 1 km resolution</p></h1>
 </div>
 
 
@@ -334,15 +334,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 </div>
 </div>
@@ -405,15 +396,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 </div>
 </div>
@@ -424,48 +406,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Rarity
+<span class="screen-reader-only">Tip</span>Mean Year of Occurrence (Newness)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<section id="abundance---based-rarity" class="level3">
-<h3 class="anchored" data-anchor-id="abundance---based-rarity">Abundance - Based Rarity</h3>
-<section id="indicator-type-2" class="level4">
-<h4 class="anchored" data-anchor-id="indicator-type-2">Indicator type</h4>
-<p>State Indicator.</p>
+<section id="indicator-type-2" class="level3">
+<h3 class="anchored" data-anchor-id="indicator-type-2">Indicator type</h3>
+<p>Data Quality.</p>
 </section>
-<section id="explanation-2" class="level4">
-<h4 class="anchored" data-anchor-id="explanation-2">Explanation</h4>
-<p>This indicator measures rarity based on the total number of records within the dataset by summing the abundance-based rarity values of all species present in a grid cell or year.</p>
+<section id="explanation-2" class="level3">
+<h3 class="anchored" data-anchor-id="explanation-2">Explanation</h3>
+<p>This indicator calculates the average (mean) year of all nature records within a specific grid cell, providing a quick look at how recent or historical the data in that cell is.</p>
 <ul>
-<li>A high indicator value means the grid cell contains many species that are locally scarce or have very low population numbers.</li>
-<li>A low value indicates that the grid cell is dominated by a few species that are highly common and frequently recorded.</li>
+<li>High value (recent mean year): The vast majority of the data in the grid cell was collected very recently. This is often driven by citizen science data from people using smartphones and apps over the last few years.</li>
+<li>Low value (older mean year): This indicates that a large portion of the dataset consists of older museum collections, historical surveys, or long-running monitoring programs from previous decades.</li>
 </ul>
 </section>
-<section id="applicability-for-policy-2" class="level4">
-<h4 class="anchored" data-anchor-id="applicability-for-policy-2">Applicability for policy</h4>
-<p>This metric is highly valuable for conservation prioritization because it highlights specific geographic areas that harbor disproportionately high numbers of locally scarce species. This provides a strong scientific justification for establishing targeted local protection zones. Furthermore, shifts in rarety can results from changes in community composition and can serve as an early warning signal.</p>
+<section id="applicability-for-policy-2" class="level3">
+<h3 class="anchored" data-anchor-id="applicability-for-policy-2">Applicability for policy</h3>
+<ul>
+<li>Data Freshness Check: It serves as a vital metadata check for policymakers to ensure they are not basing current conservation laws on outdated information. If a grid cell has a very low mean year, this indicates that the area needs urgent re-surveying.</li>
+<li>Monitoring history: It helps environmental agencies map out how data collection methods have evolved across different provinces.</li>
+</ul>
 </section>
-<section id="limitations-2" class="level4">
-<h4 class="anchored" data-anchor-id="limitations-2">Limitations</h4>
-<p>The primary limitation is its extreme sensitivity to sampling bias and the absolute volume of total occurrences in the data cube. For instance, a common species that is under-reported will artificially increase rarety. Instead, a single rare but highly charismatic species that is often recorded by wildlife enthusiasts will falsely cause the abundance-based rarity score to drop.</p>
+<section id="limitations-2" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-2">Limitations</h3>
+<p>A recent mean year does not infer high data quality. A region with a low (older) mean year might actually have a much higher data quality because it has been conducting flawless, highly comprehensive, and structured professional monitoring for forty years.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>AbRM_map <span class="ot">&lt;-</span> <span class="fu">ab_rarity_map</span>(Angiosperm_data_cube,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>AbRM_ts <span class="ot">&lt;-</span> <span class="fu">ab_rarity_ts</span>(Angiosperm_data_cube,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(AbRM_map)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>NN_map <span class="ot">&lt;-</span> <span class="fu">newness_map</span>(Angiosperm_data_cube,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>NN_ts <span class="ot">&lt;-</span> <span class="fu">newness_ts</span>(Angiosperm_data_cube, </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(AbRM_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(NN_map,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(NN_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
@@ -477,74 +463,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="area-based-rarity" class="level3">
-<h3 class="anchored" data-anchor-id="area-based-rarity">Area-based rarity</h3>
-<section id="indicator-type-3" class="level4">
-<h4 class="anchored" data-anchor-id="indicator-type-3">Indicator type</h4>
-<p>State Indicator.</p>
-</section>
-<section id="explanation-3" class="level4">
-<h4 class="anchored" data-anchor-id="explanation-3">Explanation</h4>
-<p>This indicator measures rarity based on geographic distribution across the entire study area. It sums the occupancy-based rarity values of all species present in a grid cell or year.</p>
-<ul>
-<li>A high indicator value demonstrates that the grid cell contains many species that have a highly restricted geographic range.</li>
-<li>A low value reveals that the grid cell contains only widespread species that can easily be found at other locations.</li>
-</ul>
-</section>
-<section id="applicability-for-policy-3" class="level4">
-<h4 class="anchored" data-anchor-id="applicability-for-policy-3">Applicability for policy</h4>
-<p>This metric is critical for spatial planning and the design of protected area networks? For instance, it highlights irreplaceable grid cells containing range-restricted species that cannot be compensated for by protecting other locations (in case of Natura2000 area). Additionally, it helps identify unique ecological niches, vulnerable ecosystems, or highly fragmented habitats that host geographically isolated species at high risk of regional extinction.</p>
-</section>
-<section id="limitations-3" class="level4">
-<h4 class="anchored" data-anchor-id="limitations-3">Limitations</h4>
-<p>The outcome is strongly depending on survey effort. Moreover, another limitation is that the score is strictly dependent on the chosen spatial scale and grid cell size of the analyzed data cube. A species might appear highly rare and range-restricted simply because it only occurs in one cell within your specific project borders, even though it might be widely distributed just outside the artificial boundaries of the analyzed cube.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ArRM_map <span class="ot">&lt;-</span>  <span class="fu">area_rarity_map</span>(Angiosperm_data_cube,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>ArRM_ts <span class="ot">&lt;-</span>  <span class="fu">area_rarity_ts</span>(Angiosperm_data_cube,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(ArRM_map, <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(ArRM_ts, <span class="at">y_label=</span><span class="st">'Total area based rarity in Flanders'</span>,<span class="at">max_year=</span><span class="dv">2022</span>)<span class="er">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
 </section>
 </div>
 </div>
@@ -555,113 +473,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Estimated Hill Diversity
+<span class="screen-reader-only">Tip</span>Occurrence Density
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<section id="indicator-type-4" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-4">Indicator type</h3>
-<p>State Indicator.</p>
+<section id="indicator-type-3" class="level3">
+<h3 class="anchored" data-anchor-id="indicator-type-3">Indicator type</h3>
+<p>Data quality indicator.</p>
 </section>
-<section id="explanation-4" class="level3">
-<h3 class="anchored" data-anchor-id="explanation-4">Explanation</h3>
-<p>This indicator measures the overall health, balance, and variety of nature by shifting the analytical focus along a smooth mathematical gradient using three standard values—Hill-0, Hill-1, and Hill-2. This gradient allows policymakers to see exactly how balanced an ecosystem’s community structure is:</p>
+<section id="explanation-3" class="level3">
+<h3 class="anchored" data-anchor-id="explanation-3">Explanation:</h3>
+<p>This metric calculates the total number of biodiversity occurrences divided by the surface area, specifically summing the number of records per square kilometer for each grid cell or year.</p>
 <ul>
-<li>Hill-0: the effective number of species (species richness). This measure reveals how many species are present.</li>
-<li>Hill-1: the effective number of typical species, balancing rare and common species. This measure indicates how evenly biodiversity is distributed across species.</li>
-<li>Hill-2: the effective number of dominant species, emphasizing common species. This indicator reveals whether biodiversity is dominated by a few common species.</li>
-</ul>
-<p>Large differences between the three values indicate that biodiversity is concentrated in a small number of dominant species, whereas similar values indicate a more even and balanced community.</p>
-</section>
-<section id="applicability-for-policy-4" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-4">Applicability for policy</h3>
-<p>Comparing Hill-0, Hill-1, and Hill-2 provides insight into both species richness and community structure.</p>
-<p>An example illustrating how the scores can be combined to provide an accurate picture of ecosystem composition:</p>
-<ul>
-<li>The Scenario: A policymaker compares two forests, Forest A and Forest B. Both forests have a total count of ten species, meaning they score equally high on Hill-0.
-<ul>
-<li>Forest A (Healthy Balance): Contains exactly one hundred trees per species. Because of this perfect distribution, its Hill-1 and Hill-2 values remain very high, signaling a highly resilient habitat.</li>
-<li>Forest B (Degraded Monoculture): Contains one thousand trees of a single invasive plant and only one individual tree for each of the other nine species. In this case, its Hill-1 score will plummet and its Hill-2 score will hit an extremely low level.</li>
-</ul></li>
+<li>High value: The grid cell contains a high concentration of occurrences.</li>
+<li>Low value: The records are sparse and thinly spread out over a large geographic area.</li>
 </ul>
 </section>
-<section id="limitations-4" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-4">Limitations</h3>
-<p>The raw numbers generated along this entire gradient are highly vulnerable to uneven sampling efforts and data collection biases within the GBIF data cube.</p>
+<section id="applicability-for-policy-3" class="level3">
+<h3 class="anchored" data-anchor-id="applicability-for-policy-3">Applicability for policy:</h3>
+<ul>
+<li>Allowing comparison of survey effort: This is a vital baseline tool for regional planning because it allows to fairly compare human observation activity</li>
+<li>Estimating citizen science engagement: It helps governments evaluate the true density of citizen science engagement.</li>
+</ul>
 </section>
-<section id="species-richness-hill-0" class="level3">
-<h3 class="anchored" data-anchor-id="species-richness-hill-0">Species richness (Hill-0)</h3>
+<section id="limitations-3" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-3">Limitations:</h3>
+<p>Just like Total Occurrences, this metric is ecologically meaningless when looked at in isolation. It primarily reflects localized human search effort (like a popular walking path or a nature center) rather than the actual conservation value of the environment.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SR_map <span class="ot">&lt;-</span>  <span class="fu">hill0_map</span>(Angiosperm_data_cube,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>SR_ts <span class="ot">&lt;-</span> <span class="fu">hill0_ts</span>(Angiosperm_data_cube,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(SR_map, <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(SR_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>OD_map <span class="ot">&lt;-</span> <span class="fu">occ_density_map</span>(Angiosperm_data_cube,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(OD_map,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="simpson-diversity-hill-2" class="level3">
-<h3 class="anchored" data-anchor-id="simpson-diversity-hill-2">Simpson diversity (Hill-2)</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Sim_map <span class="ot">&lt;-</span>  <span class="fu">hill2_map</span>(Angiosperm_data_cube,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>Sim_ts <span class="ot">&lt;-</span> <span class="fu">hill2_ts</span>(Angiosperm_data_cube,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(Sim_map, <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(Sim_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -676,52 +534,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Cumulative Species Richness
+<span class="screen-reader-only">Tip</span>Completeness
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<section id="indicator-type-5" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-5">Indicator type:</h3>
-<p>Data Quality / Trend Indicator.</p>
+<section id="indicator-type-4" class="level3">
+<h3 class="anchored" data-anchor-id="indicator-type-4">Indicator type</h3>
+<p>Data quality indicator.</p>
 </section>
-<section id="explanation-5" class="level3">
-<h3 class="anchored" data-anchor-id="explanation-5">Explanation:</h3>
-<p>While standard Species Richness simply represents the total number of species found in a single year, Cumulative Richness keeps a running total over time. Every time a new, unique species is observed that has never been recorded in previous years within that grid cell, it is added to a cumulative sum.</p>
+<section id="explanation-4" class="level3">
+<h3 class="anchored" data-anchor-id="explanation-4">Explanation</h3>
+<p>This indicator estimates how complete our knowledge of an ecological community is by calculating “Sample Coverage” (a concept originally developed by Turing and Good, and popularized by Chao and Jost). Instead of just counting the raw number of observations, it calculates the proportion of all individuals in the actual community that belong to the species we have already detected in our sample:</p>
 <ul>
-<li>High or fast-rising value: Each year, many “new” species are still being discovered for the first time in that region. While this could theoretically mean an influx of new climate-migrants or invasive alien species, in most cases it simply means the historical dataset is incomplete and we are still catching up on mapping what is actually there.</li>
-<li>Low or flattening value: The curve is flattening out, meaning almost no new species are being added to the historical list anymore. This indicates that the dataset for this region has become highly comprehensive and mature.</li>
+<li>High value (Value of 1.0 or 100%): The sample is perfectly complete. This indicates that all species living in that area have been successfully found and recorded, meaning no new species are expected to be uncovered through further fieldwork or searching.</li>
+<li>Low value (Value of 0.2 or 20%, for example): The sample is incomplete. This suggests that while you have found some species, an estimated 80% of the remaining individuals in that community belong to species that have not yet been detected or logged in the database.</li>
 </ul>
 </section>
-<section id="applicability-for-policy-5" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-5">Applicability for policy:</h3>
+<section id="applicability-for-policy-4" class="level3">
+<h3 class="anchored" data-anchor-id="applicability-for-policy-4">Applicability for policy</h3>
 <ul>
-<li>Data Completeness Check: If the cumulative richness line is steep and rising fast, it warns the government that the current data is an underestimate and too incomplete to base hard policy decisions on.</li>
-<li>Tracking New Arrivals: In highly monitored regions where data is already complete, a sudden new bump in cumulative richness can serve as a leading indicator for the arrival of invasive alien species or climate-driven species shifts.</li>
+<li>An important indicator of data quality: This indicator is an absolute prerequisite for reliable, data-driven policymaking. If completeness is high, it ensurs that any differences are real ecological trends rather than just reflections of uneven sampling sizes.</li>
+<li>Tracing “blind spots”: This indicator allows environmental agencies to identify gaps in data coverage. A low completeness score in a given region signals the need for increased monitoring efforts.</li>
 </ul>
 </section>
-<section id="limitations-5" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-5">Limitations</h3>
-<p>This metric is poorly suited to measuring rapid, negative biodiversity changes or current habitat degradation. Because it is a cumulative sum, the value never decreases. If a local extinction occurs or if common species crash in numbers, cumulative richness will completely ignore it and remain at its historic maximum.</p>
+<section id="limitations-4" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-4">Limitations</h3>
+<p>Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>CR_ts <span class="ot">&lt;-</span> <span class="fu">cum_richness_ts</span>(Angiosperm_data_cube, </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(CR_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ComP_map <span class="ot">&lt;-</span> <span class="fu">completeness_map</span>(Angiosperm_data_cube,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ComP_ts <span class="ot">&lt;-</span> <span class="fu">completeness_ts</span>(Angiosperm_data_cube, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(ComP_map,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(ComP_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -736,340 +600,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Mean Year of Occurrence (Newness)
+<span class="screen-reader-only">Tip</span>Species Richness Density
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<section id="indicator-type-6" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-6">Indicator type</h3>
-<p>Data Quality.</p>
-</section>
-<section id="explanation-6" class="level3">
-<h3 class="anchored" data-anchor-id="explanation-6">Explanation</h3>
-<p>This indicator calculates the average (mean) year of all nature records within a specific grid cell, providing a quick look at how recent or historical the data in that cell is.</p>
-<ul>
-<li>High value (recent mean year): The vast majority of the data in the grid cell was collected very recently. This is often driven by citizen science data from people using smartphones and apps over the last few years.</li>
-<li>Low value (older mean year): This indicates that a large portion of the dataset consists of older museum collections, historical surveys, or long-running monitoring programs from previous decades.</li>
-</ul>
-</section>
-<section id="applicability-for-policy-6" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-6">Applicability for policy</h3>
-<ul>
-<li>Data Freshness Check: It serves as a vital metadata check for policymakers to ensure they are not basing current conservation laws on outdated information. If a grid cell has a very low mean year, this indicates that the area needs urgent re-surveying.</li>
-<li>Monitoring history: It helps environmental agencies map out how data collection methods have evolved across different provinces.</li>
-</ul>
-</section>
-<section id="limitations-6" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-6">Limitations</h3>
-<p>A recent mean year does not infer high data quality. A region with a low (older) mean year might actually have a much higher data quality because it has been conducting flawless, highly comprehensive, and structured professional monitoring for forty years.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>NN_map <span class="ot">&lt;-</span> <span class="fu">newness_map</span>(Angiosperm_data_cube,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>NN_ts <span class="ot">&lt;-</span> <span class="fu">newness_ts</span>(Angiosperm_data_cube, </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(NN_map,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(NN_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Occurrence Density
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<section id="indicator-type-7" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-7">Indicator type</h3>
-<p>Data quality indicator.</p>
-</section>
-<section id="explanation-7" class="level3">
-<h3 class="anchored" data-anchor-id="explanation-7">Explanation:</h3>
-<p>This metric calculates the total number of biodiversity occurrences divided by the surface area, specifically summing the number of records per square kilometer for each grid cell or year.</p>
-<ul>
-<li>High value: The grid cell contains a high concentration of occurrences.</li>
-<li>Low value: The records are sparse and thinly spread out over a large geographic area.</li>
-</ul>
-</section>
-<section id="applicability-for-policy-7" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-7">Applicability for policy:</h3>
-<ul>
-<li>Allowing comparison of survey effort: This is a vital baseline tool for regional planning because it allows to fairly compare human observation activity</li>
-<li>Estimating citizen science engagement: It helps governments evaluate the true density of citizen science engagement.</li>
-</ul>
-</section>
-<section id="limitations-7" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-7">Limitations:</h3>
-<p>Just like Total Occurrences, this metric is ecologically meaningless when looked at in isolation. It primarily reflects localized human search effort (like a popular walking path or a nature center) rather than the actual conservation value of the environment.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>OD_map <span class="ot">&lt;-</span> <span class="fu">occ_density_map</span>(Angiosperm_data_cube,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(OD_map,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Occupancy turnover
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<section id="indicator-type-8" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-8">Indicator type:</h3>
-<p>Trend / Pressure Indicator.</p>
-</section>
-<section id="explanation-8" class="level3">
-<h3 class="anchored" data-anchor-id="explanation-8">Explanation:</h3>
-<p>This indicator measures how the species composition within a specific area shifts over time, tracking the exact rate at which species appear or disappear between two periods. Using the Jaccard dissimilarity index, the system compares the historical list of species against the modern list and scores the turnover on a scale from 0 to 1:</p>
-<ul>
-<li>High value (closer to 1): The area is experiencing rapid and community restructuring. Old species are disappearing and entirely new species are taking their place, meaning the two time periods look completely different from each other.</li>
-<li>Low value (closer to 0): The ecosystem is highly stable and static. The exact same species that lived in the area years ago are still present today.</li>
-</ul>
-</section>
-<section id="applicability-for-policy-8" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-8">Applicability for policy:</h3>
-<ul>
-<li>Ecosystem stability &amp; Stress Testing: This is a vital tool for assessing how ecosystems respond to large-scale pressures like climate change, habitat fragmentation, or nitrogen deposition.</li>
-<li>Evaluating management success: It allows governments to see if nature restoration policies are actually working. For example, if a province creates a new wetland, a controlled increase in turnover proves that the targeted wetland species are successfully moving in.</li>
-<li>Invasive species tracking: High turnover can serve as a red flag for biological invasions, warning conservation boards that native species are potentially being replaced by incoming alien species.</li>
-</ul>
-</section>
-<section id="limitations-8" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-8">Limitations</h3>
-<p>The metric shows that change is happening, but it cannot tell you why or whether the change is ecologically good or bad. A high turnover score could mean a heavily degraded forest is being invaded by invasive weeds, or it could mean a barren piece of land is successfully transforming into a rich wildflower meadow. It must always be combined with rarity or taxonomic indices to understand the true nature of the shift.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>OT_ts <span class="ot">&lt;-</span> <span class="fu">occ_turnover_ts</span>(Angiosperm_data_cube,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(OT_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Completeness
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<section id="indicator-type-9" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-9">Indicator type</h3>
-<p>Data quality indicator.</p>
-</section>
-<section id="explanation-9" class="level3">
-<h3 class="anchored" data-anchor-id="explanation-9">Explanation</h3>
-<p>This indicator estimates how complete our knowledge of an ecological community is by calculating “Sample Coverage” (a concept originally developed by Turing and Good, and popularized by Chao and Jost). Instead of just counting the raw number of observations, it calculates the proportion of all individuals in the actual community that belong to the species we have already detected in our sample:</p>
-<ul>
-<li>High value (Value of 1.0 or 100%): The sample is perfectly complete. This indicates that all species living in that area have been successfully found and recorded, meaning no new species are expected to be uncovered through further fieldwork or searching.</li>
-<li>Low value (Value of 0.2 or 20%, for example): The sample is incomplete. This suggests that while you have found some species, an estimated 80% of the remaining individuals in that community belong to species that have not yet been detected or logged in the database.</li>
-</ul>
-</section>
-<section id="applicability-for-policy-9" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-9">Applicability for policy</h3>
-<ul>
-<li>An important indicator of data quality: This indicator is an absolute prerequisite for reliable, data-driven policymaking. If completeness is high, it ensurs that any differences are real ecological trends rather than just reflections of uneven sampling sizes.</li>
-<li>Tracing “blind spots”: This indicator allows environmental agencies to identify gaps in data coverage. A low completeness score in a given region signals the need for increased monitoring efforts.</li>
-</ul>
-</section>
-<section id="limitations-9" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-9">Limitations</h3>
-<p>Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>ComP_map <span class="ot">&lt;-</span> <span class="fu">completeness_map</span>(Angiosperm_data_cube,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>ComP_ts <span class="ot">&lt;-</span> <span class="fu">completeness_ts</span>(Angiosperm_data_cube, </span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(ComP_map,</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(ComP_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Species Richness Density
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<section id="indicator-type-10" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-10">Indicator type</h3>
+<section id="indicator-type-5" class="level3">
+<h3 class="anchored" data-anchor-id="indicator-type-5">Indicator type</h3>
 <p>State / Trend Indicator.</p>
 </section>
-<section id="explanation-10" class="level3">
-<h3 class="anchored" data-anchor-id="explanation-10">Explanation</h3>
+<section id="explanation-5" class="level3">
+<h3 class="anchored" data-anchor-id="explanation-5">Explanation</h3>
 <p>This indicator measures local biodiversity by dividing the total number of unique species by the surface area, specifically calculating the number of unique species found per square kilometer for each grid cell or year.</p>
 <ul>
 <li>High value: The grid cell contains a high concentration of unique species.</li>
 <li>Low value: The area contains a low concentraion of unique species.</li>
 </ul>
 </section>
-<section id="applicability-for-policy-10" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-10">Applicability for policy:</h3>
+<section id="applicability-for-policy-5" class="level3">
+<h3 class="anchored" data-anchor-id="applicability-for-policy-5">Applicability for policy:</h3>
 <ul>
 <li>Allowing comparison across scales: Cubes with different grid sizes can easily be compared.</li>
 <li>Identifying hotspots of biodiversity.</li>
 </ul>
 </section>
-<section id="limitations-10" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-10">Limitations</h3>
+<section id="limitations-5" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-5">Limitations</h3>
 <p>It is largely affected by biases in survey effort.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>SRD_map <span class="ot">&lt;-</span> <span class="fu">spec_richness_density_map</span>(Angiosperm_data_cube,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>SRD_ts <span class="ot">&lt;-</span> <span class="fu">spec_richness_density_ts</span>(Angiosperm_data_cube, </span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(SRD_map,</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(SRD_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Execute preprocessing step</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>SRD_map <span class="ot">&lt;-</span> <span class="fu">spec_richness_density_map</span>(Angiosperm_data_cube,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>SRD_ts <span class="ot">&lt;-</span> <span class="fu">spec_richness_density_ts</span>(Angiosperm_data_cube, </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(SRD_map,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(SRD_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Flanders_florabank_1km_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
