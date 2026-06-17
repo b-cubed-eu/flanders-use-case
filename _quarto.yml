@@ -15,15 +15,21 @@ website:
         menu:
          - text: Generate example Cube 
            href: src/preprocessing_general_indicators.qmd
-         - text: Results Angiospermae 1km
+         - text: Results flowering plants 1km
            href: src/b3gbi_indicators_1km.qmd
-         - text: Results Angiospermae 10km
+         - text: Results flowering plants 10km
            href: src/b3gbi_indicators_10km.qmd
-         - text: Results Insecta 1km
+         - text: Results flowering plants 1km no outliers
+           href: src/Flanders_1km_no_outliers.qmd
+         - text: Results flowering plants 1km no outliers and filter completeness
+           href: src/Flanders_1km_no_outliers_filter_completeness.qmd
+         - text: Results flowering plants Florabank 1km 
+           href: src/Flanders_florabank_1km.qmd
+         - text: Results insects 1km
            href: src/b3gbi_indicators_Insecta_1km.qmd
-         - text: Results Insecta 10km
+         - text: Results insects 10km
            href: src/b3gbi_indicators_Insecta_10km.qmd
-         - text: Results Insecta 1 km (no filters)
+         - text: Results insects 1 km (no filters)
            href: src/b3gbi_indicators_Insecta_1km_ALL.qmd
       - text: 'Phylogenetic indicators'
         menu:

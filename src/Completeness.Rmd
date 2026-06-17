@@ -16,4 +16,4 @@ This indicator estimates how complete our knowledge of an ecological community i
 
 ### Limitations
 
-Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat. 
+Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat.

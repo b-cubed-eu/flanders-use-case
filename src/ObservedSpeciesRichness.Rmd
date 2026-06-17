@@ -1,5 +1,3 @@
-
-
 ## Observed species richness
 
 ### Indicator type
@@ -11,7 +9,7 @@ State / Trend Indicator (Alpha Diversity).
 Observed species richness represents the total number of unique species discovered and recorded within a given geographic area or specific year:
 
 - High value: A high number of unique species, indicating a diverse local community.
-- Low value: A low numbere of unique species, signaling a species-poor habitat or an area which has been rarely surveyed.
+- Low value: A low number of unique species, signaling a species-poor habitat or an area which has been rarely surveyed.
 
 ### Applicability for policy
 

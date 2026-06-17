@@ -8,7 +8,11 @@ output: html_document
 
 library(dplyr)
 
+#filter toevoegen voor Vlaanderen
+
 data_all_Flanders <- read.csv("~/GitHub/Flanders_use_case/_preprocessing/data/raw/data_all_Flanders.csv")
+
+
 
 
 
@@ -75,4 +79,3 @@ top_publishers
 
 write.csv("~/GitHub/Flanders_use_case/_preprocessing/data/raw/top_publishers.csv")
 ```
-

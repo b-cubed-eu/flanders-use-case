@@ -83,7 +83,7 @@ saveRDS(TO_ts,
 
 
 #Bootstrapping ok
-``` 
+```
 
 #8.3. Evenness
 

@@ -1,4 +1,3 @@
-
 ### Indicator type:
 
 Data Quality / Trend Indicator.
@@ -17,4 +16,4 @@ While standard Species Richness simply represents the total number of species fo
 
 ### Limitations
 
-This metric is poorly suited to measuring rapid, negative biodiversity changes or current habitat degradation. Because it is a cumulative sum, the value never decreases. If a local extinction occurs or if common species crash in numbers, cumulative richness will completely ignore it and remain at its historic maximum. 
+This metric is poorly suited to measuring rapid, negative biodiversity changes or current habitat degradation. Because it is a cumulative sum, the value never decreases. If a local extinction occurs or if common species crash in numbers, cumulative richness will completely ignore it and remain at its historic maximum.
