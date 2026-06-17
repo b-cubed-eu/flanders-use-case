@@ -20,9 +20,9 @@ website:
          - text: Results flowering plants 10km
            href: src/b3gbi_indicators_10km.qmd
          - text: Results flowering plants 1km no outliers
-           href: src/Flanders_1km_no_outliers.qmd
+           href: src/b3gbi_indicators_1km_no_outliers.qmd
          - text: Results flowering plants 1km no outliers and filter completeness
-           href: src/Flanders_1km_no_outliers_filter_completeness.qmd
+           href: src/b3gbi_indicators_1km_no_outliers_filter_completeness.qmd
          - text: Results flowering plants Florabank 1km 
            href: src/Flanders_florabank_1km.qmd
          - text: Results insects 1km
