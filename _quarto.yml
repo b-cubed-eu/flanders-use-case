@@ -25,6 +25,8 @@ website:
            href: src/b3gbi_indicators_1km_no_outliers_filter_completeness.qmd
          - text: Results flowering plants Florabank 1km 
            href: src/Flanders_florabank_1km.qmd
+         - text: Results flowering plants Florabank 10km 
+           href: src/Flanders_florabank_10km.qmd
          - text: Results insects 1km
            href: src/b3gbi_indicators_Insecta_1km.qmd
          - text: Results insects 10km
