@@ -109,23 +109,35 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_1km_no_outliers.html">
+ <span class="dropdown-text">Results flowering plants 1km no outliers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_1km_no_outliers_filter_completeness.html">
+ <span class="dropdown-text">Results flowering plants 1km no outliers and filter completeness</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 1 km (no filters)</span></a>
   </li>  
     </ul>
   </li>
@@ -223,15 +235,19 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="explanation" class="level4">
 <h4 class="anchored" data-anchor-id="explanation">Explanation</h4>
-<p>The <a href="https://www.cbd.int/gbf/targets/6">CBD Target 6</a> headline indicator, calculated by applying b3alien, represents the rate of invasive alien species establishment.</p>
+<p>This headline indicator, calculated by applying the b3alien package, estimates the actual rate at which new invasive alien species (IAS) successfully establish permanent populations within a region. It screens wildlife observations against international alien checklists to track the speed of biological invasions:</p>
+<ul>
+<li>A fast-rising establishment rate implies that more non-native species are successfully breeding, surviving, and setting up permanent populations in the area.</li>
+<li>A low or decreasing establishment rate indicates that fewer new alien species are managing to gain a permanent foothold in the local ecosystem.</li>
+</ul>
 </section>
 <section id="applicability-for-policy" class="level4">
 <h4 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h4>
-<p><a href="https://www.cbd.int/gbf/targets/6">Target 6 of CBD</a> is to ‘eliminate, minimize, reduce and or mitigate the impacts of invasive alien species on biodiversity and ecosystem services by identifying and managing pathways of the introduction of alien species, preventing the introduction and establishment of priority invasive alien species, reducing the rates of introduction and establishment of other known or potential invasive alien species by at least 50 per cent, by 2030, eradicating or controlling invasive alien species especially in priority sites, such as islands’.</p>
+<p>This metric serves as the official CBD Headline Indicator to monitor global and national progress toward Target 6 of the Kunming-Montreal Global Biodiversity Framework. Its direct policy goal is to reduce the introduction and establishment rates of known invasive species by at least 50% by 2030. Especially looking at this at longer time scales (as is suggested in the CBD documentation) can provide some insight in the effectiveness of policies.</p>
 </section>
 <section id="limitations" class="level4">
 <h4 class="anchored" data-anchor-id="limitations">Limitations</h4>
-<p>As a headline indicator, it simplifies complex ecological processes into a single metric. It is sensitive to data gaps, uneven taxonomic and geographic coverage, and differences in monitoring effort across regions and over time. Aggregation may mask species-specific invasions or local impact hotspots that are important for management. It should therefore be interpreted alongside disaggregated indicators and expert ecological assessment.</p>
+<p>As a high-level headline indicator, it simplifies highly complex ecological processes into a single, generic number. It is highly sensitive to regional data gaps and uneven mapping across different species groups. Therefore, this metric must always be interpreted alongside local maps and expert ecological assessments. Importantly, basic measures for observation effort and special bias can also be retrieved from the package b3alien.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Target6/Figure_target6_indicator_heavily_filtering.png" class="img-fluid figure-img"></p>

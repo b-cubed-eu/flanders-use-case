@@ -124,6 +124,7 @@ plot_ts(OSR_ts,
 ```
 
 In the graph below, observed species richness is corrected for total occurrences.
+
 ```{r, echo = FALSE}
 #OSR corrected for TO
 OSR_ts$data$TO<- TO_ts_data$diversity_val
@@ -133,9 +134,6 @@ plot_ts(OSR_ts,
         max_year=2022)
 ```
 :::
-
-
-
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Cumulative Species Richness
