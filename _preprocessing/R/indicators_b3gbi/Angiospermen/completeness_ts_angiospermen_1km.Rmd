@@ -1,0 +1,88 @@
+---
+title: "Calculate General Indicators Flanders Case Study WP6"
+output: html_document
+---
+
+#install packages
+
+```{r}
+#install.packages("b3gbi", repos = #c("https://b-cubed-eu.r-universe.dev","https://cloud.r-project.org"))
+#b3gbi#install.packages("rnaturalearthdata")
+
+gc()
+library(b3gbi)
+library(sf)
+library(taxize)
+library(here)
+
+
+
+```
+
+#Define input file and directory of output files
+
+```{r}
+library(dplyr)
+library(sf)
+
+Focus <- 'Flanders_1km'
+
+alle_data <- read.csv(paste0("./_preprocessing/data/raw/Angiosperm_data_",Focus,".csv"))
+
+year_filter = 1975
+
+output_path <- here("_preprocessing","data", "output", "general_indicator", 'completeness')
+
+Flanders <- read_sf('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+
+all_data_filter <- alle_data%>%
+  filter(year==year_filter)
+
+Angiosperm_data_cube <- process_cube(all_data_filter)
+
+if (!dir.exists(output_path)) {
+  dir.create(output_path, recursive = TRUE)
+}
+#check resolution of file
+Angiosperm_data_cube
+
+ComP_ts_filter <-completeness_map(Angiosperm_data_cube,
+                         cell_size="grid",
+                         gridded_average=TRUE)
+
+plot_map(ComP_ts_filter)
+
+
+str(Angiosperm_data_cube)
+```
+
+
+#8.13 completeness
+
+```{r}
+'This function calculates the completeness of biodiversity data over a gridded map or as a time series using the Sample Coverage metric from the iNEXT package.'
+
+
+gc()
+
+ComP_ts <-completeness_ts(Angiosperm_data_cube,
+                         cell_size="grid",
+                         gridded_average=TRUE)
+
+ComP_map <-completeness_map(Angiosperm_data_cube,
+                            spherical_geometry = FALSE,
+                         cell_size="grid")
+
+
+##export data to showcase in dashboard
+saveRDS(ComP_ts,
+        paste0(output_path, '/ComP_ts.rds'))
+
+##export data to showcase in dashboard
+saveRDS(ComP_map,
+        paste0(output_path, '/ComP_map.rds'))
+
+
+```
+
+
