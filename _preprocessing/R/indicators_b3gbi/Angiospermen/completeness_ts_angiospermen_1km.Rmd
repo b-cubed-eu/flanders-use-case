@@ -56,8 +56,7 @@ plot_map(ComP_ts_filter)
 str(Angiosperm_data_cube)
 ```
 
-
-#8.13 completeness
+#8.13 Total occurrences
 
 ```{r}
 'This function calculates the completeness of biodiversity data over a gridded map or as a time series using the Sample Coverage metric from the iNEXT package.'
@@ -65,15 +64,12 @@ str(Angiosperm_data_cube)
 
 gc()
 
-ComP_ts <-completeness_ts(Angiosperm_data_cube,
-                         cell_size="grid",
-                         gridded_average=TRUE)
 
-ComP_map <-completeness_map(Angiosperm_data_cube,
+TO_map <-total_occ_map(Angiosperm_data_cube,
                             spherical_geometry = FALSE,
                          cell_size="grid")
 
-
+plot-map(total_occurrences)
 ##export data to showcase in dashboard
 saveRDS(ComP_ts,
         paste0(output_path, '/ComP_ts.rds'))
@@ -84,5 +80,3 @@ saveRDS(ComP_map,
 
 
 ```
-
-

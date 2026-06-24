@@ -99,10 +99,10 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.
 
 ```{r, echo=FALSE, warning = FALSE,message = FALSE}
-OD_ts_Natura2000 <- readRDS('./Flanders_Natura2000/OD_ts.rds')
+OD_ts_Natura2000 <- readRDS('./src/Flanders_Natura2000/OD_ts.rds')
 
 
-OD_ts_nonNatura2000 <- readRDS('.//Flanders_nonNatura2000/OD_ts.rds')
+OD_ts_nonNatura2000 <- readRDS('./src/Flanders_nonNatura2000/OD_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
 df_nat     <- as.data.frame(OD_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
@@ -110,7 +110,9 @@ df_non     <- as.data.frame(OD_ts_nonNatura2000$data) %>% mutate(Group = "nonNat
 
 df_both <- bind_rows(df_nat, df_non)
 
-ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+df_both <- df_both%>%filter(year<2023)
+
+a <- ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
 
   # groeps-trend
   geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
@@ -128,7 +130,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 
   labs(
     x = "Year",
-    y = "Occurence density",
+    y = expression("number of occurrences per km"^2),
     colour = "",
     fill = ""
   ) +
@@ -137,6 +139,63 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
     legend.title = element_blank()
   )+
   theme_minimal() 
+
+ggsave(
+  filename = "./Flanders_1km/Occurrence_density_Natura2000.png",
+  plot = a,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Species Richness Density
+
+Species Richness Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.
+
+```{r, echo=FALSE, warning = FALSE,message = FALSE}
+SRD_ts_Natura2000 <- readRDS('./src/Flanders_Natura2000/SRD_ts.rds')
+
+
+SRD_ts_nonNatura2000 <- readRDS('./src/Flanders_nonNatura2000/SRD_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(SRD_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(SRD_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+df_both <- df_both%>%filter(year<2023)
+
+a <- ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2)  +
+
+  labs(
+    x = "Year",
+    y = expression("number of species per km"^2),
+    colour = "",
+    fill = ""
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+
+ggsave(
+  filename = "./Flanders_1km/Species_richness_density_Natura2000.png",
+  plot = a,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
 ```
 :::
 
