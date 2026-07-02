@@ -1,0 +1,1237 @@
+---
+title: "Compare Natura2000 with non-Natura2000 based on Angiosperm cube with dubicube"
+author: "Ward Langeraert"
+date: today
+
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-location: right
+    code-fold: true
+    self-contained: true
+
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(b3gbi) # v0.9.0
+library(dubicube) # v0.12.3
+library(glmmTMB)
+library(emmeans)
+library(cowplot)
+
+# Globals
+analysis_path <- here::here("_preprocessing/R/Natura2000")
+data_path <- here::here("_preprocessing/data/raw")
+
+cache_path <- file.path(analysis_path, "cache", "compare_natura2000_dubicube")
+dir.create(cache_path, recursive = TRUE, showWarnings = FALSE)
+
+out_path <- file.path(analysis_path, "output", "compare_natura2000_dubicube")
+dir.create(out_path, recursive = TRUE, showWarnings = FALSE)
+devices <- c("jpg", "tiff", "eps")
+
+# Source
+source(file.path(analysis_path, "source", "cache_compute.R"))
+source(file.path(analysis_path, "source", "save_figure.R"))
+```
+
+# Goal
+
+We test some things for Flanders use case of the B-Cubed project:
+<https://flanders.b-cubed.eu/>
+
+* Test uncertainty calculation dubicube and b3gbi on a simple indicator
+* Calculate a new indicator and use effect classification to test significance
+* Use area and sampling effort as correction factors
+
+We focus on the "General indicators Natura 2000 angiospermae" ([link](https://flanders.b-cubed.eu/src/b3gbi_indicators_Natura2000.html)).
+More specifically on the species richness within and outside Natura2000 habitat.
+
+![Total number of unique species per year detected in Natura 2000 versus non Natura 2000 area visualised on the [dashboard](https://flanders.b-cubed.eu/src/b3gbi_indicators_Natura2000.html).](https://flanders.b-cubed.eu/src/b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-2-1.png
+)
+
+# Data
+
+We load the data and select the data from 1975 up to 2022.
+We need to be able to calculate (1) species richness, (2) surface area, and (3) sampling effort.
+We need (2) and (3) since we can assume that we get a higher species richness when a larger surface area is surveyed and when sampling effort is higher.
+
+```{r}
+data_natura2000 <- read_csv(
+  file.path(data_path, "Angiosperm_data_flanders_Natura2000.csv"),
+  name_repair = "minimal",
+  col_select = -1,
+  show_col_types = FALSE
+) %>%
+  filter(year %in% 1975:2022)
+
+data_nonnatura2000 <- read_csv(
+  file.path(data_path, "Angiosperm_data_flanders_nonNatura2000.csv"),
+  name_repair = "minimal",
+  col_select = -1,
+  show_col_types = FALSE
+) %>%
+  filter(year %in% 1975:2022)
+
+glimpse(data_natura2000)
+```
+
+1. We can calculate number of species
+
+This figure is identical to the one on the dashboard (without the final years).
+
+```{r}
+sr_natura2000 <- data_natura2000 %>%
+  summarise(n_spec = n_distinct(specieskey), .by = c("year")) %>%
+  mutate(location = "Natura2000")
+sr_nonnatura2000 <- data_nonnatura2000 %>%
+  summarise(n_spec = n_distinct(specieskey), .by = c("year")) %>%
+  mutate(location = "non-Natura2000")
+
+bind_rows(sr_natura2000, sr_nonnatura2000) %>%
+  ggplot(aes(x = year, y = n_spec, colour = location)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "loess", formula = "y ~ x", se = FALSE) +
+  labs(x = "Year", y = "Number of species", colour = "Area type") +
+  theme_minimal()
+```
+
+2. We can calculate surface area
+
+We now each grid cell is 1 km².
+
+```{r}
+area_natura2000 <- data_natura2000 %>%
+  summarise(area_km2 = n_distinct(eeacellcode), .by = c("year")) %>%
+  mutate(location = "Natura2000")
+area_nonnatura2000 <- data_nonnatura2000 %>%
+  summarise(area_km2 = n_distinct(eeacellcode), .by = c("year")) %>%
+  mutate(location = "non-Natura2000")
+
+bind_rows(area_natura2000, area_nonnatura2000) %>%
+  ggplot(aes(x = year, y = area_km2, fill = location)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Year", y = "Area (km²)", fill = "Area type") +
+  theme_minimal()
+```
+
+3. We can almost calculate sampling effort
+
+Normally we would calculate in the SQL query the count at a higher taxonomic level.
+However, in this dataset the highest available is `ordercount`.
+We could download a new cube that calculates count on a higher taxonomic level (perhaps across all taxa even) to get a better value.
+For now, we just use the total number of occurrences per year over the whole datasets as a proxy for sampling effort.
+
+The sum of the occurrences mixes biological abundance with observer effort.
+If one habitat truly has more individuals, this metric may overestimate effort there.
+If possible, a measure such as the number of visits or independent sampling events would be preferable.
+
+```{r}
+area_natura2000 <- data_natura2000 %>%
+  summarise(total_occ = sum(occurrences), .by = c("year")) %>%
+  mutate(location = "Natura2000")
+area_nonnatura2000 <- data_nonnatura2000 %>%
+  summarise(total_occ = sum(occurrences), .by = c("year")) %>%
+  mutate(location = "non-Natura2000")
+
+bind_rows(area_natura2000, area_nonnatura2000) %>%
+  ggplot(aes(x = year, y = total_occ, colour = location)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "loess", formula = "y ~ x", se = FALSE) +
+  labs(x = "Year", y = "Number of occurrences", colour = "Area type") +
+  theme_minimal()
+```
+
+# Basic uncertainty calculation
+
+Let's see how the **b3gbi** package handles uncertainty calculation.
+We can add uncertainty using the `add_ci()` function (new from v0.9.0 onwards).
+In the documentation, we read that confidence level calculation is not provided for observed species richness, since this is not relevant.
+
+Natura2000:
+
+```{r}
+cube_natura2000 <- process_cube(data_natura2000)
+obs_rich_natura2000 <- obs_richness_ts(cube_natura2000)
+plot(obs_rich_natura2000)
+```
+
+non-Natura2000:
+
+```{r}
+cube_nonnatura2000 <- process_cube(data_nonnatura2000)
+obs_rich_nonnatura2000 <- obs_richness_ts(cube_nonnatura2000)
+plot(obs_rich_nonnatura2000)
+```
+
+Let's see what happens if we calculate confidence intervals with dubicube.
+
+```{r}
+my_spec_richness <- function(df) {
+  df %>%
+    summarise(diversity_val = n_distinct(taxonKey), .by = c("year"))
+}
+```
+
+```{r}
+# Bootstrapping (cached)
+bootstrap_results_natura2000 <- cache_compute(
+  path = cache_path,
+  file = "bootstrap_results_natura2000",
+  expr = {
+    dubicube::bootstrap_cube(
+      data_cube = cube_natura2000,
+      fun = my_spec_richness,
+      grouping_var = "year",
+      samples = 1000,
+      seed = 123
+    )
+  }
+)
+bootstrap_results_nonnatura2000 <- cache_compute(
+  path = cache_path,
+  file = "bootstrap_results_nonnatura2000",
+  expr = {
+    dubicube::bootstrap_cube(
+      data_cube = cube_nonnatura2000,
+      fun = my_spec_richness,
+      grouping_var = "year",
+      samples = 1000,
+      seed = 123
+    )
+  }
+)
+
+# Interval calculation
+ci_spec_richness_natura2000 <- dubicube::calculate_bootstrap_ci(
+  bootstrap_results = bootstrap_results_natura2000,
+  grouping_var = "year",
+  type = "perc",
+  conf = 0.95
+)
+ci_spec_richness_nonnatura2000 <- dubicube::calculate_bootstrap_ci(
+  bootstrap_results = bootstrap_results_nonnatura2000,
+  grouping_var = "year",
+  type = "perc",
+  conf = 0.95
+)
+```
+
+As expected, the confidence intervals do not overlap the estimate (as explained [here](https://b-cubed-eu.github.io/dubicube/articles/bootstrap-interval-calculation.html#issues-with-bias-correction-for-species-richness-indicators)).
+
+```{r}
+#| warning: false
+# Convert bootstrap replicates to dataframe
+bootstrap_results_natura2000_df <- boot_list_to_dataframe(
+  boot_list = bootstrap_results_natura2000,
+  grouping_var = "year"
+) %>%
+  mutate(location = "Natura2000",
+         year = as.numeric(year))
+bootstrap_results_nonnatura2000_df <- boot_list_to_dataframe(
+  boot_list = bootstrap_results_nonnatura2000,
+  grouping_var = "year"
+) %>%
+  mutate(location = "non-Natura2000",
+         year = as.numeric(year))
+
+# Get bias values
+bias_df <- bind_rows(bootstrap_results_natura2000_df,
+                     bootstrap_results_nonnatura2000_df) %>%
+  distinct(year, estimate = est_original, `bootstrap estimate` = est_boot, location)
+
+# Get estimate values
+estimate_df <- bias_df %>%
+  pivot_longer(cols = c("estimate", "bootstrap estimate"),
+               names_to = "Legend", values_to = "value") %>%
+  mutate(Legend = factor(Legend, levels = c("estimate", "bootstrap estimate"),
+                         ordered = TRUE))
+# Visualise
+bind_rows(bootstrap_results_natura2000_df,
+          bootstrap_results_nonnatura2000_df) %>%
+  ggplot(aes(x = year)) +
+  # Distribution
+  geom_violin(aes(y = rep_boot, group = year),
+              fill = alpha("cornflowerblue", 0.2)) +
+  # Estimates and bias
+  geom_point(data = estimate_df,
+             aes(y = value, shape = Legend, colour = location),
+             size = 1, alpha = 0.5) +
+  # Intervals
+  geom_errorbar(
+    data = bind_rows(
+      ci_spec_richness_natura2000 %>%
+        mutate(location = "Natura2000",
+               year = as.numeric(year)),
+      ci_spec_richness_nonnatura2000 %>%
+        mutate(location = "non-Natura2000",
+               year = as.numeric(year))
+    ),
+    aes(ymin = ll, ymax = ul, colour = location),
+    linewidth = 0.5
+  ) +
+  # Settings
+  facet_wrap(~location, ncol = 1) +
+  labs(y = "Species richness",
+       x = "", shape = "Legend:", colour = "Location:") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+Let's ignore the bias. We assume the measure of uncertainty is correct and around the original estimate.
+
+```{r}
+ci_spec_richness_natura2000_2 <- dubicube::calculate_bootstrap_ci(
+  bootstrap_results = bootstrap_results_natura2000,
+  grouping_var = "year",
+  type = "perc",
+  conf = 0.95,
+  no_bias = TRUE
+)
+ci_spec_richness_nonnatura2000_2 <- dubicube::calculate_bootstrap_ci(
+  bootstrap_results = bootstrap_results_nonnatura2000,
+  grouping_var = "year",
+  type = "perc",
+  conf = 0.95,
+  no_bias = TRUE
+)
+```
+
+```{r}
+#| warning: false
+# Get bias values
+bias_df_2 <- bind_rows(bootstrap_results_natura2000_df,
+                     bootstrap_results_nonnatura2000_df) %>%
+  distinct(year, estimate = est_original, `bootstrap estimate` = est_boot, location)
+
+# Get estimate values
+estimate_df_2 <- bias_df_2 %>%
+  pivot_longer(cols = c("estimate", "bootstrap estimate"),
+               names_to = "Legend", values_to = "value") %>%
+  mutate(Legend = factor(Legend, levels = c("estimate", "bootstrap estimate"),
+                         ordered = TRUE))
+# Visualise
+bind_rows(bootstrap_results_natura2000_df,
+          bootstrap_results_nonnatura2000_df) %>%
+  ggplot(aes(x = year)) +
+  # Distribution
+  geom_violin(aes(y = rep_boot, group = year),
+              fill = alpha("cornflowerblue", 0.2)) +
+  # Estimates and bias
+  geom_point(data = estimate_df,
+             aes(y = value, shape = Legend, colour = location),
+             size = 1, alpha = 0.5) +
+  # Intervals
+  geom_errorbar(
+    data = bind_rows(
+      ci_spec_richness_natura2000_2 %>%
+        mutate(location = "Natura2000",
+               year = as.numeric(year)),
+      ci_spec_richness_nonnatura2000_2 %>%
+        mutate(location = "non-Natura2000",
+               year = as.numeric(year))
+    ),
+    aes(ymin = ll, ymax = ul, colour = location),
+    linewidth = 0.5
+  ) +
+  # Settings
+  facet_wrap(~location, ncol = 1) +
+  labs(y = "Species richness",
+       x = "", shape = "Legend:", colour = "Location:") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+There are some issues with this method:
+
+- The bootstrap should resample grid cells, not occurrence records
+- The cubes have a different number of rows
+- The bootstrap bias is very large
+
+# Species richness density
+
+This calculates average local richness.
+
+> Are Natura 2000 cells richer in species than non-Natura 2000 cells?
+
+- No need to adjust for area (every observation is one 1 km² cell)
+- Easy to interpret (difference of means)
+- Naturally accommodates different numbers of cells in the two habitats
+
+## Bootstrapping
+
+Because we have two datasets of different sizes, we cannot use **dubicube** for bootstrapping. (Perhaps via stratified bootstrapping with **boot** package?)
+
+```{r}
+# Combine datasets
+cell_richness <- bind_rows(
+  cube_natura2000$data %>%
+    mutate(location = "Natura2000"),
+  cube_nonnatura2000$data %>%
+    mutate(location = "non-Natura2000")
+) %>%
+  summarise(
+    richness = n_distinct(taxonKey),
+    total_occ = sum(obs),
+    .by = c("year", "cellCode", "location")
+  ) %>%
+  mutate(
+    tot_occ_year_location = sum(total_occ),
+    .by = c("year", "location")
+  ) %>%
+  mutate(
+    tot_occ_year = sum(total_occ),
+    .by = "year"
+  ) %>%
+  select(-"total_occ")
+```
+
+```{r}
+# Number of bootstrap replicates
+n_boot <- 1000
+
+years <- sort(unique(cell_richness$year))
+
+# Calculate species richness density per year
+out <- purrr::map_dfr(years, function(yr) {
+  # Filter year
+  dat_year <- filter(cell_richness, year == yr)
+  
+  # Split data
+  nat <- filter(dat_year, location == "Natura2000")
+  nonnat <- filter(dat_year, location == "non-Natura2000")
+
+  # Original estimate
+  est_original <-
+    mean(nat$richness) -
+    mean(nonnat$richness)
+
+  # Bootstrap replicates
+  rep_boot <- replicate(n_boot, {
+    nat_boot <- nat[sample(nrow(nat), replace = TRUE), ]
+    nonnat_boot <- nonnat[sample(nrow(nonnat), replace = TRUE), ]
+
+    mean(nat_boot$richness) -
+      mean(nonnat_boot$richness)
+  })
+  
+  # Calculate statistics
+  est_boot <- mean(rep_boot)
+  se_boot <- sd(rep_boot)
+  bias_boot <- est_boot - est_original
+  
+  # Return results in dubicube format
+  tibble(
+    sample = seq_len(n_boot),
+    year = yr,
+    est_original = est_original,
+    rep_boot = rep_boot,
+    est_boot = est_boot,
+    se_boot = se_boot,
+    bias_boot = bias_boot
+  )
+})
+```
+
+We can calculate the intervals with **dubicube** (not BCa).
+
+```{r}
+# Calculate percentile intervals
+ci_difference <- dubicube::calculate_bootstrap_ci(
+  bootstrap_results = out,
+  grouping_var = "year",
+  type = "perc",
+  conf = 0.95,
+  aggregate = FALSE
+)
+```
+
+```{r}
+threshold_specs <- 5
+```
+
+We classify effects with **dubicube**.
+We use an arbitrary difference of `r threshold_specs` species to differentiate between large or small effects.
+
+```{r}
+# Perform effect classification
+result_ci_difference <- dubicube::add_effect_classification(
+  df = ci_difference,
+  cl_columns = c("ll", "ul"),
+  threshold = threshold_specs,
+  reference = 0,
+  coarse = TRUE
+)
+```
+
+```{r}
+# Define ggplot colour palettes
+coarse_colour <- scale_fill_manual(
+  values = c(
+    "increase" = "chartreuse3",
+    "stable"   = "gold",
+    "decrease" = "firebrick1",
+    "unknown"  = "skyblue"
+  ),
+  labels = c(
+    increase = "Higher in Natura 2000",
+    stable   = "No meaningful difference",
+    decrease = "Lower in Natura 2000",
+    unknown  = "Uncertain"
+  ),
+  drop = FALSE,
+  name = NULL
+)
+```
+
+```{r}
+smooth_df <- result_ci_difference %>%
+  distinct(year, est_original, ll, ul, effect_coarse)
+
+p_boot_richness <- result_ci_difference %>%
+  ggplot(aes(x = factor(year))) +
+
+  # zero reference line
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+
+  # optional threshold lines
+  geom_hline(
+    yintercept = c(-threshold_specs, threshold_specs),
+    linetype = "dotdash",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+
+  # CI bounds (raw)
+  geom_errorbar(
+    data = smooth_df,
+    aes(ymin = ll, ymax = ul),
+    linewidth = 0.6,
+    width = 0.2,
+    colour = "black",
+    show.legend = TRUE
+  ) +
+
+  # point estimate
+  geom_point(
+    data = smooth_df,
+    aes(y = est_original, fill = effect_coarse),
+    size = 2,
+    shape = 21,
+    colour = "black",
+    stroke = 0.3,
+    show.legend = TRUE
+  ) +
+
+  # smoother: estimate trend
+  geom_smooth(
+    data = smooth_df,
+    aes(y = est_original, x = as.numeric(factor(year))),
+    method = "loess",
+    se = FALSE,
+    colour = "darkorange",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI lower bound
+  geom_smooth(
+    data = smooth_df,
+    aes(y = ll, x = as.numeric(factor(year))),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI upper bound
+  geom_smooth(
+    data = smooth_df,
+    aes(y = ul, x = as.numeric(factor(year))),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  coarse_colour +
+  scale_x_discrete(
+    breaks = seq(1975, 2024, by = 5) |> as.character()
+  ) +
+  scale_y_continuous(
+    breaks = scales::pretty_breaks(n = 10)
+  ) +
+
+  labs(
+    y = "Difference in species richness density",
+    x = "Year"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "top",
+    legend.box = "vertical"
+  )
+
+save_figure(p_boot_richness, "sp_richness_boot_coarse", path = out_path,
+            dpi = 300, width = 8, height = 6)
+p_boot_richness
+```
+
+## Model based
+
+We can also perform this analysis in a model based way (GLMM).
+Remember we aggregated:
+
+```{r}
+head(cell_richness)
+```
+
+```{r}
+cell_richness %>%
+  ggplot(aes(x = richness)) +
+  geom_histogram() +
+  facet_wrap(~location)
+```
+
+A Poisson model will not be reasonable (variance is much higher than mean):
+
+```{r}
+cell_richness %>%
+  summarise(mean = mean(richness),
+            var = var(richness),
+            .by = "location")
+```
+
+Although not ideal, a Gaussian model directly models the mean richness and produces contrasts that are easy to interpret. Then the model is
+
+$$
+Y_{ijt} \sim \mathcal{N}(\mu_{ijt}, \sigma^2)
+$$
+
+where
+
+* $Y_{ijt}$ = observed local species richness in cell $i$, habitat $j$, year $t$
+* $b_i$ = random intercept for cell $i$
+* $\mu_{ijt} = \mathbb{E}[Y_{ijt}]$ = expected richness
+
+with linear predictor
+
+$$
+\mu_{ijt} = \beta_0 + \beta_{\mathrm{loc}(j)} + \beta_{\mathrm{year}(t)} + \beta_{\mathrm{loc}\times\mathrm{year}(j,t)} + b_i
+$$
+
+where
+
+$$
+b_i \sim \mathcal{N}(0,\sigma_b^2).
+$$
+
+The interaction term $\beta_{\mathrm{loc}\times\mathrm{year}(j,t)}$ allows the difference between Natura 2000 and non-Natura 2000 to vary from year to year.
+
+```{r}
+# Create factors
+cell_richness_f <- cell_richness %>%
+  mutate(
+    year_f = factor(year),
+    cellCode_f = factor(cellCode),
+    location_f = factor(location, levels = c("non-Natura2000", "Natura2000"))
+  )
+```
+
+```{r}
+fit_richness <- cache_compute(
+  path = cache_path,
+  file = "fit_richness",
+  expr = {
+    glmmTMB(
+      richness ~ location_f*year_f + (1 | cellCode_f),
+      data = cell_richness_f
+    )
+  }
+)
+```
+
+```{r}
+# Calculate contrasts and confidence limits
+emm <- emmeans(fit_richness, ~ location_f | year_f)
+diff_year <- contrast(
+  emm,
+  method = "revpairwise",
+  by = "year_f"
+)
+diff_df <- as.data.frame(diff_year)
+
+diff_df <- diff_df %>%
+  mutate(
+    ll = estimate - 1.96 * SE,
+    ul = estimate + 1.96 * SE
+  )
+```
+
+```{r}
+# Perform effect classification
+smooth_df_model <- dubicube::add_effect_classification(
+  df = diff_df,
+  cl_columns = c("ll", "ul"),
+  threshold = threshold_specs,
+  reference = 0,
+  coarse = TRUE
+) %>%
+  mutate(year = as.numeric(year_f))
+
+p_model_richness <- smooth_df_model %>%
+  ggplot(aes(x = year_f)) +
+
+  # zero line
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+
+  # threshold lines
+  geom_hline(
+    yintercept = c(-threshold_specs, threshold_specs),
+    linetype = "dotdash",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+  
+  # CI bounds (raw)
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    linewidth = 0.6,
+    width = 0.2,
+    colour = "black",
+    show.legend = TRUE
+  ) +
+
+  # point estimate
+  geom_point(
+    aes(y = estimate, fill = effect_coarse),
+    size = 2,
+    shape = 21,
+    colour = "black",
+    stroke = 0.3,
+    show.legend = TRUE
+  ) +
+
+  # smoother: estimate trend
+  geom_smooth(
+    aes(y = estimate, x = year),
+    method = "loess",
+    se = FALSE,
+    colour = "darkorange",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI lower bound
+  geom_smooth(
+    aes(y = ll, x = year),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI upper bound
+  geom_smooth(
+    aes(y = ul, x = year),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  coarse_colour +
+  scale_x_discrete(
+    breaks = seq(1975, 2024, by = 5) |> as.character()
+  ) +
+  scale_y_continuous(
+    breaks = scales::pretty_breaks(n = 10)
+  ) +
+
+  labs(
+    y = "Difference in species richness density",
+    x = "Year"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "top",
+    legend.box = "vertical"
+  )
+
+save_figure(p_model_richness, "sp_richness_model_coarse", path = out_path,
+            dpi = 300, width = 8, height = 6)
+p_model_richness
+```
+
+```{r}
+# Determine common y-axis limits from both input datasets
+y_limits <- range(
+  c(
+    smooth_df$ll,
+    smooth_df$ul,
+    smooth_df_model$ll,
+    smooth_df_model$ul
+  ),
+  na.rm = TRUE
+)
+
+# Apply common limits and add titles
+p_boot_richness_final <-
+  p_boot_richness +
+  coord_cartesian(ylim = y_limits) +
+  ggtitle("Bootstrap") +
+  theme(
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10)
+  )
+
+p_model_richness_final <-
+  p_model_richness +
+  coord_cartesian(ylim = y_limits) +
+  ggtitle("Model-based") +
+  theme(
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10)
+  )
+
+# Combine
+p_combined <- plot_grid(
+  p_boot_richness_final,
+  p_model_richness_final,
+  labels = c("A.", "B."),
+  ncol = 1,
+  align = "hv",
+  axis = "tblr"
+)
+
+save_figure(p_combined, "sp_richness_coarse", path = out_path,
+            dpi = 300, width = 8, height = 8)
+```
+
+
+## Sampling effort (model based)
+We attempted to include survey effort in the model using the log-transformed total number of occurrences per habitat and year.
+
+However, this approach does not work well in practice. The effort variable is strongly confounded with the year × habitat structure in the data, meaning it is not independent from the variables already in the model. As a result, the model becomes rank-deficient and cannot uniquely estimate the effect of effort: some coefficients are dropped because they are not identifiable.
+
+In short, we tried to account for sampling effort, but the available effort proxy is too closely tied to temporal and habitat variation to be estimated separately from the main effects.
+
+# Occurrence density
+## Bootstrapping
+
+We use the same method as before.
+
+```{r}
+# Combine datasets
+cell_occurrences <- bind_rows(
+  cube_natura2000$data %>%
+    mutate(location = "Natura2000"),
+  cube_nonnatura2000$data %>%
+    mutate(location = "non-Natura2000")
+) %>%
+  summarise(
+    total_occ = sum(obs),
+    .by = c("year", "cellCode", "location")
+  )
+```
+
+```{r}
+# Number of bootstrap replicates
+n_boot <- 1000
+
+years <- sort(unique(cell_occurrences$year))
+
+# Calculate species richness density per year
+out_occurrences <- purrr::map_dfr(years, function(yr) {
+  # Filter year
+  dat_year <- filter(cell_occurrences, year == yr)
+  
+  # Split data
+  nat <- filter(dat_year, location == "Natura2000")
+  nonnat <- filter(dat_year, location == "non-Natura2000")
+
+  # Original estimate
+  est_original <-
+    mean(nat$total_occ) -
+    mean(nonnat$total_occ)
+
+  # Bootstrap replicates
+  rep_boot <- replicate(n_boot, {
+    nat_boot <- nat[sample(nrow(nat), replace = TRUE), ]
+    nonnat_boot <- nonnat[sample(nrow(nonnat), replace = TRUE), ]
+
+    mean(nat_boot$total_occ) -
+      mean(nonnat_boot$total_occ)
+  })
+  
+  # Calculate statistics
+  est_boot <- mean(rep_boot)
+  se_boot <- sd(rep_boot)
+  bias_boot <- est_boot - est_original
+  
+  # Return results in dubicube format
+  tibble(
+    sample = seq_len(n_boot),
+    year = yr,
+    est_original = est_original,
+    rep_boot = rep_boot,
+    est_boot = est_boot,
+    se_boot = se_boot,
+    bias_boot = bias_boot
+  )
+})
+```
+
+We can calculate the intervals with **dubicube** (not BCa).
+
+```{r}
+# Calculate percentile intervals
+ci_difference_occurrences <- dubicube::calculate_bootstrap_ci(
+  bootstrap_results = out_occurrences,
+  grouping_var = "year",
+  type = "perc",
+  conf = 0.95,
+  aggregate = FALSE
+)
+```
+
+```{r}
+threshold_occs <- 15
+```
+
+We classify effects with **dubicube**.
+We use an arbitrary difference of `r threshold_specs` species to differentiate between large or small effects.
+
+```{r}
+# Perform effect classification
+result_ci_difference_occurrences <- dubicube::add_effect_classification(
+  df = ci_difference_occurrences,
+  cl_columns = c("ll", "ul"),
+  threshold = threshold_occs,
+  reference = 0,
+  coarse = TRUE
+)
+```
+
+```{r}
+smooth_df_occurrences <- result_ci_difference_occurrences %>%
+  distinct(year, est_original, ll, ul, effect_coarse)
+
+p_boot_occurrences <- result_ci_difference_occurrences %>%
+  ggplot(aes(x = factor(year))) +
+
+  # zero reference line
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+
+  # optional threshold lines
+  geom_hline(
+    yintercept = c(-threshold_occs, threshold_occs),
+    linetype = "dotdash",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+
+  # CI bounds (raw)
+  geom_errorbar(
+    data = smooth_df_occurrences,
+    aes(ymin = ll, ymax = ul),
+    linewidth = 0.6,
+    width = 0.2,
+    colour = "black",
+    show.legend = TRUE
+  ) +
+
+  # point estimate
+  geom_point(
+    data = smooth_df_occurrences,
+    aes(y = est_original, fill = effect_coarse),
+    size = 2,
+    shape = 21,
+    colour = "black",
+    stroke = 0.3,
+    show.legend = TRUE
+  ) +
+
+  # smoother: estimate trend
+  geom_smooth(
+    data = smooth_df_occurrences,
+    aes(y = est_original, x = as.numeric(factor(year))),
+    method = "loess",
+    se = FALSE,
+    colour = "darkorange",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI lower bound
+  geom_smooth(
+    data = smooth_df_occurrences,
+    aes(y = ll, x = as.numeric(factor(year))),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI upper bound
+  geom_smooth(
+    data = smooth_df_occurrences,
+    aes(y = ul, x = as.numeric(factor(year))),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  coarse_colour +
+  scale_x_discrete(
+    breaks = seq(1975, 2024, by = 5) |> as.character()
+  ) +
+  scale_y_continuous(
+    breaks = scales::pretty_breaks(n = 10)
+  ) +
+
+  labs(
+    y = "Difference in occurrence density",
+    x = "Year"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "top",
+    legend.box = "vertical"
+  )
+
+save_figure(p_boot_occurrences, "sp_occs_boot_coarse", path = out_path,
+            dpi = 300, width = 8, height = 6)
+p_boot_occurrences
+```
+
+## Model based
+
+We can perform this analysis in a model based way like before.
+
+```{r}
+# Create factors
+cell_occurrences_f <- cell_occurrences %>%
+  mutate(
+    year_f = factor(year),
+    cellCode_f = factor(cellCode),
+    location_f = factor(location, levels = c("non-Natura2000", "Natura2000"))
+  )
+```
+
+```{r}
+fit_occurrences <- cache_compute(
+  path = cache_path,
+  file = "fit_occurrences",
+  expr = {
+    glmmTMB(
+      total_occ ~ location_f*year_f + (1 | cellCode_f),
+      data = cell_occurrences_f
+    )
+  }
+)
+```
+
+```{r}
+# Calculate contrasts and confidence limits
+emm_occurrences <- emmeans(fit_occurrences, ~ location_f | year_f)
+diff_year_occurrences <- contrast(
+  emm_occurrences,
+  method = "revpairwise",
+  by = "year_f"
+)
+diff_df_occurrences <- as.data.frame(diff_year_occurrences)
+
+diff_df_occurrences <- diff_df_occurrences %>%
+  mutate(
+    ll = estimate - 1.96 * SE,
+    ul = estimate + 1.96 * SE
+  )
+```
+
+```{r}
+# Perform effect classification
+smooth_df_model_occurrences <- dubicube::add_effect_classification(
+  df = diff_df_occurrences,
+  cl_columns = c("ll", "ul"),
+  threshold = threshold_occs,
+  reference = 0,
+  coarse = TRUE
+) %>%
+  mutate(year = as.numeric(year_f))
+
+p_model_occurrences <- smooth_df_model_occurrences %>%
+  ggplot(aes(x = year_f)) +
+
+  # zero line
+  geom_hline(
+    yintercept = 0,
+    linetype = "dashed",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+
+  # threshold lines
+  geom_hline(
+    yintercept = c(-threshold_specs, threshold_specs),
+    linetype = "dotdash",
+    linewidth = 0.5,
+    colour = "grey40"
+  ) +
+  
+  # CI bounds (raw)
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    linewidth = 0.6,
+    width = 0.2,
+    colour = "black",
+    show.legend = TRUE
+  ) +
+
+  # point estimate
+  geom_point(
+    aes(y = estimate, fill = effect_coarse),
+    size = 2,
+    shape = 21,
+    colour = "black",
+    stroke = 0.3,
+    show.legend = TRUE
+  ) +
+
+  # smoother: estimate trend
+  geom_smooth(
+    aes(y = estimate, x = year),
+    method = "loess",
+    se = FALSE,
+    colour = "darkorange",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI lower bound
+  geom_smooth(
+    aes(y = ll, x = year),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  # smoother: CI upper bound
+  geom_smooth(
+    aes(y = ul, x = year),
+    method = "loess",
+    se = FALSE,
+    colour = "orange",
+    linetype = "dotted",
+    linewidth = 1,
+    formula = "y ~ x"
+  ) +
+
+  coarse_colour +
+  scale_x_discrete(
+    breaks = seq(1975, 2024, by = 5) |> as.character()
+  ) +
+  scale_y_continuous(
+    breaks = scales::pretty_breaks(n = 10)
+  ) +
+
+  labs(
+    y = "Difference in occurrence density",
+    x = "Year"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "top",
+    legend.box = "vertical"
+  )
+
+save_figure(p_model_occurrences, "sp_occs_model_coarse", path = out_path,
+            dpi = 300, width = 8, height = 6)
+p_model_occurrences
+```
+
+```{r}
+# Determine common y-axis limits from both input datasets
+y_limits_occurrences <- range(
+  c(
+    smooth_df_occurrences$ll,
+    smooth_df_occurrences$ul,
+    smooth_df_model_occurrences$ll,
+    smooth_df_model_occurrences$ul
+  ),
+  na.rm = TRUE
+)
+
+# Apply common limits and add titles
+p_boot_occurrences_final <-
+  p_boot_occurrences +
+  coord_cartesian(ylim = y_limits_occurrences) +
+  ggtitle("Bootstrap") +
+  theme(
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10)
+  )
+
+p_model_occurrences_final <-
+  p_model_occurrences +
+  coord_cartesian(ylim = y_limits_occurrences) +
+  ggtitle("Model-based") +
+  theme(
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10)
+  )
+
+# Combine
+p_combined_occurrences <- plot_grid(
+  p_boot_occurrences_final,
+  p_model_occurrences_final,
+  labels = c("A.", "B."),
+  ncol = 1,
+  align = "hv",
+  axis = "tblr"
+)
+
+save_figure(p_combined_occurrences, "sp_occs_coarse", path = out_path,
+            dpi = 300, width = 8, height = 8)
+```
