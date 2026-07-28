@@ -19,7 +19,6 @@ library(sf)
 ```
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-
 {{< include ObservedSpeciesRichness.Rmd >}}
 
 ```{r, eval=FALSE}
@@ -46,7 +45,7 @@ OSR_map <- readRDS("./Insecta_data_Flanders_1km_ALL/OSR_map.rds")$data
 ggplot(data = OSR_map) +
   geom_sf(aes(fill = diversity_val), color = NA) +
   scale_fill_viridis_c(na.value = NA) +
-  theme_minimal()+
+  theme_void()+
   theme(legend.title = element_blank())
 ```
 

@@ -4,6 +4,8 @@ format:
   html:
     code-fold: true
     code-summary: "Show the code"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
@@ -32,13 +34,24 @@ The indicator is highly dependent on having an accurate and complete phylogeneti
 library(sf)
 library(ggplot2)
 
-pd_map <- read_sf("./pdIndicator/pd_Vl_1km.geojson")
+pd_map <- read_sf("./src/pdIndicator/pd_Vl_1km.geojson")
+
+pd_map <- st_transform(pd_map, crs=3035)
+
 
 ggplot(data = pd_map) +
   geom_sf(aes(fill = pd), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +   # voor continue waarden
-  theme_minimal()+
-  theme(legend.title = element_blank())
+  scale_fill_viridis_c(na.value = NA,
+                       name = "Faith’s PD") +   # voor continue waarden
+  theme_void()
+
+ggsave(
+  filename = "./src/pdIndicator/pd.png",
+  plot = a,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
 ```
 
 ## Phylogenetic Diversity loss map
@@ -64,12 +77,22 @@ This indicator treats all "threatened" categories (CR, EN, VU) with equal weight
 library(sf)
 library(ggplot2)
 
-pd_map <- read_sf("./pdIndicator/pd_loss_Vl_1km.geojson")
+pd_map <- read_sf("./src/pdIndicator/pd_loss_Vl_1km.geojson")
 
-ggplot(data = pd_map) +
+pd_map <- st_transform(pd_map, crs=3035)
+
+b <- ggplot(data = pd_map) +
   geom_sf(aes(fill = pd_loss), color = NA) +
-  scale_fill_viridis_c(na.value = NA) +   # voor continue waarden
-  theme_minimal()+
-  theme(legend.title = element_blank())
+  scale_fill_viridis_c(na.value = NA,
+                       name= "Expected loss of Faith’s PD") +   # voor continue waarden
+  theme_void()
+
+ggsave(
+  filename = "./src/pdIndicator/pdlossmap.png",
+  plot = b,
+  width = 8,
+  height = 5,
+  dpi = 300
+)
 ```
 :::

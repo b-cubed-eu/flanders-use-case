@@ -448,9 +448,9 @@ plot_ts(OT_ts)
 ```
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
-OT_ts <- readRDS('./Flanders_1km/OT_ts.rds')
+OT_ts <- readRDS('./src/Flanders_1km/OT_ts.rds')
 OT_ts_data <- OT_ts$data
-ggplot(OT_ts_data, aes(year, diversity_val)) +
+a <- ggplot(OT_ts_data, aes(year, diversity_val)) +
   geom_point(
     size = 3,
     colour = "#48A529"

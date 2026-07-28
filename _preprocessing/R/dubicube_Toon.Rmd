@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+remotes::install_github("b-cubed-eu/dubicube")
 library(dubicube)
 library(dplyr)
 library(ggplot2)
@@ -15,7 +16,7 @@ library(ggplot2)
 ## load cube
 
 ```{r }
-angioGBIF <- read.csv("c:/Thuiswerk_c/Angiosperm_data_Flanders_1km.csv")
+angioGBIF <- read.csv("./_preprocessing/data/raw/Angiosperm_data_Flanders_1km.csv")
 ```
 
 ### check for zero's and NoData
@@ -95,9 +96,14 @@ The eea gridcells with 0 occurences (or no data) are not exported? These locatio
 ```{r}
 angio_p$data %>%
   group_by(cellCode) %>%
-  summarize(sum_obs = sum(obs)) %>%
-  dplyr::arrange(desc(sum_obs)) %>%
-  ggplot(aes(x = sum_obs)) + geom_histogram()
+  summarize(`Number of observations` = sum(obs)) %>%
+  ggplot(aes(x = `Number of observations`)) +
+  geom_histogram(fill = "#005957", color = NA) +
+  theme_minimal() +
+  theme(
+    axis.title = element_text(),
+    axis.text = element_text()
+  )
 ```
 
 It's very strong skewed to the right, to be expected for a variable 'number of observations'.
@@ -115,9 +121,14 @@ red = normal distribution black = density function of the actual distribution in
 ```{r}
 ggplot(angio_p_log, aes(x = log_sum_obs)) + 
   geom_density() +
-  stat_function(fun = dnorm, colour = "red",
+  stat_function(fun = dnorm, colour = "#48A529",
                 args = list(mean = mean(angio_p_log$log_sum_obs),
-                            sd = sd(angio_p_log$log_sum_obs)))
+                            sd = sd(angio_p_log$log_sum_obs)))+
+  labs(
+    x = "Log(Number of occurrences)",
+    y = "Frequency"
+  )+
+  theme_minimal()
 ```
 
 Solution for visualization -\> a legend in the log scale?
