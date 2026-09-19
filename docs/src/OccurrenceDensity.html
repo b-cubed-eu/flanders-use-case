@@ -109,23 +109,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.qmd">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
     </ul>
   </li>
@@ -198,9 +202,9 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#indicator-type" id="toc-indicator-type" class="nav-link active" data-scroll-target="#indicator-type">Indicator type</a></li>
-  <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation:</a></li>
-  <li><a href="#applicability-for-policy" id="toc-applicability-for-policy" class="nav-link" data-scroll-target="#applicability-for-policy">Applicability for policy:</a></li>
-  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations:</a></li>
+  <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation</a></li>
+  <li><a href="#applicability-for-policy" id="toc-applicability-for-policy" class="nav-link" data-scroll-target="#applicability-for-policy">Applicability for policy</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
   </ul>
 </nav>
     </div>
@@ -210,33 +214,54 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="indicator-type" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type">Indicator type</h3>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
 <p>Data quality indicator.</p>
 </section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation:</h3>
-<p>This metric calculates the total number of biodiversity occurrences divided by the surface area, specifically summing the number of records per square kilometer for each grid cell or year.</p>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>This metric measures the density of occurrence records by summing the number of occurrences per square kilometre within each grid cell. For maps, the value is calculated for each spatial cell. For time-series analyses, the density is summed across all grid cells in the data cube for each time step.</p>
 <ul>
-<li>High value: The grid cell contains a high concentration of occurrences.</li>
-<li>Low value: The records are sparse and thinly spread out over a large geographic area.</li>
+<li>High value: the grid cell contains a high concentration of occurrences.</li>
+<li>Low value: the occurrence records in this grid cell are sparse.</li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy:</h3>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h2>
 <ul>
-<li>Allowing comparison of survey effort: This is a vital baseline tool for regional planning because it allows to fairly compare human observation activity</li>
-<li>Estimating citizen science engagement: It helps governments evaluate the true density of citizen science engagement.</li>
+<li>Allows comparison of survey effort across scales: cubes with different grid sizes can easily be compared.</li>
+<li>Estimating citizen science engagement: it helps evaluate the true density of citizen science records.</li>
 </ul>
+<p>However, these two interpretations are closely linked and can be difficult to separate. They should therefore be interpreted with caution and ideally in combination with other indicators or expert knowledge to ensure correct interpretation. Limitations</p>
+<p>In case of citizen science data, this metric primarily reflects localised human search effort (like a popular walking path or a nature centre).</p>
 </section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations:</h3>
-<p>Just like Total Occurrences, this metric is ecologically meaningless when looked at in isolation. It primarily reflects localized human search effort (like a popular walking path or a nature center) rather than the actual conservation value of the environment.</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>In case of citizen science data, this metric primarily reflects localised human search effort (like a popular walking path or a nature centre).</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

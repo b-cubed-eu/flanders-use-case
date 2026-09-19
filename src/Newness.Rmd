@@ -1,20 +1,21 @@
+## Indicator type
 
-### Indicator type
+Data quality indicator.
 
-Data Quality.
+## Explanation
 
-### Explanation
+This indicator measures the age distribution of records within a dataset. For spatial maps, it calculates the average (mean) year of all species occurrence records within a specific grid cell, indicating how recent or historical the data in that cell is. For time-series analyses, the value is calculated as a running historical average. It calculates a cumulative mean at each time step based on all records collected from the beginning of the dataset until that time point. This tracks how the ‘center of mass’ of the dataset changes over time as new records are added, revealing whether historical or newer records are dominant. 
 
-This indicator calculates the average (mean) year of all nature records within a specific grid cell, providing a quick look at how recent or historical the data in that cell is.
+- High value (recent mean year): The majority of the data in the grid cell was collected recently. This is often driven by citizen science data over the last few years.
 
-- High value (recent mean year): The vast majority of the data in the grid cell was collected very recently. This is often driven by citizen science data from people using smartphones and apps over the last few years.
-- Low value (older mean year): This indicates that a large portion of the dataset consists of older museum collections, historical surveys, or long-running monitoring programs from previous decades.
+- Low value (older mean year): This indicates that a large portion of the species occurrence records consists of older museum collections or long-running monitoring programs.
 
-### Applicability for policy
+## Applicability for policy
 
-- Data Freshness Check: It serves as a vital metadata check for policymakers to ensure they are not basing current conservation laws on outdated information. If a grid cell has a very low mean year, this indicates that the area needs urgent re-surveying.
-- Monitoring history: It helps environmental agencies map out how data collection methods have evolved across different provinces.
+- Monitoring survey history: The indicator helps visualise how survey effort has evolved across space and time, highlighting areas that have been surveyed recently as well as regions with limited recent monitoring.
 
-### Limitations
+- Data recency assessment: Grid cells with lower mean observation years rely more heavily on older records and may require re-surveying to ensure that management decisions are informed by up-to-date biodiversity data.
 
-A recent mean year does not infer high data quality. A region with a low (older) mean year might actually have a much higher data quality because it has been conducting flawless, highly comprehensive, and structured professional monitoring for forty years. 
+## Limitations
+
+A recent mean year is not necessarily an indication of quality, as some countries or regions have been conducting comprehensive biodiversity monitoring for many years and will therefore reflect an older mean year of occurrence, while others may show a recent mean year due to, e.g., the sudden availability of large amounts of citizen science data. 

@@ -19,10 +19,6 @@ website:
            href: src/b3gbi_indicators_1km.qmd
          - text: Results flowering plants 10km
            href: src/b3gbi_indicators_10km.qmd
-         - text: Results flowering plants 1km no outliers
-           href: src/b3gbi_indicators_1km_no_outliers.qmd
-         - text: Results flowering plants 1km no outliers and filter completeness
-           href: src/b3gbi_indicators_1km_no_outliers_filter_completeness.qmd
          - text: Results flowering plants Florabank 1km 
            href: src/Flanders_florabank_1km.qmd
          - text: Results flowering plants Florabank 10km 
@@ -31,8 +27,6 @@ website:
            href: src/b3gbi_indicators_Insecta_1km.qmd
          - text: Results insects 10km
            href: src/b3gbi_indicators_Insecta_10km.qmd
-         - text: Results insects 1 km (no filters)
-           href: src/b3gbi_indicators_Insecta_1km_ALL.qmd
       - text: 'Phylogenetic indicators'
         menu:
          - text: Results at 1 km resolution
@@ -58,9 +52,6 @@ website:
       - icon: github
         href: https://github.com/b-cubed-eu/WP6_use_case_Flanders
         aria-label: "GitHub Repository"
-        
-
-      
 
 format:
   html:
@@ -69,7 +60,7 @@ format:
       - brand
     css: styles.css
     toc: true
-    
+    include-after-body: footer.html  
 
 editor: visual
 

@@ -4,6 +4,49 @@ output: html_document
 ---
 
 ```{r}
+b_cubed_palette <- c(
+  "#005957", # donker teal (primary)
+  "#6CDDB4", # licht mint / accent
+  "#2E7D32",
+  "#43A047",
+  "#81C784",
+  "#C8E6C9",
+  "#FFFFFF"
+)
+
+library(ggplot2)
+
+theme_bcubed <- function() {
+  theme_minimal(base_size = 12) +
+    theme(
+      plot.title = element_text(face = "bold"),
+      legend.position = "bottom",
+      panel.grid.minor = element_blank()
+    )
+}
+
+scale_fill_bcubed <- function(...) {
+  scale_fill_manual(values = b_cubed_palette, ...)
+}
+
+scale_color_bcubed <- function(...) {
+  scale_color_manual(values = b_cubed_palette, ...)
+}
+
+library(scales)
+
+n <- length(unique(df_top$publisher))
+
+gradient_palette <- colorRampPalette(c(
+  "#6B3F2A",  # bruin
+  "#FFFFFF",  # wit
+  "#005957"   # B-Cubed groen
+))(n)
+```
+
+PART 1: Belgium download
+
+```{r}
 #read in data
 
 library(dplyr)
@@ -11,10 +54,6 @@ library(dplyr)
 #filter toevoegen voor Vlaanderen
 
 data_all_Flanders <- read.csv("~/GitHub/Flanders_use_case/_preprocessing/data/raw/data_all_Flanders.csv")
-
-
-
-
 
 overzicht <- data_all_Flanders %>%
   group_by(year) %>%
@@ -25,16 +64,15 @@ library(ggplot2)
 overzicht$year <- as.numeric(as.character(overzicht$year))
 
 b <- ggplot(overzicht, aes(x = year, y = total_records)) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2) +
+  geom_line(linewidth = 1, color= "#005957") +
   scale_x_continuous(
     breaks = seq(min(overzicht$year), max(overzicht$year), by = 10)
   ) +
   labs(
-    title = "Total Number of Records per Year",
     y = "Number of Records"
   ) +
-  theme_minimal(base_size = 12)
+  theme_minimal(base_size = 12)+
+  theme_bcubed()
 ```
 
 ```{r}
@@ -42,6 +80,10 @@ b <- ggplot(overzicht, aes(x = year, y = total_records)) +
 df <- data_all_Flanders
 
 df$year <- as.numeric(as.character(df$year))
+
+debug <- df%>%
+  group_by(year)%>%
+  summarise(total_records=sum(n_records))
 
 top_publishers <- df %>%
   filter(year >= 2000) %>%
@@ -59,15 +101,34 @@ df_top <- df %>%
 
 library(ggplot2)
 
+library(scales)
+
+n <- n_distinct(df_top$publisher)
+
+gradient_palette <- colorRampPalette(c(
+  "#6B3F2A",
+  "#FFFFFF",
+  "#005957",
+  "#6CDDB4",
+  '#48A529',
+  '#000000'
+))(n)
+
+
 a <- ggplot(df_top, aes(x = year, y = totaal_records, fill = publisher)) +
   geom_col() +
+  scale_fill_manual(values = gradient_palette) +
   labs(
     title = "Top 10 Publishers by Number of Records (Since 2000)",
     x = "Year",
-    y = "Number of Records",
+    y = "Number of records",
     fill = "Publisher"
   ) +
-  theme_minimal(base_size = 12)
+  theme(
+    plot.title = element_text(face = "bold"),
+    axis.title = element_text(face = "plain")
+  )+
+  theme_minimal()
 
 top_publishers <- df %>%
   group_by(publisher) %>%
@@ -77,5 +138,96 @@ top_publishers <- df %>%
 
 top_publishers
 
-write.csv("~/GitHub/Flanders_use_case/_preprocessing/data/raw/top_publishers.csv")
+library('forcats')
+
+top_publishers <- top_publishers %>%
+  mutate(publisher = fct_reorder(publisher, total_records))
+
+ b <-  ggplot(top_publishers, aes(x = total_records, y = publisher)) +
+  geom_col(fill = "#005957") +
+  geom_text(
+    aes(label = scales::comma(total_records)),
+    hjust = -0.1,
+    size = 3.5
+  ) +
+  scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Total records per publisher",
+    x = "Total records",
+    y = NULL
+  ) +
+  theme_minimal()
+
+write.csv(top_publishers, "~/GitHub/Flanders_use_case/_preprocessing/data/raw/top_publishers.csv")
+```
+
+PART II: Flanders download
+
+```{r}
+library('rgbif')
+library('sf')
+
+dl <- occ_download_get(
+  key = "0000799-260623161305970"
+)
+
+dat <- occ_download_import(
+  dl
+)
+
+#only select for gridcells in Flanders
+
+Flanders <- read_sf('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+
+dat_Flanders <- dat%>%
+  filter(eeacellcode%in%Flanders$CELLCODE)
+
+dat_Flanders_sum <- dat_Flanders %>%
+  group_by(kingdom, year) %>%
+  summarise(total_records = sum(occurrences), .groups = "drop")%>%
+  filter(year>1974)
+
+n <- n_distinct(dat_Flanders_sum$kingdom)
+
+gradient_palette <- colorRampPalette(c(
+  "#6B3F2A",
+  "#FFFFFF",
+  "#005957",
+  "#6CDDB4",
+  '#48A529',
+  '#000000'
+))(n)
+
+
+test <- ggplot(dat_Flanders_sum, aes(x = year, y = total_records, fill = kingdom)) +
+  geom_col() +
+  scale_fill_manual(values = gradient_palette) +
+  labs(
+    title = "Records per year by kingdom",
+    x = "Year",
+    y = "Total number of records",
+    fill = "Kingdom"
+  ) +
+  theme_minimal()
+
+dat_Flanders_sum <- dat_Flanders %>%
+  group_by(year) %>%
+  summarise(total_records = sum(occurrences))%>%
+  filter(year>1974)
+
+dat_prop <- dat_Flanders %>%
+  filter(year>1974)%>%
+  group_by(kingdom) %>%
+  summarise(total_records = sum(occurrences), .groups = "drop") %>%
+  mutate(proportion = total_records / sum(total_records))
+
+test <- ggplot(dat_prop, aes(x = kingdom, y = proportion)) +
+  geom_col(fill = "steelblue") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Proportion of records per kingdom",
+    x = "Kingdom",
+    y = "Proportion"
+  ) +
+  theme_minimal()
 ```

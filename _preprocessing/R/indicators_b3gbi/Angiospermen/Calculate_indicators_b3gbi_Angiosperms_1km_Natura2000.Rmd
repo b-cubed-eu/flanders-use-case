@@ -85,8 +85,6 @@ saveRDS(TO_ts,
 #Bootstrapping ok
 ```
 
-
-
 #8.4. Rarity
 
 ```{r}

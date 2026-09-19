@@ -116,12 +116,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Results flowering plants 10km</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../src/Flanders_1km_no_outliers.qmd">
- <span class="dropdown-text">Results flowering plants 1km no outliers</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
  <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.qmd">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
@@ -130,10 +130,6 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
  <span class="dropdown-text">Results insects 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results insects 1 km (no filters)</span></a>
   </li>  
     </ul>
   </li>
@@ -205,13 +201,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#observed-species-richness" id="toc-observed-species-richness" class="nav-link active" data-scroll-target="#observed-species-richness">Observed species richness</a>
-  <ul class="collapse">
-  <li><a href="#indicator-type" id="toc-indicator-type" class="nav-link" data-scroll-target="#indicator-type">Indicator type</a></li>
+  <li><a href="#indicator-type" id="toc-indicator-type" class="nav-link active" data-scroll-target="#indicator-type">Indicator type</a></li>
   <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation</a></li>
   <li><a href="#applicability-for-policy" id="toc-applicability-for-policy" class="nav-link" data-scroll-target="#applicability-for-policy">Applicability for policy</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -221,33 +214,49 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="observed-species-richness" class="level2">
-<h2 class="anchored" data-anchor-id="observed-species-richness">Observed species richness</h2>
-<section id="indicator-type" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type">Indicator type</h3>
-<p>State / Trend Indicator (Alpha Diversity).</p>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
+<p>State indicator.</p>
 </section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation</h3>
-<p>Observed species richness represents the total number of unique species discovered and recorded within a given geographic area or specific year:</p>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>Observed species richness represents the total number of unique species discovered and recorded. For maps, the value is calculated for each spatial cell. For time-series analyses, the value is calculated per time step over the complete data cube.&nbsp;</p>
 <ul>
-<li>High value: A high number of unique species, indicating a diverse local community.</li>
-<li>Low value: A low number of unique species, signaling a species-poor habitat or an area which has been rarely surveyed.</li>
+<li><p>High value: A high number of unique species, indicating a diverse local community.</p></li>
+<li><p>Low value: A low number of unique species, signalling a species-poor habitat.</p></li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h3>
-<p>This metric is a necessary for determining biodiversity hotspots and tracing potential declines in species richness across specific taxonomic groups. It provides the initial baseline data needed to justify local protection zones, evaluate regional habitat health, and track broad, long-term shifts in community composition over the years.</p>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h2>
+<p>This metric is necessary for determining biodiversity hotspots on a map or tracing potential declines in species richness over time. With taxonomic filtering, one can quantify the number of species in a particular cohort, such as known alien species, tree species, or carnivores.</p>
 </section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p>Observed species richness is highly sensitive to sampling bias and human observation effort. If certain grid cells are studied more carefully or visited more frequently by volunteers than others, they will artificially appear to have more species. Furthermore, results are skewed by species detectability. Rare or widely dispersed species are easily missed during casual surveys, whereas highly conspicuous or easy-to-find species will often be reported.</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>Observed species richness is highly sensitive to sampling bias and human observation effort. If certain grid cells are studied more carefully or visited more frequently by volunteers than others, they will artificially appear to have more species. Therefore, this metric should be interpreted within the context of a measure of survey effort, such as total occurrences or occurrence density. Furthermore, results are skewed by species detectability. Rare or widely dispersed species are easily missed by citizens, whereas highly conspicuous or easy-to-find species will often be reported (Hillebrand et al.&nbsp;2018).</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

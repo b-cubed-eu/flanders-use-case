@@ -1,19 +1,19 @@
-### Indicator type
+## Indicator type
 
-State / Trend Indicator.
+State Indicator.
 
-### Explanation
+## Explanation
 
-This indicator measures local biodiversity by dividing the total number of unique species by the surface area, specifically calculating the number of unique species found per square kilometer for each grid cell or year.
+This indicator measures local biodiversity by dividing the total number of unique species by the surface area, representing the number of unique species found per square kilometre. For maps, the value is calculated for each spatial cell. For time-series analyses, species richness density is obtained by dividing the total number of unique species per year by the surface area of the entire cube.
 
 - High value: The grid cell contains a high concentration of unique species.
-- Low value: The area contains a low concentraion of unique species.
+- Low value: The area contains a low concentration of unique species.
 
-### Applicability for policy:
+## Applicability for policy:
 
-- Allowing comparison across scales: Cubes with different grid sizes can easily be compared.
-- Identifying hotspots of biodiversity.
+- Allowing comparison across scales: cubes with different grid sizes can easily be compared.
+- Identifying hotspots of biodiversity. By including a filter at a higher taxonomic rank, richness can be compared between different orders or kingdoms.
 
-### Limitations
+## Limitations
 
-It is largely affected by biases in survey effort.
+Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al., 2018), as well as the detectability of each species.

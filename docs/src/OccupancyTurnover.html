@@ -109,23 +109,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.qmd">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
     </ul>
   </li>
@@ -197,8 +201,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#indicator-type" id="toc-indicator-type" class="nav-link active" data-scroll-target="#indicator-type">Indicator type:</a></li>
-  <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation:</a></li>
+  <li><a href="#indicator-type" id="toc-indicator-type" class="nav-link active" data-scroll-target="#indicator-type">Indicator type</a></li>
+  <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation</a></li>
   <li><a href="#applicability-for-policy" id="toc-applicability-for-policy" class="nav-link" data-scroll-target="#applicability-for-policy">Applicability for policy:</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
   </ul>
@@ -210,34 +214,49 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="indicator-type" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type">Indicator type:</h3>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
 <p>Trend / Pressure Indicator.</p>
 </section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation:</h3>
-<p>This indicator measures how the species composition within a specific area shifts over time, tracking the exact rate at which species appear or disappear between two periods. Using the Jaccard dissimilarity index, the system compares the historical list of species against the modern list and scores the turnover on a scale from 0 to 1:</p>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>Occupancy turnover measures changes in species composition over time, reflecting the rate at which species appear or disappear from a given area between two time steps in the data cube. The metric is calculated using the Jaccard dissimilarity index (Jaccard, 1901), which compares the species present in two time steps and quantifies their dissimilarity on a scale from 0 to 1. High values (closer to 1): indicate a complete turnover in species composition between the two time periods. Low values (closer to 0): indicate little or no change in species composition between the two time periods. This indicator is available only as a time series.</p>
+</section>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy:</h2>
 <ul>
-<li>High value (closer to 1): The area is experiencing rapid and community restructuring. Old species are disappearing and entirely new species are taking their place, meaning the two time periods look completely different from each other.</li>
-<li>Low value (closer to 0): The ecosystem is highly stable and static. The exact same species that lived in the area years ago are still present today.</li>
+<li>Ecosystem stability: This is a vital tool for assessing how ecosystems have responded to large-scale pressures like climate change, habitat fragmentation, land use change or nitrogen deposition.</li>
+<li>Evaluating effectiveness of management strategies: It allows managers to evaluate whether restoration policies are actually working. For example, if a province creates a new wetland, a controlled increase in turnover might indicate that the targeted wetland species are successfully moving in.</li>
+<li>Invasive species: Biological invasions can result in high turnover rates.</li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy:</h3>
-<ul>
-<li>Ecosystem stability &amp; Stress Testing: This is a vital tool for assessing how ecosystems respond to large-scale pressures like climate change, habitat fragmentation, or nitrogen deposition.</li>
-<li>Evaluating management success: It allows governments to see if nature restoration policies are actually working. For example, if a province creates a new wetland, a controlled increase in turnover proves that the targeted wetland species are successfully moving in.</li>
-<li>Invasive species tracking: High turnover can serve as a red flag for biological invasions, warning conservation boards that native species are potentially being replaced by incoming alien species.</li>
-</ul>
-</section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p>The metric shows that change is happening, but it cannot tell you why or whether the change is ecologically good or bad. A high turnover score could mean a heavily degraded forest is being invaded by invasive weeds, or it could mean a barren piece of land is successfully transforming into a rich wildflower meadow. It must always be combined with rarity or taxonomic indices to understand the true nature of the shift.</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>This measure is largely affected by survey effort. Further, it must always be combined with rarity or taxonomic indices to understand the true nature of the turnover shift (positive or negative for local biodiversity). Turnover timescales also differ across organism types. Mobile, short-lived species such as birds and insects exhibit faster turnover than sessile, long-lived tree species.</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

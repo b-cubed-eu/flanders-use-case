@@ -5,7 +5,7 @@ library(sf)
 library(dplyr)
 library(leaflet)
 library(lwgeom)
-
+library(ggplot2)
 ```
 
 ```{r}
@@ -147,3 +147,99 @@ EEA_Flanders_union_map_5km <- leaflet()%>%
 
 st_write(EEA_Flanders_union_5km, './_preprocessing/data/raw/spatial/EEA_5km_Flanders_union.geojson')
 ```
+```{r}
+#Add visualisation
+Flanders_noholes <- st_read('./_preprocessing/data/raw/spatial/flanders_noholes.geojson')
+
+Flanders_buffer <-st_read('./_preprocessing/data/raw/spatial/flanders_buffer15_wgs84.geojson')
+
+Flanders_10km <- st_read('./_preprocessing/data/raw/spatial/EEA_10km_Flanders_union.geojson')
+
+Flanders_1km <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Flanders_union.geojson')
+
+Natura_2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.geojson')
+
+nonNatura_2000 <- st_read('./_preprocessing/data/raw/spatial/EEA_1km_nonNatura2000.geojson')
+
+ggplot() +
+  geom_sf(data = Flanders_buffer,
+          fill = "#6CDDB4",   # B-Cubed groen
+          color = "#6CDDB4") +
+  geom_sf(data = Flanders_noholes,
+          fill = "#005957",   # B-Cubed lichtgroen
+          color = "#005957") +
+  theme_void()
+
+ggplot() +
+  geom_sf(data = Flanders_buffer,
+          fill = "#6CDDB4",   # B-Cubed groen
+          color = "#6CDDB4") +
+  geom_sf(data = Flanders_noholes,
+          fill = "#005957",   # B-Cubed lichtgroen
+          color = "#005957") +
+  geom_sf(data=Flanders_1km,
+          color = '#EFF8F5',
+          fill=NA)+
+  theme_void()
+
+ggplot() +
+  geom_sf(
+    data = nonNatura_2000,
+    aes(fill = "non Natura 2000"),
+    color = "#6CDDB4"
+  ) +
+  geom_sf(
+    data = Natura_2000,
+    aes(fill = "Natura 2000"),
+    color = "#005957"
+  ) +
+  scale_fill_manual(
+    name = NULL,
+    values = c(
+      "non Natura 2000" = "#6CDDB4",
+      "Natura 2000" = "#005957"
+    )
+  ) +
+  theme_void()
+
+fl <- ggplot() +
+  geom_sf(data = Flanders_noholes,
+          fill = "#48A529",
+          color = "#48A529"
+) +
+  theme_void()
+
+ggsave(
+  filename = "./_preprocessing/data/raw/spatial/Flanders_map.png",
+  plot = fl,
+  width = 8,
+  height = 6,
+  units = "in",
+  dpi = 300
+)
+```
+
+```{r}
+library(leaflet)
+
+library(sf)
+
+hbtrl <- st_read(
+  "C:/Users/jasmijn_hillaert/Downloads/ps_hbtrl/processed/ps_hbtrl/ps_hbtrl.lb72.gpkg"
+)
+
+vgtrl <- st_read(
+"C:/Users/jasmijn_hillaert/Downloads/ps_vglrl/ps_vglrl.shp")
+
+hbtrl_wgs84 <- st_transform(hbtrl, 4326)
+vgtrl_wgs84 <- st_transform(vgtrl, 4326)
+test <- leaflet()%>%
+  addTiles()%>%
+  addPolygons(data=hbtrl_wgs84, color= 'red')%>%
+  addPolygons(data=vgtrl_wgs84, color= 'blue')%>%
+  addPolygons(data=Natura_2000)
+
+
+```
+
+
