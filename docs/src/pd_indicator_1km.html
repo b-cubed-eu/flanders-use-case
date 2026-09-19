@@ -109,23 +109,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
     </ul>
   </li>
@@ -217,6 +221,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>The indicators displayed below were calculated for flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 March 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.knsn44.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -231,23 +236,23 @@ ul.task-list li input[type="checkbox"] {
 <div class="callout-body-container callout-body">
 <section id="indicator-type" class="level3">
 <h3 class="anchored" data-anchor-id="indicator-type">Indicator type</h3>
-<p>State Indicator / Evolutionary Diversity Variable.</p>
-</section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation</h3>
-<p>This indicator, calculated using the pdindicatoR package, takes into account the evolutionary relatedness of species by calculating the sum of the branch lenghts (representing the accumulated genetic changes) of the evolutionary tree of life that connect all the species found in a specific area. Instead of just counting the number of different species (species richness), it calculates the minimum path length needed to span across those species on a phylogenetic tree.</p>
+<p>State indicator</p>
+<section id="explanation" class="level4">
+<h4 class="anchored" data-anchor-id="explanation">Explanation</h4>
+<p>This indicator takes into account the evolutionary relatedness of species by calculating the sum of the branch lengths (representing the accumulated genetic changes) of the evolutionary tree of life that connect all the species found in a specific area. Instead of just counting the number of different species (species richness), it calculates the minimum path length needed to span across those species on a phylogenetic tree.</p>
 <ul>
-<li>High value: The area contains species that are far apart on the tree of life (for example, it includes species ofancient lineages that have evolved seperately from most other modern species). This means a wide variety of evolutionary features and distinct genetic traits are probably present in that ecosystem.</li>
-<li>Low value: The species in the area are very closely related and clumped together on the same or a few related branches of the tree of life, meaning the ecosystem has a comparatively low variety of distinct evolutionary features.</li>
+<li><p>High value: The area contains species that are far apart on the tree of life (for example, it includes species of ancient lineages that have evolved separately from most other modern species). This means a wide variety of evolutionary features and distinct genetic traits are probably present in that ecosystem.</p></li>
+<li><p>Low value: The species in the area are very closely related and clumped together on the same or a few related branches of the tree of life, meaning the ecosystem has a comparatively low variety of distinct evolutionary features.</p></li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h3>
-<p>This metric is highly valuable for long-term conservation planning and climate change adaptation policies. Because we can only guess which biological traits and features will be crucial for species survival in changing future environments, protecting a wide variety of features—rather than just the number of species—maximizes the overall adaptability and resilience of the ecosystem.</p>
 </section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p>The indicator is highly dependent on having an accurate and complete phylogenetic tree with reliable branch lenghts for the taxonomic group being analyzed. If the evolutionary relationships are poorly mapped behind the scenes, the calculated tree-spanning path can become skewed, potentially over- or underestimating the true evolutionary value of the area.</p>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h2>
+<p>This metric is highly valuable for long-term conservation planning and climate change adaptation policies. Because we can only guess which biological traits and features will be crucial for species survival in changing future environments, protecting a wide variety of features (rather than just the number of species) maximizes the overall adaptability and resilience of the ecosystem.</p>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>The indicator is highly dependent on having an accurate and complete phylogenetic tree with reliable branch lengths for the taxonomic group being analyzed. If the evolutionary relationships are poorly mapped behind the scenes, the calculated tree-spanning path can become skewed, potentially over- or underestimating the true evolutionary value of the area.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -258,24 +263,40 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="phylogenetic-diversity-loss-map" class="level2">
-<h2 class="anchored" data-anchor-id="phylogenetic-diversity-loss-map">Phylogenetic Diversity loss map</h2>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Phylogenetic Diversity loss map
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <section id="indicator-type-1" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type-1">Indicator type:</h3>
-<p>Spatial Planning / Risk and Vulnerability Indicator.</p>
-<p>###Explanation: This indicator calculates exactly how much evolutionary history we stand to lose if threatened species disappear from a specific grid cell. Species are considered ‘threatened’ when classified as Critically Endangered (CR), Endangered (EN) or Vulnerable (VU) according to the local IUCN Red List. The total Phylogenetic Diversity is then once calculated with all species present; and second, without the threatened species. The difference between these two scores equals the Expected PD Loss.</p>
+<h3 class="anchored" data-anchor-id="indicator-type-1">Indicator type</h3>
+<p>Pressure/ecosystem indicator.</p>
+</section>
+<section id="explanation-1" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-1">Explanation</h2>
+<p>This indicator calculates exactly how much evolutionary history we stand to lose if threatened species disappear from a specific grid cell. Species are considered ‘threatened’ when classified as Critically Endangered (CR), Endangered (EN) or Vulnerable (VU) according to the local IUCN Red List. The total Phylogenetic Diversity is then once calculated with all species present; and second, without the threatened species. The difference between these two scores equals the Expected PD Loss.</p>
 <ul>
-<li>High value (High Expected Loss): If the threatened species in this grid cell go extinct, a substantial chunk of the evolutionary tree of life and the feature diversity associated with it for this region will vanish. This happens because these endangered species have no close relatives in these cells that share their evolutionary history and evolved traits.</li>
-<li>Low value (Low Expected Loss): The threatened species in this cell are either close cousins to other commonpecies (meaning their disappearance won’t completely delete that branch of the tree of life), or there are few threatened species present in the area.</li>
+<li><p>High value (High Expected Loss): If the threatened species in this grid cell go extinct, a substantial chunk of the evolutionary tree of life and the feature diversity associated with it for this region will vanish. This happens because these endangered species have no close relatives in these cells that share their evolutionary history and evolved traits.&nbsp;</p></li>
+<li><p>Low value (Low Expected Loss): The threatened species in this cell are either close cousins to other common species (meaning their disappearance won’t completely delete that branch of the tree of life) or there are few threatened species present in the area.</p></li>
 </ul>
 </section>
-<section id="applicability-for-policy-1" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy-1">Applicability for policy</h3>
-<p>This indicator provides a “triage map” for policymakers and conservation agencies that highlights the areas where the loss of evolutionary heritage is expected to be greatest. Rather than just looking at decline in species richness alone, it also considers the variety of features across the evolutionary tree of life. Resources can then be allocated towards high priority areas, for example to expand protected areas to include hotspots of evolutionary heritage.</p>
+<section id="applicability-for-policy-1" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-1">Applicability for policy</h2>
+<p>This indicator provides a “triage map” for policymakers and conservation agencies that highlights the areas where the loss of evolutionary heritage is expected to be greatest. Rather than just looking at the decline in species richness alone, it also considers the variety of features across the evolutionary tree of life. Resources can then be allocated towards high-priority areas, for example, to expand protected areas to include hotspots of evolutionary heritage.</p>
 </section>
-<section id="limitations-1" class="level3">
-<h3 class="anchored" data-anchor-id="limitations-1">Limitations</h3>
-<p>This indicator treats all “threatened” categories (CR, EN, VU) with equal weight when calculating the expected loss, and therefore it does notdifferentiate between a species that is on the brink of extinction versus one that is vulnerable. Furthermore, it relies on the up-to-date accuracy of regional Red Lists and therefore the potential loss of aa species that has become threatened but is not officially assessed yet, will not be factored in.</p>
+<section id="limitations-1" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-1">Limitations</h2>
+<p>This indicator treats all “threatened” categories (CR, EN, VU) with equal weight when calculating the expected loss, and therefore, it does not differentiate between a species that is on the brink of extinction versus one that is vulnerable. Furthermore, it relies on the up-to-date accuracy of regional Red Lists, and therefore, the potential loss of a species that has become threatened but is not officially assessed yet will not be factored in.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -286,7 +307,6 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-</section>
 </div>
 </div>
 </div>
@@ -294,6 +314,25 @@ ul.task-list li input[type="checkbox"] {
 
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

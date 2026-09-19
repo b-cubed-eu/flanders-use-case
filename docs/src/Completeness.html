@@ -116,16 +116,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Results flowering plants 10km</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../src/Flanders_1km_no_outliers.qmd">
- <span class="dropdown-text">Results flowering plants 1km no outliers</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/Flanders_1km_no_outliers_filter_completeness.qmd">
- <span class="dropdown-text">Results flowering plants 1km no outliers and filter completeness</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
  <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
@@ -134,10 +130,6 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
  <span class="dropdown-text">Results insects 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results insects 1 km (no filters)</span></a>
   </li>  
     </ul>
   </li>
@@ -222,33 +214,52 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="indicator-type" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type">Indicator type</h3>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
 <p>Data quality indicator.</p>
 </section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation</h3>
-<p>This indicator estimates how complete our knowledge of an ecological community is by calculating “Sample Coverage” (a concept originally developed by Turing and Good, and popularized by Chao and Jost). Instead of just counting the raw number of observations, it calculates the proportion of all individuals in the actual community that belong to the species we have already detected in our sample:</p>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>This indicator estimates how complete our knowledge of an ecological community is by calculating “Sample Coverage” (a concept originally developed by Turing and Good (1953), and popularised by Chao and Jost (2012)). Instead of just counting the raw number of observations, it estimates the proportion of all individuals in the actual community that belong to the species we have already detected in our sample. For maps, the value is calculated for each spatial cell using all historical data for that cell. For time-series analyses, the value is calculated independently for each time step over the complete data cube.</p>
 <ul>
-<li>High value (Value of 1.0 or 100%): The sample is perfectly complete. This indicates that all species living in that area have been successfully found and recorded, meaning no new species are expected to be uncovered through further fieldwork or searching.</li>
-<li>Low value (Value of 0.2 or 20%, for example): The sample is incomplete. This suggests that while you have found some species, an estimated 80% of the remaining individuals in that community belong to species that have not yet been detected or logged in the database.</li>
+<li><p>High value (Value of 1.0 or 100%): The sample is almost complete, suggesting that further fieldwork or additional searches are unlikely to reveal many new species. Although other species might be present, they are likely very rare and/or have extremely low detectability.</p></li>
+<li><p>Low value (Value of 0.2 or 20%, for example): The sample is incomplete. This suggests that while you have found some species, an estimated 80% of all individuals in that community belong to species that have not yet been detected or logged in the database.</p></li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h3>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h2>
 <ul>
-<li>An important indicator of data quality: This indicator is an absolute prerequisite for reliable, data-driven policymaking. If completeness is high, it ensurs that any differences are real ecological trends rather than just reflections of uneven sampling sizes.</li>
-<li>Tracing “blind spots”: This indicator allows environmental agencies to identify gaps in data coverage. A low completeness score in a given region signals the need for increased monitoring efforts.</li>
+<li><p>An important indicator of data quality: This indicator is an absolute prerequisite for reliable, data-driven policymaking. If completeness is high, it ensures that any differences are real ecological trends rather than just reflections of uneven sampling sizes.</p></li>
+<li><p>Tracing “blind spots”: This indicator allows environmental agencies to identify gaps in data coverage. A low completeness score in a given region signals the need for increased monitoring efforts.</p></li>
 </ul>
 </section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p>Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat.</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat. As species turnover occurs, and some species are highly mobile, a completeness of 1 is rarely, if ever, achieved.</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

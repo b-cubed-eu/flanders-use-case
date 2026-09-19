@@ -109,23 +109,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.qmd">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
     </ul>
   </li>
@@ -210,33 +214,52 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="indicator-type" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type">Indicator type</h3>
-<p>Data Quality.</p>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
+<p>Data quality indicator.</p>
 </section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation</h3>
-<p>This indicator calculates the average (mean) year of all nature records within a specific grid cell, providing a quick look at how recent or historical the data in that cell is.</p>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>This indicator measures the age distribution of records within a dataset. For spatial maps, it calculates the average (mean) year of all species occurrence records within a specific grid cell, indicating how recent or historical the data in that cell is. For time-series analyses, the value is calculated as a running historical average. It calculates a cumulative mean at each time step based on all records collected from the beginning of the dataset until that time point. This tracks how the ‘center of mass’ of the dataset changes over time as new records are added, revealing whether historical or newer records are dominant.&nbsp;</p>
 <ul>
-<li>High value (recent mean year): The vast majority of the data in the grid cell was collected very recently. This is often driven by citizen science data from people using smartphones and apps over the last few years.</li>
-<li>Low value (older mean year): This indicates that a large portion of the dataset consists of older museum collections, historical surveys, or long-running monitoring programs from previous decades.</li>
+<li><p>High value (recent mean year): The majority of the data in the grid cell was collected recently. This is often driven by citizen science data over the last few years.</p></li>
+<li><p>Low value (older mean year): This indicates that a large portion of the species occurrence records consists of older museum collections or long-running monitoring programs.</p></li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h3>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h2>
 <ul>
-<li>Data Freshness Check: It serves as a vital metadata check for policymakers to ensure they are not basing current conservation laws on outdated information. If a grid cell has a very low mean year, this indicates that the area needs urgent re-surveying.</li>
-<li>Monitoring history: It helps environmental agencies map out how data collection methods have evolved across different provinces.</li>
+<li><p>Monitoring survey history: The indicator helps visualise how survey effort has evolved across space and time, highlighting areas that have been surveyed recently as well as regions with limited recent monitoring.</p></li>
+<li><p>Data recency assessment: Grid cells with lower mean observation years rely more heavily on older records and may require re-surveying to ensure that management decisions are informed by up-to-date biodiversity data.</p></li>
 </ul>
 </section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p>A recent mean year does not infer high data quality. A region with a low (older) mean year might actually have a much higher data quality because it has been conducting flawless, highly comprehensive, and structured professional monitoring for forty years.</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>A recent mean year is not necessarily an indication of quality, as some countries or regions have been conducting comprehensive biodiversity monitoring for many years and will therefore reflect an older mean year of occurrence, while others may show a recent mean year due to, e.g., the sudden availability of large amounts of citizen science data.&nbsp;</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

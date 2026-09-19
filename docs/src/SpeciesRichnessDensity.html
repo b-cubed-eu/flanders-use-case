@@ -109,23 +109,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.qmd">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
     </ul>
   </li>
@@ -210,33 +214,52 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="indicator-type" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type">Indicator type</h3>
-<p>State / Trend Indicator.</p>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
+<p>State Indicator.</p>
 </section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation</h3>
-<p>This indicator measures local biodiversity by dividing the total number of unique species by the surface area, specifically calculating the number of unique species found per square kilometer for each grid cell or year.</p>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>This indicator measures local biodiversity by dividing the total number of unique species by the surface area, representing the number of unique species found per square kilometre. For maps, the value is calculated for each spatial cell. For time-series analyses, species richness density is obtained by dividing the total number of unique species per year by the surface area of the entire cube.</p>
 <ul>
 <li>High value: The grid cell contains a high concentration of unique species.</li>
-<li>Low value: The area contains a low concentraion of unique species.</li>
+<li>Low value: The area contains a low concentration of unique species.</li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy:</h3>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy:</h2>
 <ul>
-<li>Allowing comparison across scales: Cubes with different grid sizes can easily be compared.</li>
-<li>Identifying hotspots of biodiversity.</li>
+<li>Allowing comparison across scales: cubes with different grid sizes can easily be compared.</li>
+<li>Identifying hotspots of biodiversity. By including a filter at a higher taxonomic rank, richness can be compared between different orders or kingdoms.</li>
 </ul>
 </section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p>It is largely affected by biases in survey effort.</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al., 2018), as well as the detectability of each species.</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

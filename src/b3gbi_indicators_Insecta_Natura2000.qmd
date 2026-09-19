@@ -41,7 +41,8 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
   geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
   labs(x = "Year",
        y = "Observed species richness",
-       colour = "") +
+       colour = "",
+       title = "Observed species richness in Flanders based on raw GBIF data")+
   theme_minimal() 
 
 
@@ -66,7 +67,8 @@ ggplot(df_both, aes(x = year, y = richness_adj, colour = Group)) +
   geom_point(alpha = 0.5) +
   labs(x = "Year",
        y = "Observed species richness (per km²)",
-       colour = "") +
+       colour = "",
+       title = "Observed species richness in Flanders based on raw GBIF data")+
   theme_minimal()
 ```
 :::
@@ -110,8 +112,9 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
     x = "Year",
     y = "Total occurences",
     colour = "",
-    fill = ""
-  ) +
+    fill = "",
+    title = "Total occurrences in Flanders based on raw GBIF data")+
+
 
   theme(
     legend.title = element_blank()
@@ -162,7 +165,7 @@ ggplot(df_both,
     x = "Year",
     y = "Total occurrences per km²",
     colour = "",
-    fill = ""
+    fill = "",
   ) +
 
   theme_minimal() +
@@ -175,7 +178,7 @@ ggplot(df_both,
 
 Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.
 
-```{r, echo=FALSE, warning = FALSE,message = FALSE}
+```{r, eval=FALSE, warning = FALSE,message = FALSE}
 OD_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/OD_ts.rds')
 
 

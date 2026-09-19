@@ -1,19 +1,23 @@
-### Indicator type
+## Indicator type
 
 Data quality indicator.
 
-### Explanation:
+## Explanation
 
-This metric calculates the total number of biodiversity occurrences divided by the surface area, specifically summing the number of records per square kilometer for each grid cell or year. 
+This metric measures the density of occurrence records by summing the number of occurrences per square kilometre within each grid cell. For maps, the value is calculated for each spatial cell. For time-series analyses, the density is summed across all grid cells in the data cube for each time step.
 
-- High value: The grid cell contains a high concentration of occurrences.
-- Low value: The records are sparse and thinly spread out over a large geographic area.
+- High value: the grid cell contains a high concentration of occurrences.
+- Low value: the occurrence records in this grid cell are sparse.
 
-### Applicability for policy:
+## Applicability for policy
 
-- Allowing comparison of survey effort: This is a vital baseline tool for regional planning because it allows to fairly compare human observation activity
-- Estimating citizen science engagement: It helps governments evaluate the true density of citizen science engagement.
+- Allows comparison of survey effort across scales: cubes with different grid sizes can easily be compared.
+- Estimating citizen science engagement: it helps evaluate the true density of citizen science records.
 
-### Limitations:
+However, these two interpretations are closely linked and can be difficult to separate. They should therefore be interpreted with caution and ideally in combination with other indicators or expert knowledge to ensure correct interpretation. Limitations
 
-Just like Total Occurrences, this metric is ecologically meaningless when looked at in isolation. It primarily reflects localized human search effort (like a popular walking path or a nature center) rather than the actual conservation value of the environment.
+In case of citizen science data, this metric primarily reflects localised human search effort (like a popular walking path or a nature centre).
+
+## Limitations
+
+In case of citizen science data, this metric primarily reflects localised human search effort (like a popular walking path or a nature centre).

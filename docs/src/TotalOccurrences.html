@@ -109,23 +109,27 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_1km.html">
- <span class="dropdown-text">Results Angiospermae 1km</span></a>
+ <span class="dropdown-text">Results flowering plants 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_10km.html">
- <span class="dropdown-text">Results Angiospermae 10km</span></a>
+ <span class="dropdown-text">Results flowering plants 10km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_1km.html">
+ <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.qmd">
+ <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km.html">
- <span class="dropdown-text">Results Insecta 1km</span></a>
+ <span class="dropdown-text">Results insects 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
- <span class="dropdown-text">Results Insecta 10km</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_1km_ALL.html">
- <span class="dropdown-text">Results Insecta 1 km (no filters)</span></a>
+ <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
     </ul>
   </li>
@@ -197,13 +201,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#total-occurrences" id="toc-total-occurrences" class="nav-link active" data-scroll-target="#total-occurrences">Total Occurrences</a>
-  <ul class="collapse">
-  <li><a href="#indicator-type" id="toc-indicator-type" class="nav-link" data-scroll-target="#indicator-type">Indicator type</a></li>
+  <li><a href="#indicator-type" id="toc-indicator-type" class="nav-link active" data-scroll-target="#indicator-type">Indicator type</a></li>
   <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation</a></li>
   <li><a href="#applicability-for-policy" id="toc-applicability-for-policy" class="nav-link" data-scroll-target="#applicability-for-policy">Applicability for policy</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -213,33 +214,49 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="total-occurrences" class="level2">
-<h2 class="anchored" data-anchor-id="total-occurrences">Total Occurrences</h2>
-<section id="indicator-type" class="level3">
-<h3 class="anchored" data-anchor-id="indicator-type">Indicator type</h3>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
 <p>Data quality indicator.</p>
 </section>
-<section id="explanation" class="level3">
-<h3 class="anchored" data-anchor-id="explanation">Explanation</h3>
-<p>This metric represents the total number of occurrences (independent of species) within a specific grid cell or year.</p>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>The total number of occurrences is calculated by summing the occurrences of all species observed for each cell or year. For maps, the value is calculated for each spatial cell. For time-series analyses, the value is calculated per time step over the complete data cube.</p>
 <ul>
-<li>High value: This usually signalsa hotspot for human outdoor activity or nature reporting.</li>
-<li>Low value: Very few or zero records have been submitted, potentially indicating a data “blind spot.”</li>
+<li>High value: A high number of occurrences has been submitted, signalling a hotspot for human outdoor activity or nature reporting.</li>
+<li>Low value: Relatively few occurrence records have been submitted, potentially indicating data “blind spots” where few people pass by and report observations. These ‘blind spots’ are also not part of long-term monitoring programs.</li>
 </ul>
 </section>
-<section id="applicability-for-policy" class="level3">
-<h3 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h3>
-<p>This metric serves two important administrative functions. First, it measures citizen science engagement. Second, it helps to interpret other metrics more correctly as it highlights biases in survey effort over time and space.</p>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h2>
+<p>This metric indicates the degree and locations of citizen science engagement. It also helps to interpret other metrics more correctly by highlighting biases in survey effort over time and space. While not itself an indicator, it is vital for interpreting the results of calculated indicators.</p>
 </section>
-<section id="limitations" class="level3">
-<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p>It primarily maps where people like to walk, near roads and towns, rather than actual conservation value.</p>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>It indicates which locations are preferred for outdoor recreation and nature recording, rather than which locations are of conservation value. Though you will tend to get lower numbers of observations in an area with fewer species.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
+<div class="quarto-footer">
+
+  <p>
+
+    B3 (Biodiversity Building Blocks for policy) receives funding from the
+
+    European Union’s Horizon Europe Research and Innovation Programme
+
+    (ID No 101059592). Views and opinions expressed are however those of the
+
+    author(s) only and do not necessarily reflect those of the European Union
+
+    or the European Commission. Neither the EU nor the EC can be held
+
+    responsible for them.
+
+  </p>
+
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
