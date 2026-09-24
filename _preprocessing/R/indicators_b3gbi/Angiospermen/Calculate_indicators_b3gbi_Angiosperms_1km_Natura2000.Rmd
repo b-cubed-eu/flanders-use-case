@@ -24,6 +24,8 @@ library(here)
 ```{r}
 Focus <- 'Flanders_Natura2000'
 
+test <- read.csv(paste0("./_preprocessing/data/raw/Angiosperm_data_",Focus,".csv"))
+
 Angiosperm_data_cube <- process_cube(read.csv(paste0("./_preprocessing/data/raw/Angiosperm_data_",Focus,".csv")))
 
 output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)

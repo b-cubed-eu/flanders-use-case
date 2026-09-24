@@ -495,7 +495,7 @@ plot_map(SRD_map,
 plot_ts(SRD_ts)
 ```
 
-```{r, eval=FALSE, echo = FALSE, warning = FALSE, message=FALSE}
+```{r,  echo = FALSE, warning = FALSE, message=FALSE}
 
 SRD_map <- readRDS('./Flanders_1km/SRD_map.rds')$data
 
@@ -510,7 +510,7 @@ ggplot(data = SRD_map) +
 
 ```
 
-```{r, eval=FALSE, echo = FALSE, warning = FALSE, message=FALSE}
+```{r,  echo = FALSE, warning = FALSE, message=FALSE}
 SRD_ts <- readRDS('./Flanders_1km/SRD_ts.rds')
 SRD_ts_data <- SRD_ts$data
 ggplot(SRD_ts_data, aes(year, diversity_val)) +

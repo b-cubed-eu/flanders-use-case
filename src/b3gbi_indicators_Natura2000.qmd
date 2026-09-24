@@ -2,7 +2,7 @@
 title:  >
   <a href="https://github.com/b-cubed-eu/b3gbi" target="_blank">
     <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;">
-  </a>General indicators Natura 2000 angiospermae
+  </a>General indicators Natura 2000 flowering plants
 format:
   html:
     code-fold: true
@@ -20,7 +20,7 @@ library(dplyr)
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Observed species richness
 
-This fundamental indicator quantifies the total number of unique species per year detected in Natura 2000 versus non Natura 2000 area. It provides a straightforward measure of detected biodiversity.
+{{< include ObservedSpeciesRichness.Rmd >}}
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
 OSR_ts_Natura2000 <- readRDS('./Flanders_Natura2000/OSR_ts.rds')
@@ -39,7 +39,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
   geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
   labs(x = "Year",
        y = "Observed species richness",
-       colour = "", 
+       colour = "",
        title = "Observed species richness in Flanders based on raw GBIF data")+
   theme_minimal() 
 
@@ -50,7 +50,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Total Occurrences
 
-This variable quantifies the overall number of species occurrence records per year in Natura2000 versus nonNatura2000 area. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.
+{{< include TotalOccurrences.Rmd >}}
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
 TO_ts_Natura2000 <- readRDS('./Flanders_Natura2000/TO_ts.rds')
@@ -72,14 +72,6 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
   # ruwe punten
   geom_point(alpha = 0.6, size = 2) +
 
-  # 👇 individuele bars rond elk punt
-  geom_errorbar(
-    aes(ymin = ll, ymax = ul),
-    width = 0.25,
-    alpha = 0.7,
-    size = 0.6
-  ) +
-
   labs(
     x = "Year",
     y = "Total occurences",
@@ -94,13 +86,16 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
   theme_minimal() 
 ```
 :::
+  
+
+  
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occurrence Density
 
-Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.
+{{< include OccurrenceDensity.Rmd >}}
 
-```{r, eval=FALSE, echo=FALSE, warning = FALSE,message = FALSE}
+```{r, warning = FALSE,message = FALSE}
 OD_ts_Natura2000 <- readRDS('./Flanders_Natura2000/OD_ts.rds')
 
 
@@ -112,8 +107,6 @@ df_non     <- as.data.frame(OD_ts_nonNatura2000$data) %>% mutate(Group = "nonNat
 
 df_both <- bind_rows(df_nat, df_non)
 
-df_both <- df_both%>%filter(year<2023)
-
 ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
 
   # groeps-trend
@@ -122,78 +115,27 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
   # ruwe punten
   geom_point(alpha = 0.6, size = 2) +
 
-  # 👇 individuele bars rond elk punt
-  geom_errorbar(
-    aes(ymin = ll, ymax = ul),
-    width = 0.25,
-    alpha = 0.7,
-    size = 0.6
-  ) +
+
 
   labs(
     x = "Year",
-    y = expression("number of occurrences per km"^2),
-    colour = "",
-    fill = "",  
-    title = "Occurrence density in Flanders based on raw GBIF data")+
-
-
-  theme(
-    legend.title = element_blank()
-  )+
-  theme_minimal() 
-
-
-```
-:::
-
-::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
-## Species Richness Density
-
-Species Richness Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.
-
-```{r, echo=FALSE, warning = FALSE,message = FALSE}
-SRD_ts_Natura2000 <- readRDS('./Flanders_Natura2000/SRD_ts.rds')
-
-
-SRD_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/SRD_ts.rds')
-
-# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(SRD_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(SRD_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
-
-df_both <- bind_rows(df_nat, df_non)
-
-df_both <- df_both%>%filter(year<2023)
-
-ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
-
-  # groeps-trend
-  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
-
-  # ruwe punten
-  geom_point(alpha = 0.6, size = 2)  +
-
-  labs(
-    x = "Year",
-    y = expression("number of species per km"^2),
+    y = "Occurrence density",
     colour = "",
     fill = "",
-  title = "Species richness density in Flanders based on raw GBIF data")+
+    title = "Occurrence density in Flanders based on raw GBIF data"
+  ) +
 
   theme(
     legend.title = element_blank()
   )+
   theme_minimal() 
-
-
 ```
 :::
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Cumulative Species Richness
 
-This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).
+{{< include CumulativeSpeciesRichness.Rmd >}}
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
 CR_ts_Natura2000 <- readRDS('./Flanders_Natura2000/CR_ts.rds')
@@ -213,7 +155,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
   labs(x = "Year",
        y = "Cumulative species richness",
        colour = "",
-       title = "Cumulative species richness in Flanders based on raw GBIF data")+
+    title = "Cumulative species richness in Flanders based on raw GBIF data") +
   theme_minimal() 
 ```
 :::
@@ -221,7 +163,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Mean Year of Occurrence (Newness)
 
-This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.
+{{< include Newness.Rmd >}}
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
 NN_ts_Natura2000 <- readRDS('./Flanders_Natura2000/NN_ts.rds')
@@ -239,9 +181,9 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
   geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
   geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
   labs(x = "Year",
-       y = "Newness (Mean Year of Occurence)",
+       y = "Newness (Mean Year of Occurrence)",
        colour = "",
-       title = "Mean year of occurrence in Flanders based on raw GBIF data") +
+    title = "Mean year of occurrence in Flanders based on raw GBIF data") +
   theme_minimal() 
 ```
 :::
@@ -249,7 +191,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occupancy turnover
 
-Occupancy Turnover measures the rate at which occupancy composition changes over time within a community, quantifying the balance between species "gains" and "losses" between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).
+{{< include OccupancyTurnover.Rmd >}}
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
 OT_ts_Natura2000 <- readRDS('./Flanders_Natura2000/OT_ts.rds')
@@ -269,7 +211,63 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
   labs(x = "Year",
        y = "Occupancy turnover",
        colour = "",
-       title = "Occupancy turnover in Flanders based on raw GBIF data")+
+    title = "Occupancy turnover in Flanders based on raw GBIF data") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Species richness density
+
+{{< include SpeciesRichnessDensity.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+SRD_ts_Natura2000 <- readRDS('./Flanders_Natura2000/SRD_ts.rds')
+
+
+SRD_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/SRD_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Species richness density",
+       colour = "",
+    title = "Species richness density in Flanders based on raw GBIF data") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Completeness
+
+{{< include Completeness.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+SRD_ts_Natura2000 <- readRDS('./Flanders_Natura2000/ComP_ts.rds')
+
+
+SRD_ts_nonNatura2000 <- readRDS('./Flanders_nonNatura2000/ComP_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Species richness density",
+       colour = "",
+    title = "Completeness in Flanders based on raw GBIF data") +
   theme_minimal() 
 ```
 :::

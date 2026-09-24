@@ -1,0 +1,84 @@
+---
+title: "Download and prepare Angiosperm data"
+author: "Jasmijn Hillaert, Ward Langeraert"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, warning=FALSE, message=FALSE}
+# Load packages
+library(tidyverse) # Data wrangling and visualisation
+library(here)      # Relative paths
+library(sf)        # Work with spatial data
+library(rgbif)
+# Source
+source(here("_preprocessing/R/create_cube/download_occ_cube.R"))
+
+data_path <- here("_preprocessing","data", "raw")
+```
+
+# Goal
+
+Load and save structured data
+
+# Structured data
+
+## Occurrence data
+
+The zip file is stored under *./data/raw*.
+
+```{r}
+file <- occ_download_get("0002139-260921141020460")
+data_total_1km<- occ_download_import(file)
+```
+
+We get a big dataframe with all occurrences.
+
+```{r}
+# Explore dataframe
+glimpse(data_total_1km)
+```
+
+```{r}
+#read in native species in Flanders (Waarnemingen)
+
+GRIIS_Flanders <- read.csv('./_preprocessing/data/raw/GRIIS_Flanders.csv')
+
+
+#remove aliens
+cube_native <- data_total_1km%>%
+  filter(!specieskey%in%GRIIS_Flanders$speciesid)
+
+#add filter for temporal uncertainty
+cube_native <- cube_native%>%
+  filter(mintemporaluncertainty <= 315360000)
+
+```
+
+# Select Flanders grid cells
+
+```{r}
+FLANDERS_EEA_10km <- st_read('./_preprocessing/data/raw/spatial/EEA_10km_Flanders_union.geojson')
+
+
+
+```
+
+```{r}
+Cube_Angio_Flanders <- cube_native%>%
+  filter(eeacellcode %in% FLANDERS_EEA_10km$CELLCODE)
+
+```
+
+```{r}
+write.csv(Cube_Angio_Flanders,
+          '_preprocessing/data/raw/Birds_data_Flanders_10km.csv')
+
+```

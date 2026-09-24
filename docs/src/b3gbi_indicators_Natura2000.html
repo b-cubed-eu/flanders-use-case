@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>  General indicators Natura 2000 angiospermae – WP6: Flanders case study</title>
+<title>  General indicators Natura 2000 flowering plants – WP6: Flanders case study</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -120,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Results flowering plants Florabank 1km</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../src/Flanders_florabank_10km.qmd">
+    <a class="dropdown-item" href="../src/Flanders_florabank_10km.html">
  <span class="dropdown-text">Results flowering plants Florabank 10km</span></a>
   </li>  
         <li>
@@ -204,7 +239,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators Natura 2000 angiospermae</p></h1>
+<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators Natura 2000 flowering plants</p></h1>
 </div>
 
 
@@ -233,7 +268,25 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This fundamental indicator quantifies the total number of unique species per year detected in Natura 2000 versus non Natura 2000 area. It provides a straightforward measure of detected biodiversity.</p>
+<section id="indicator-type" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type">Indicator type</h2>
+<p>State indicator.</p>
+</section>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>Observed species richness represents the total number of unique species discovered and recorded. For maps, the value is calculated for each spatial cell. For time-series analyses, the value is calculated per time step over the complete data cube.&nbsp;</p>
+<ul>
+<li><p>High value: A high number of unique species, indicating a diverse local community.</p></li>
+<li><p>Low value: A low number of unique species, signalling a species-poor habitat.</p></li>
+</ul>
+</section>
+<section id="applicability-for-policy" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy">Applicability for policy</h2>
+<p>This metric is necessary for determining biodiversity hotspots on a map or tracing potential declines in species richness over time. With taxonomic filtering, one can quantify the number of species in a particular cohort, such as known alien species, tree species, or carnivores.</p>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<p>Observed species richness is highly sensitive to sampling bias and human observation effort. If certain grid cells are studied more carefully or visited more frequently by volunteers than others, they will artificially appear to have more species. Therefore, this metric should be interpreted within the context of a measure of survey effort, such as total occurrences or occurrence density. Furthermore, results are skewed by species detectability. Rare or widely dispersed species are easily missed by citizens, whereas highly conspicuous or easy-to-find species will often be reported (Hillebrand et al.&nbsp;2018).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -243,6 +296,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</section>
 </div>
 </div>
 </div>
@@ -258,7 +312,25 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This variable quantifies the overall number of species occurrence records per year in Natura2000 versus nonNatura2000 area. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.</p>
+<section id="indicator-type-1" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type-1">Indicator type</h2>
+<p>Data quality indicator.</p>
+</section>
+<section id="explanation-1" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-1">Explanation</h2>
+<p>The total number of occurrences is calculated by summing the occurrences of all species observed for each cell or year. For maps, the value is calculated for each spatial cell. For time-series analyses, the value is calculated per time step over the complete data cube.</p>
+<ul>
+<li>High value: A high number of occurrences has been submitted, signalling a hotspot for human outdoor activity or nature reporting.</li>
+<li>Low value: Relatively few occurrence records have been submitted, potentially indicating data “blind spots” where few people pass by and report observations. These ‘blind spots’ are also not part of long-term monitoring programs.</li>
+</ul>
+</section>
+<section id="applicability-for-policy-1" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-1">Applicability for policy</h2>
+<p>This metric indicates the degree and locations of citizen science engagement. It also helps to interpret other metrics more correctly by highlighting biases in survey effort over time and space. While not itself an indicator, it is vital for interpreting the results of calculated indicators.</p>
+</section>
+<section id="limitations-1" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-1">Limitations</h2>
+<p>It indicates which locations are preferred for outdoor recreation and nature recording, rather than which locations are of conservation value. Though you will tend to get lower numbers of observations in an area with fewer species.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -268,6 +340,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</section>
 </div>
 </div>
 </div>
@@ -283,7 +356,76 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Occurrence Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.</p>
+<section id="indicator-type-2" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type-2">Indicator type</h2>
+<p>Data quality indicator.</p>
+</section>
+<section id="explanation-2" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-2">Explanation</h2>
+<p>This metric measures the density of occurrence records by summing the number of occurrences per square kilometre within each grid cell. For maps, the value is calculated for each spatial cell. For time-series analyses, the density is summed across all grid cells in the data cube for each time step.</p>
+<ul>
+<li>High value: the grid cell contains a high concentration of occurrences.</li>
+<li>Low value: the occurrence records in this grid cell are sparse.</li>
+</ul>
+</section>
+<section id="applicability-for-policy-2" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-2">Applicability for policy</h2>
+<ul>
+<li>Allows comparison of survey effort across scales: cubes with different grid sizes can easily be compared.</li>
+<li>Estimating citizen science engagement: it helps evaluate the true density of citizen science records.</li>
+</ul>
+<p>However, these two interpretations are closely linked and can be difficult to separate. They should therefore be interpreted with caution and ideally in combination with other indicators or expert knowledge to ensure correct interpretation. Limitations</p>
+<p>In case of citizen science data, this metric primarily reflects localised human search effort (like a popular walking path or a nature centre).</p>
+</section>
+<section id="limitations-2" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-2">Limitations</h2>
+<p>In case of citizen science data, this metric primarily reflects localised human search effort (like a popular walking path or a nature centre).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>OD_ts_Natura2000 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">'./Flanders_Natura2000/OD_ts.rds'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>OD_ts_nonNatura2000 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">'./Flanders_nonNatura2000/OD_ts.rds'</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df_nat     <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(OD_ts_Natura2000<span class="sc">$</span>data) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="st">"Natura2000"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df_non     <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(OD_ts_nonNatura2000<span class="sc">$</span>data) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="st">"nonNatura2000"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df_both <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_nat, df_non)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_both, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> diversity_val, <span class="at">colour =</span> Group, <span class="at">fill =</span> Group)) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># groeps-trend</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha=</span> <span class="fl">0.15</span>) <span class="sc">+</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ruwe punten</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Occurrence density"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">""</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">""</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Occurrence density in Flanders based on raw GBIF data"</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </div>
 </div>
 </div>
@@ -293,13 +435,34 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Species Richness Density
+<span class="screen-reader-only">Tip</span>Cumulative Species Richness
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Species Richness Density measures the spatial concentration of records by calculating the total number of occurrences per square kilometre. This allows for more meaningful comparisons between spatial units of different sizes.</p>
+<section id="indicator-type-3" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type-3">Indicator type:</h2>
+<p>Data quality indicator</p>
+</section>
+<section id="explanation-3" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-3">Explanation:</h2>
+<p>Cumulative richness is calculated by adding only newly observed unique species each year to a cumulative sum.&nbsp; For maps, the value is calculated as a snapshot for each spatial cell. For time-series analyses, the value is calculated as a running cumulative sum for each sequential time step over the complete data cube.&nbsp;</p>
+<ul>
+<li><p>Steep increase of the cumulative curve: Each timestep, new species are still being discovered for the first time in that region.&nbsp;</p></li>
+<li><p>Shallow increase or flat cumulative curve: Almost no new species are being added to the historical list anymore.&nbsp;</p></li>
+</ul>
+</section>
+<section id="applicability-for-policy-3" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-3">Applicability for policy:</h2>
+<ul>
+<li><p>Data completeness check: If the cumulative richness line is steep, it indicates that the data is still incomplete and not all species are represented in the dataset.</p></li>
+<li><p>Tracking new arrivals: In highly monitored regions where data is already complete, a sudden increase in cumulative richness can serve as a leading indicator for the arrival of invasive alien species or climate-driven species shifts.</p></li>
+</ul>
+</section>
+<section id="limitations-3" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-3">Limitations</h2>
+<p>This metric is poorly suited to measuring rapid, negative biodiversity changes or current habitat degradation. Since it is a cumulative sum, the value never decreases. If a local extinction occurs or if common species crash in numbers, cumulative richness will completely ignore it and remain at its maximum.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -309,6 +472,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</section>
 </div>
 </div>
 </div>
@@ -318,13 +482,34 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Cumulative Species Richness
+<span class="screen-reader-only">Tip</span>Mean Year of Occurrence (Newness)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This indicator tracks the total number of unique species observed from the beginning of a specified time period up to a given year. It provides an estimation of how many new species are still being recorded over time within a region, helping to evaluate sampling effort and assess the overall recorded biodiversity over the study duration. This is an inherently temporal indicator, presented as a time series (indicator_ts).</p>
+<section id="indicator-type-4" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type-4">Indicator type</h2>
+<p>Data quality indicator.</p>
+</section>
+<section id="explanation-4" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-4">Explanation</h2>
+<p>This indicator measures the age distribution of records within a dataset. For spatial maps, it calculates the average (mean) year of all species occurrence records within a specific grid cell, indicating how recent or historical the data in that cell is. For time-series analyses, the value is calculated as a running historical average. It calculates a cumulative mean at each time step based on all records collected from the beginning of the dataset until that time point. This tracks how the ‘center of mass’ of the dataset changes over time as new records are added, revealing whether historical or newer records are dominant.&nbsp;</p>
+<ul>
+<li><p>High value (recent mean year): The majority of the data in the grid cell was collected recently. This is often driven by citizen science data over the last few years.</p></li>
+<li><p>Low value (older mean year): This indicates that a large portion of the species occurrence records consists of older museum collections or long-running monitoring programs.</p></li>
+</ul>
+</section>
+<section id="applicability-for-policy-4" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-4">Applicability for policy</h2>
+<ul>
+<li><p>Monitoring survey history: The indicator helps visualise how survey effort has evolved across space and time, highlighting areas that have been surveyed recently as well as regions with limited recent monitoring.</p></li>
+<li><p>Data recency assessment: Grid cells with lower mean observation years rely more heavily on older records and may require re-surveying to ensure that management decisions are informed by up-to-date biodiversity data.</p></li>
+</ul>
+</section>
+<section id="limitations-4" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-4">Limitations</h2>
+<p>A recent mean year is not necessarily an indication of quality, as some countries or regions have been conducting comprehensive biodiversity monitoring for many years and will therefore reflect an older mean year of occurrence, while others may show a recent mean year due to, e.g., the sudden availability of large amounts of citizen science data.&nbsp;</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -334,6 +519,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</section>
 </div>
 </div>
 </div>
@@ -343,13 +529,31 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Mean Year of Occurrence (Newness)
+<span class="screen-reader-only">Tip</span>Occupancy turnover
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This variable calculates the average year of occurrence for all records within a given spatial unit (e.g., grid cell, for indicator_map) or temporal unit (e.g., year, for indicator_ts), providing an estimation of the relative recency of observations. Maps can highlight areas with more recent average records, while time series show the average observation date over cumulative data.</p>
+<section id="indicator-type-5" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type-5">Indicator type</h2>
+<p>Trend / Pressure Indicator.</p>
+</section>
+<section id="explanation-5" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-5">Explanation</h2>
+<p>Occupancy turnover measures changes in species composition over time, reflecting the rate at which species appear or disappear from a given area between two time steps in the data cube. The metric is calculated using the Jaccard dissimilarity index (Jaccard, 1901), which compares the species present in two time steps and quantifies their dissimilarity on a scale from 0 to 1. High values (closer to 1): indicate a complete turnover in species composition between the two time periods. Low values (closer to 0): indicate little or no change in species composition between the two time periods. This indicator is available only as a time series.</p>
+</section>
+<section id="applicability-for-policy-5" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-5">Applicability for policy:</h2>
+<ul>
+<li>Ecosystem stability: This is a vital tool for assessing how ecosystems have responded to large-scale pressures like climate change, habitat fragmentation, land use change or nitrogen deposition.</li>
+<li>Evaluating effectiveness of management strategies: It allows managers to evaluate whether restoration policies are actually working. For example, if a province creates a new wetland, a controlled increase in turnover might indicate that the targeted wetland species are successfully moving in.</li>
+<li>Invasive species: Biological invasions can result in high turnover rates.</li>
+</ul>
+</section>
+<section id="limitations-5" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-5">Limitations</h2>
+<p>This measure is largely affected by survey effort. Further, it must always be combined with rarity or taxonomic indices to understand the true nature of the turnover shift (positive or negative for local biodiversity). Turnover timescales also differ across organism types. Mobile, short-lived species such as birds and insects exhibit faster turnover than sessile, long-lived tree species.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -359,6 +563,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</section>
 </div>
 </div>
 </div>
@@ -368,13 +573,34 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Occupancy turnover
+<span class="screen-reader-only">Tip</span>Species richness density
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Occupancy Turnover measures the rate at which occupancy composition changes over time within a community, quantifying the balance between species “gains” and “losses” between consecutive time intervals. High turnover indicates a dynamic community with frequent species replacement, while low turnover suggests stability. This is an exclusively temporal indicator, presented as a time series (indicator_ts).</p>
+<section id="indicator-type-6" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type-6">Indicator type</h2>
+<p>State Indicator.</p>
+</section>
+<section id="explanation-6" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-6">Explanation</h2>
+<p>This indicator measures local biodiversity by dividing the total number of unique species by the surface area, representing the number of unique species found per square kilometre. For maps, the value is calculated for each spatial cell. For time-series analyses, species richness density is obtained by dividing the total number of unique species per year by the surface area of the entire cube.</p>
+<ul>
+<li>High value: The grid cell contains a high concentration of unique species.</li>
+<li>Low value: The area contains a low concentration of unique species.</li>
+</ul>
+</section>
+<section id="applicability-for-policy-6" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-6">Applicability for policy:</h2>
+<ul>
+<li>Allowing comparison across scales: cubes with different grid sizes can easily be compared.</li>
+<li>Identifying hotspots of biodiversity. By including a filter at a higher taxonomic rank, richness can be compared between different orders or kingdoms.</li>
+</ul>
+</section>
+<section id="limitations-6" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-6">Limitations</h2>
+<p>Observed richness is highly dependent on the comprehensiveness of the dataset it is being applied to. If some regions are more intensively, carefully or systematically sampled than others, this will likely reflect as higher observed richness. Observed richness also depends on the relative abundance and spatial aggregation of each species, with less abundant and less aggregated species less likely to be discovered during surveys (Hillebrand et al., 2018), as well as the detectability of each species.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -384,6 +610,54 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</section>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Completeness
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<section id="indicator-type-7" class="level2">
+<h2 class="anchored" data-anchor-id="indicator-type-7">Indicator type</h2>
+<p>Data quality indicator.</p>
+</section>
+<section id="explanation-7" class="level2">
+<h2 class="anchored" data-anchor-id="explanation-7">Explanation</h2>
+<p>This indicator estimates how complete our knowledge of an ecological community is by calculating “Sample Coverage” (a concept originally developed by Turing and Good (1953), and popularised by Chao and Jost (2012)). Instead of just counting the raw number of observations, it estimates the proportion of all individuals in the actual community that belong to the species we have already detected in our sample. For maps, the value is calculated for each spatial cell using all historical data for that cell. For time-series analyses, the value is calculated independently for each time step over the complete data cube.</p>
+<ul>
+<li><p>High value (Value of 1.0 or 100%): The sample is almost complete, suggesting that further fieldwork or additional searches are unlikely to reveal many new species. Although other species might be present, they are likely very rare and/or have extremely low detectability.</p></li>
+<li><p>Low value (Value of 0.2 or 20%, for example): The sample is incomplete. This suggests that while you have found some species, an estimated 80% of all individuals in that community belong to species that have not yet been detected or logged in the database.</p></li>
+</ul>
+</section>
+<section id="applicability-for-policy-7" class="level2">
+<h2 class="anchored" data-anchor-id="applicability-for-policy-7">Applicability for policy</h2>
+<ul>
+<li><p>An important indicator of data quality: This indicator is an absolute prerequisite for reliable, data-driven policymaking. If completeness is high, it ensures that any differences are real ecological trends rather than just reflections of uneven sampling sizes.</p></li>
+<li><p>Tracing “blind spots”: This indicator allows environmental agencies to identify gaps in data coverage. A low completeness score in a given region signals the need for increased monitoring efforts.</p></li>
+</ul>
+</section>
+<section id="limitations-7" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-7">Limitations</h2>
+<p>Completeness is a statistical correction tool calculated behind the scenes via the iNEXT package. It measures the reliability and maturity of the dataset, not the actual nature quality of the habitat. As species turnover occurs, and some species are highly mobile, a completeness of 1 is rarely, if ever, achieved.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="b3gbi_indicators_Natura2000_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </div>
 </div>
 </div>

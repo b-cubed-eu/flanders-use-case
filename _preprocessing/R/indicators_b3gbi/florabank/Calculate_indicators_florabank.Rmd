@@ -414,8 +414,7 @@ ComP_map <-completeness_map(Angiosperm_data_cube,
 
 
 ##export data to showcase in dashboard
-saveRDS(ComP_ts,
-        paste0(output_path, '/ComP_ts.rds'))
+saveRDS('./ComP_ts.rds'))
 
 ##export data to showcase in dashboard
 saveRDS(ComP_map,

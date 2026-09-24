@@ -20,7 +20,7 @@ about:
       href: https://github.com/b-cubed-eu/pdindicatoR
 ---
 
-This dashboard showcases developed workflows within [the B-Cubed project](https://b-cubed.eu/case-studies) for the region of Flanders, a region of Europe where species occurrence data are abundant.
+This dashboard showcases developed workflows within [the B-Cubed project](https://b-cubed.eu/case-studies) for the region of Flanders, a region of Europe where species occurrence data are abundant. All indicators presented here are calculated based on raw GBIF data and therefore strongly influenced by data availability on GBIF.
 
 The implemented indicators in this dashboard can be subdivided into:
 

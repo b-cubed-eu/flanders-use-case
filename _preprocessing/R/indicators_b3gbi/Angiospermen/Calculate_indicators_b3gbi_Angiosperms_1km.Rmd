@@ -381,5 +381,4 @@ saveRDS(SRD_ts,
 saveRDS(SRD_map,
         paste0(output_path, '/SRD_map.rds'))
 
-
 ```

@@ -1,0 +1,273 @@
+---
+title:  >
+  <a href="https://github.com/b-cubed-eu/b3gbi" target="_blank">
+    <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;">
+  </a>General indicators Natura 2000 for birds
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+#load library
+library(b3gbi)
+library(ggplot2)
+library(dplyr)
+
+```
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Observed species richness
+
+{{< include ObservedSpeciesRichness.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+OSR_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/OSR_ts.rds')
+
+
+OSR_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/OSR_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OSR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OSR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Observed species richness",
+       colour = "",
+       title = "Observed species richness in Flanders based on raw GBIF data")+
+  theme_minimal() 
+
+
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Total Occurrences
+
+{{< include TotalOccurrences.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+TO_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/TO_ts.rds')
+
+
+TO_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/TO_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(TO_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(TO_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+  labs(
+    x = "Year",
+    y = "Total occurences",
+    colour = "",
+    fill = "",
+    title = "Total occurrences in Flanders based on raw GBIF data")+
+
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+:::
+  
+
+  
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Occurrence Density
+
+{{< include OccurrenceDensity.Rmd >}}
+
+```{r, warning = FALSE,message = FALSE}
+OD_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/OD_ts.rds')
+
+
+OD_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/OD_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OD_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OD_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
+
+  # groeps-trend
+  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+
+  # ruwe punten
+  geom_point(alpha = 0.6, size = 2) +
+
+
+
+  labs(
+    x = "Year",
+    y = "Occurrence density",
+    colour = "",
+    fill = "",
+    title = "Occurrence density in Flanders based on raw GBIF data"
+  ) +
+
+  theme(
+    legend.title = element_blank()
+  )+
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Cumulative Species Richness
+
+{{< include CumulativeSpeciesRichness.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+CR_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/CR_ts.rds')
+
+
+CR_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/CR_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(CR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(CR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Cumulative species richness",
+       colour = "",
+    title = "Cumulative species richness in Flanders based on raw GBIF data") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Mean Year of Occurrence (Newness)
+
+{{< include Newness.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+NN_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/NN_ts.rds')
+
+
+NN_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/NN_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(NN_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(NN_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Newness (Mean Year of Occurrence)",
+       colour = "",
+    title = "Mean year of occurrence in Flanders based on raw GBIF data") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Occupancy turnover
+
+{{< include OccupancyTurnover.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+OT_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/OT_ts.rds')
+
+
+OT_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/OT_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Occupancy turnover",
+       colour = "",
+    title = "Occupancy turnover in Flanders based on raw GBIF data") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Species richness density
+
+{{< include SpeciesRichnessDensity.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+SRD_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/SRD_ts.rds')
+
+
+SRD_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/SRD_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Species richness density",
+       colour = "",
+    title = "Species richness density in Flanders based on raw GBIF data") +
+  theme_minimal() 
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Completeness
+
+{{< include Completeness.Rmd >}}
+
+```{r, echo = FALSE, warning = FALSE,message = FALSE}
+SRD_ts_Natura2000 <- readRDS('./Birds_data_Flanders_Natura2000/ComP_ts.rds')
+
+
+SRD_ts_nonNatura2000 <- readRDS('./Birds_data_Flanders_nonNatura2000/ComP_ts.rds')
+
+# stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
+df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
+df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+
+df_both <- bind_rows(df_nat, df_non)
+
+ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
+  geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
+  geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
+  labs(x = "Year",
+       y = "Species richness density",
+       colour = "",
+    title = "Completeness in Flanders based on raw GBIF data") +
+  theme_minimal() 
+```
+:::
