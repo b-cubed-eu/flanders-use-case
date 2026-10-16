@@ -2,7 +2,7 @@
 title:  >
   <a href="https://github.com/b-cubed-eu/b3gbi" target="_blank">
     <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;">
-  </a>General indicators Natura 2000 for insects
+  </a>General indicators Natura 2000 insects
 format:
   html:
     code-fold: true
@@ -17,6 +17,13 @@ library(dplyr)
 
 ```
 
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+#correct for time lag en remove last 3 years from graph
+present_year <- as.integer(format(Sys.Date(), "%Y"))
+```
+
+The indicators displayed below were calculated for native insects recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (31 May 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.rky6mr.
+
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Observed species richness
 
@@ -29,8 +36,8 @@ OSR_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/OSR_ts.rds')
 OSR_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/OSR_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(OSR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(OSR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(OSR_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(OSR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -55,12 +62,11 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
 TO_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/TO_ts.rds')
 
-
 TO_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/TO_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(TO_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(TO_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(TO_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(TO_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -74,7 +80,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
 
   labs(
     x = "Year",
-    y = "Total occurences",
+    y = "Total occurrences",
     colour = "",
     fill = "",
     title = "Total occurrences in Flanders based on raw GBIF data")+
@@ -86,9 +92,6 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) 
   theme_minimal() 
 ```
 :::
-  
-
-  
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Occurrence Density
@@ -102,8 +105,8 @@ OD_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/OD_ts.rds')
 OD_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/OD_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(OD_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(OD_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(OD_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(OD_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -144,8 +147,8 @@ CR_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/CR_ts.rds')
 CR_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/CR_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(CR_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(CR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(CR_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(CR_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -172,8 +175,8 @@ NN_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/NN_ts.rds')
 NN_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/NN_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(NN_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(NN_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(NN_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(NN_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -200,8 +203,8 @@ OT_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/OT_ts.rds')
 OT_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/OT_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -228,8 +231,8 @@ SRD_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/SRD_ts.rds')
 SRD_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/SRD_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(SRD_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(SRD_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -250,14 +253,14 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
 {{< include Completeness.Rmd >}}
 
 ```{r, echo = FALSE, warning = FALSE,message = FALSE}
-SRD_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/ComP_ts.rds')
+ComP_ts_Natura2000 <- readRDS('./Insecta_data_Flanders_Natura2000/ComP_ts.rds')
 
 
-SRD_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/ComP_ts.rds')
+ComP_ts_nonNatura2000 <- readRDS('./Insecta_data_Flanders_nonNatura2000/ComP_ts.rds')
 
 # stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets
-df_nat     <- as.data.frame(OT_ts_Natura2000$data) %>% mutate(Group = "Natura2000")
-df_non     <- as.data.frame(OT_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000")
+df_nat     <- as.data.frame(ComP_ts_Natura2000$data) %>% mutate(Group = "Natura2000") %>% filter(year < present_year - 2)
+df_non     <- as.data.frame(ComP_ts_nonNatura2000$data) %>% mutate(Group = "nonNatura2000") %>% filter(year < present_year - 2)
 
 df_both <- bind_rows(df_nat, df_non)
 
@@ -265,7 +268,7 @@ ggplot(df_both, aes(x = year, y = diversity_val, colour = Group)) +
   geom_smooth(se = FALSE, size = 1) +   # gesmoothte lijn per groep
   geom_point(alpha = 0.5) +             # ruwe data in dezelfde kleur
   labs(x = "Year",
-       y = "Species richness density",
+       y = "Completeness",
        colour = "",
     title = "Completeness in Flanders based on raw GBIF data") +
   theme_minimal() 

@@ -17,7 +17,7 @@ library(dplyr)
 library(sf)
 ```
 
-The indicators displayed below were calculated for flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 March 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.knsn44.
+The indicators displayed below were calculated for native flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 March 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.knsn44.
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Total occurrences
@@ -27,12 +27,15 @@ The indicators displayed below were calculated for flowering plants recorded in 
 ```{r, eval=FALSE, warning = FALSE, message=FALSE}
 #load library
 library(b3gbi)
+library(dubicube)
 
 TO_map <- total_occ_map(Angiosperm_data_cube,
                             cell_size="grid")
 
 TO_ts <- total_occ_ts(Angiosperm_data_cube, 
                           cell_size="grid")
+
+TO_ts <- add_ci(TO_ts)
 
 plot_map(TO_map, 
          visible_gridlines = FALSE)
@@ -63,9 +66,16 @@ ggplot(df_plot, aes(x = xcoord, y = ycoord, colour = sum_obs)) + geom_point() +
 ```{r, echo=FALSE, warning = FALSE, message=FALSE}
 TO_ts <- readRDS('./Flanders_1km/TO_ts.rds')
 
+
 TO_ts_data <- TO_ts$data
 
 ggplot(TO_ts_data, aes(year, diversity_val)) +
+  geom_errorbar(
+    aes(ymin = ll, ymax = ul),
+    width = 0.2,
+    colour = "#005957",
+    linewidth = 0.8
+  ) +
   geom_point(
     size = 3,
     colour = "#48A529"
@@ -81,7 +91,7 @@ ggplot(TO_ts_data, aes(year, diversity_val)) +
   scale_x_continuous(
     limits = c(min(TO_ts_data$year, na.rm = TRUE), 2022)
   ) +
-labs(
+  labs(
     title = "Total number of occurrences in Flanders based on raw GBIF data",
     y = "Number of occurrences",
     x = "Year"

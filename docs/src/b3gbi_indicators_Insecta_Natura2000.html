@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>  General indicators Natura 2000 for insects – WP6: Flanders case study</title>
+<title>  General indicators Natura 2000 insects – WP6: Flanders case study</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -166,6 +166,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_10km.html">
  <span class="dropdown-text">Results insects 10km</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_birds_1km.html">
+ <span class="dropdown-text">Results birds 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_birds_10km.html">
+ <span class="dropdown-text">Results birds 10km</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -205,11 +213,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-natura2000">    
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Natura2000.html">
- <span class="dropdown-text">Angiospermae 1km</span></a>
+ <span class="dropdown-text">b3gbi Flowering plants 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Florabank_Natura2000.html">
+ <span class="dropdown-text">b3gbi Florabank 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_Natura2000.html">
- <span class="dropdown-text">Insecta 1km</span></a>
+ <span class="dropdown-text">b3gbi Insecta 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Birds_Natura2000.html">
+ <span class="dropdown-text">b3gbi Birds 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/pdindicator_Natura2000.html">
+ <span class="dropdown-text">pdIndicator Flowering plants 1km</span></a>
   </li>  
     </ul>
   </li>
@@ -239,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators Natura 2000 for insects</p></h1>
+<h1 class="title"><p><a href="https://github.com/b-cubed-eu/b3gbi" target="_blank"> <img src="b3gbi.png" style="width:60px; vertical-align:middle; margin-right:5px;"> </a>General indicators Natura 2000 insects</p></h1>
 </div>
 
 
@@ -256,6 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>The indicators displayed below were calculated for native insects recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (31 May 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.rky6mr.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -291,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -335,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -389,8 +410,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>OD_ts_nonNatura2000 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">'./Insecta_data_Flanders_nonNatura2000/OD_ts.rds'</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># stel: ts_nat en ts_non zijn output van indicator_ts voor twee subsets</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df_nat     <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(OD_ts_Natura2000<span class="sc">$</span>data) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="st">"Natura2000"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df_non     <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(OD_ts_nonNatura2000<span class="sc">$</span>data) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="st">"nonNatura2000"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df_nat     <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(OD_ts_Natura2000<span class="sc">$</span>data) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="st">"Natura2000"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(year <span class="sc">&lt;</span> present_year <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df_non     <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(OD_ts_nonNatura2000<span class="sc">$</span>data) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="st">"nonNatura2000"</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(year <span class="sc">&lt;</span> present_year <span class="sc">-</span> <span class="dv">2</span>)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df_both <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_nat, df_non)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
@@ -420,7 +441,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -467,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -514,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -558,7 +579,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -605,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -652,7 +673,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="b3gbi_indicators_Insecta_Natura2000_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

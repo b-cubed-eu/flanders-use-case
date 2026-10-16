@@ -7,22 +7,23 @@ format:
 
 #### Indicator type
 
-indicator to evaluate policy
+Pressure Indicator / monitoring management
 
 #### Explanation
 
-This headline indicator, calculated by applying the b3alien package, estimates the actual rate at which new invasive alien species (IAS) successfully establish permanent populations within a region. It screens wildlife observations against international alien checklists to track the speed of biological invasions:
+This indicator quantifies the number of new invasive alien species (IAS) that successfully establish within a country or region per year. The package b3alien screens occurrence records against international alien checklists to infer the establishment rate of IAS species. Furthermore, the package corrects for detection delays by applying the approach proposed by Solow and Costello, resulting in a more reliable basis for estimating IAS establishment rates.
 
-- A fast-rising establishment rate implies that more non-native species are successfully breeding, surviving, and setting up permanent populations in the area.
-- A low or decreasing establishment rate indicates that fewer new alien species are managing to gain a permanent foothold in the local ecosystem.
+- An increasing rate indicates that more IAS species are introduced and established in the region.
+
+- A declining rate suggests that fewer IAS are being introduced, possibly due to effective prevention efforts targeting key introduction pathways.
 
 #### Applicability for policy
 
-This metric serves as the official CBD Headline Indicator to monitor global and national progress toward Target 6 of the Kunming-Montreal Global Biodiversity Framework. Its direct policy goal is to reduce the introduction and establishment rates of known invasive species by at least 50% by 2030. Especially looking at this at longer time scales (as is suggested in the CBD documentation) can provide some insight in the effectiveness of policies.
+This metric serves as the official CBD (Convention on Biological Diversity) Headline Indicator 6.1, “Rate of invasive alien species establishment”, to monitor global and national progress toward Target 6 of the Kunming-Montreal Global Biodiversity Framework. This target aims to reduce the introduction and establishment rates of known invasive species by at least 50% by 2030. Examining this indicator over longer time periods, as recommended in the CBD guidance, can provide valuable insights into the effectiveness of policies and management interventions. 
 
 #### Limitations
 
-As a high-level headline indicator, it simplifies highly complex ecological processes into a single, generic number. It is highly sensitive to regional data gaps and uneven mapping across different species groups. Therefore, this metric must always be interpreted alongside local maps and expert ecological assessments. Importantly, basic measures for observation effort and special bias can also be retrieved from the package b3alien.
+This metric is highly sensitive to changes in survey effort over space and time, and differences in detectability among taxonomic groups. Consequently, this indicator should always be assessed alongside local distribution maps and expert ecological knowledge. Measures of observation effort and spatial bias are available through the b3alien package and should be considered when interpreting the results.
 
 ![Figure 1: Target 6 indicator based on the GRIIS checklist,including only invasive species that are established, invasive or widespreadInvasive.](Target6/Figure_target6_indicator_heavily_filtering.png)
 
