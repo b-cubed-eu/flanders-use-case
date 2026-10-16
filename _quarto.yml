@@ -46,12 +46,17 @@ website:
            href: src/alienspeciesportal.qmd
       - text: 'Natura2000'
         menu:
-         - text: Angiospermae 1km
+         - text: b3gbi Flowering plants 1km
            href: src/b3gbi_indicators_Natura2000.qmd
-         - text: Insecta 1km 
+         - text: b3gbi Florabank 1km 
+           href: src/b3gbi_indicators_Florabank_Natura2000.qmd
+         - text: b3gbi Insecta 1km 
            href: src/b3gbi_indicators_Insecta_Natura2000.qmd
-         - text: Birds 1km 
+         - text: b3gbi Birds 1km 
            href: src/b3gbi_indicators_Birds_Natura2000.qmd
+         - text: pdIndicator Flowering plants 1km 
+           href: src/pdindicator_Natura2000.qmd
+        
            
     right: 
       - icon: github

@@ -17,7 +17,7 @@ library(dplyr)
 library(sf)
 ```
 
-The indicators displayed below were calculated for flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (31 May 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.rky6mr.
+The indicators displayed below were calculated for native insects recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (31 May 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.rky6mr.
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 ## Total occurrences
@@ -501,7 +501,7 @@ ggplot(data = SRD_map) +
 
 ```
 
-```{r, eval=FALSE, echo = FALSE, warning = FALSE, message=FALSE}
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
 SRD_ts <- readRDS('./Insecta_data_Flanders_1km/SRD_ts.rds')
 SRD_ts_data <- SRD_ts$data
 ggplot(SRD_ts_data, aes(year, diversity_val)) +

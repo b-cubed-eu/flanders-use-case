@@ -23,6 +23,10 @@ Florabank alle data
 
 https://www.gbif.org/occurrence/download/0020997-260519110011954
 
+Birds 1 km https://www.gbif.org/occurrence/download/0053276-260806074905277
+
+Birds 10 km https://www.gbif.org/occurrence/download/0002139-260921141020460
+
 
 HabitatDirectiveReporting
 

@@ -170,6 +170,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../src/b3gbi_indicators_birds_1km.html">
  <span class="dropdown-text">Results birds 1km</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_birds_10km.html">
+ <span class="dropdown-text">Results birds 10km</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -209,15 +213,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-natura2000">    
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Natura2000.html">
- <span class="dropdown-text">Angiospermae 1km</span></a>
+ <span class="dropdown-text">b3gbi Flowering plants 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/b3gbi_indicators_Florabank_Natura2000.html">
+ <span class="dropdown-text">b3gbi Florabank 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Insecta_Natura2000.html">
- <span class="dropdown-text">Insecta 1km</span></a>
+ <span class="dropdown-text">b3gbi Insecta 1km</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../src/b3gbi_indicators_Birds_Natura2000.html">
- <span class="dropdown-text">Birds 1km</span></a>
+ <span class="dropdown-text">b3gbi Birds 1km</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../src/pdindicator_Natura2000.html">
+ <span class="dropdown-text">pdIndicator Flowering plants 1km</span></a>
   </li>  
     </ul>
   </li>
@@ -264,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The indicators displayed below were calculated for flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 March 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.knsn44.</p>
+<p>The indicators displayed below were calculated for native flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 March 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.knsn44.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -301,17 +313,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>Show the code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load library</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(b3gbi)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>TO_map <span class="ot">&lt;-</span> <span class="fu">total_occ_map</span>(Angiosperm_data_cube,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>TO_ts <span class="ot">&lt;-</span> <span class="fu">total_occ_ts</span>(Angiosperm_data_cube, </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(TO_map, </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dubicube)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>TO_map <span class="ot">&lt;-</span> <span class="fu">total_occ_map</span>(Angiosperm_data_cube,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>TO_ts <span class="ot">&lt;-</span> <span class="fu">total_occ_ts</span>(Angiosperm_data_cube, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cell_size=</span><span class="st">"grid"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>TO_ts <span class="ot">&lt;-</span> <span class="fu">add_ci</span>(TO_ts)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(TO_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_map</span>(TO_map, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">visible_gridlines =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ts</span>(TO_ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">

@@ -1,0 +1,155 @@
+---
+title: Phylogenetic diversity 1km Natura 2000
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+editor_options: 
+  chunk_output_type: console
+---
+
+The indicators displayed below were calculated for native flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 March 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.knsn44.
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Phylogenetic diversity
+
+### Indicator type
+
+State indicator
+
+#### Explanation
+
+This indicator takes into account the evolutionary relatedness of species by calculating the sum of the branch lengths (representing the accumulated genetic changes) of the evolutionary tree of life that connect all the species found in a specific area. Instead of just counting the number of different species (species richness), it calculates the minimum path length needed to span across those species on a phylogenetic tree.
+
+- High value: The area contains species that are far apart on the tree of life (for example, it includes species of ancient lineages that have evolved separately from most other modern species). This means a wide variety of evolutionary features and distinct genetic traits are probably present in that ecosystem.
+
+- Low value: The species in the area are very closely related and clumped together on the same or a few related branches of the tree of life, meaning the ecosystem has a comparatively low variety of distinct evolutionary features.
+
+## Applicability for policy
+
+This metric is highly valuable for long-term conservation planning and climate change adaptation policies. Because we can only guess which biological traits and features will be crucial for species survival in changing future environments, protecting a wide variety of features (rather than just the number of species) maximizes the overall adaptability and resilience of the ecosystem.
+
+## Limitations
+
+The indicator is highly dependent on having an accurate and complete phylogenetic tree with reliable branch lengths for the taxonomic group being analyzed. If the evolutionary relationships are poorly mapped behind the scenes, the calculated tree-spanning path can become skewed, potentially over- or underestimating the true evolutionary value of the area.
+
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+library(sf)
+library(ggplot2)
+library(dplyr)
+
+pd_map <- read_sf("./pdIndicator/pd_Vl_1km.geojson")
+
+pd_map <- st_transform(pd_map, crs=3035)
+
+EEA_Natura2000 <- read_sf("./pdIndicator//EEA_1km_Natura2000.geojson")
+EEA_nonNatura2000 <- read_sf("./pdIndicator/EEA_1km_nonNatura2000.geojson") 
+
+# Natura 2000-cellen
+n2k <- st_drop_geometry(EEA_Natura2000)
+n2k <- dplyr::distinct(n2k, CELLCODE)
+n2k$groep <- "Natura 2000"
+
+# niet-Natura 2000-cellen
+non_n2k <- st_drop_geometry(EEA_nonNatura2000)
+non_n2k <- dplyr::distinct(non_n2k, CELLCODE)
+non_n2k$groep <- "non-Natura 2000"
+
+# samenvoegen, en cellen die in beide lijsten staan weglaten
+status <- rbind(n2k, non_n2k)
+dubbel <- status$CELLCODE[duplicated(status$CELLCODE)]
+status <- status[!status$CELLCODE %in% dubbel, ]
+
+# pd-waarde erbij zetten
+pd <- st_drop_geometry(pd_map)
+pd_groep <- dplyr::inner_join(pd, status, by = "CELLCODE")
+
+kleur_n2k     <- "#005957"   # vervang door B-Cubed-kleur 1
+kleur_non_n2k <- "#6CDDB4"   # vervang door B-Cubed-kleur 2
+
+ggplot(pd_groep, aes(x = groep, y = pd, fill = groep)) +
+  geom_boxplot(width = 0.5, colour = "black", outlier.size = 0.8) +
+  scale_fill_manual(values = c("Natura 2000" = "#005957",
+                               "non-Natura 2000" = "#6CDDB4" )) +
+  labs(x = NULL, y = "Phylogenetic diversity (Faith’s PD)") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank())
+
+
+
+```
+:::
+
+::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
+## Phylogenetic Diversity loss map
+
+### Indicator type
+
+Pressure/ecosystem indicator.
+
+## Explanation
+
+This indicator calculates exactly how much evolutionary history we stand to lose if threatened species disappear from a specific grid cell. Species are considered ‘threatened’ when classified as Critically Endangered (CR), Endangered (EN) or Vulnerable (VU) according to the local IUCN Red List. The total Phylogenetic Diversity is then once calculated with all species present; and second, without the threatened species. The difference between these two scores equals the Expected PD Loss.
+
+- High value (High Expected Loss): If the threatened species in this grid cell go extinct, a substantial chunk of the evolutionary tree of life and the feature diversity associated with it for this region will vanish. This happens because these endangered species have no close relatives in these cells that share their evolutionary history and evolved traits.
+
+- Low value (Low Expected Loss): The threatened species in this cell are either close cousins to other common species (meaning their disappearance won't completely delete that branch of the tree of life) or there are few threatened species present in the area.
+
+## Applicability for policy
+
+This indicator provides a "triage map" for policymakers and conservation agencies that highlights the areas where the loss of evolutionary heritage is expected to be greatest. Rather than just looking at the decline in species richness alone, it also considers the variety of features across the evolutionary tree of life. Resources can then be allocated towards high-priority areas, for example, to expand protected areas to include hotspots of evolutionary heritage.
+
+## Limitations
+
+This indicator treats all "threatened" categories (CR, EN, VU) with equal weight when calculating the expected loss, and therefore, it does not differentiate between a species that is on the brink of extinction versus one that is vulnerable. Furthermore, it relies on the up-to-date accuracy of regional Red Lists, and therefore, the potential loss of a species that has become threatened but is not officially assessed yet will not be factored in.
+
+
+```{r pd-loss-data, echo = FALSE, warning = FALSE, message = FALSE}
+pd_loss_map <- read_sf("./pdIndicator/pd_loss_Vl_1km.geojson")
+
+kleur_n2k     <- "#005957"
+kleur_non_n2k <- "#6CDDB4"
+kleuren <- c("Natura 2000" = kleur_n2k, "non-Natura 2000" = kleur_non_n2k)
+ 
+# add Natura 2000 status
+pd_loss <- st_drop_geometry(pd_loss_map)
+pd_loss_groep <- inner_join(pd_loss, status, by = "CELLCODE")
+pd_loss_groep <- pd_loss_groep[!is.na(pd_loss_groep$pd_loss), ]
+```
+ 
+```{r pd-loss-share, echo=FALSE, warning = FALSE, message = FALSE}
+# percentage of cells with an expected loss (> 0) per group
+procent <- tapply(pd_loss_groep$pd_loss > 0, pd_loss_groep$groep, mean) * 100
+aandeel <- data.frame(groep = names(procent), procent = as.numeric(procent))
+ 
+ggplot(aandeel, aes(x = groep, y = procent, fill = groep)) +
+  geom_col(width = 0.5) +
+  geom_text(aes(label = paste0(round(procent, 1), " %")), vjust = -0.5) +
+  scale_fill_manual(values = kleuren) +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(x = NULL, y = "Cells with expected PD loss (%)") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank())
+```
+ 
+```{r pd-loss-boxplot, echo = FALSE, warning = FALSE, message = FALSE}
+# only cells with an expected loss
+met_verlies <- pd_loss_groep[pd_loss_groep$pd_loss > 0, ]
+ 
+ggplot(met_verlies, aes(x = groep, y = pd_loss, fill = groep)) +
+  geom_boxplot(width = 0.5, colour = "black", outlier.size = 0.8) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "white") +
+  scale_fill_manual(values = kleuren) +
+  labs(x = NULL, y = "Expected loss of Faith’s PD\n(only including cells with a loss)") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank())
+```
+
+
+:::

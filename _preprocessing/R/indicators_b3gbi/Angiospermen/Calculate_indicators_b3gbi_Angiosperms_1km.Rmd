@@ -8,12 +8,13 @@ output: html_document
 ```{r}
 #install.packages("b3gbi", repos = #c("https://b-cubed-eu.r-universe.dev","https://cloud.r-project.org"))
 #b3gbi#install.packages("rnaturalearthdata")
-
+remotes::install_github("b-cubed-eu/b3gbi", ref = "fix/shapefile-area")
 gc()
-library(b3gbi)
+#library(b3gbi)
 library(sf)
 library(taxize)
 library(here)
+library(dubicube)
 
 
 
@@ -24,7 +25,7 @@ library(here)
 ```{r}
 Focus <- 'Flanders_1km'
 
-Angiosperm_data_cube <- process_cube(read.csv(paste0("./_preprocessing/data/raw/Angiosperm_data_",Focus,".csv")))
+Angiosperm_data_cube <- b3gbi::process_cube(read.csv(paste0("./_preprocessing/data/raw/Angiosperm_data_",Focus,".csv")))
 
 output_path <- here("_preprocessing","data", "output", "general_indicators", Focus)
 
@@ -61,7 +62,6 @@ saveRDS(OSR_ts,
 
 ```{r}
 'This variable quantifies the overall number of species occurrence records within a spatial unit or temporal period. While not a biodiversity indicator itself, it is crucial for understanding data comprehensiveness and distribution. It is presented as a map showing data density or a time series of annual record counts.'
-
 gc()
 
 #TODO: lukt niet om schaal aan te passen naar 1 km
@@ -74,11 +74,15 @@ TO_map <- total_occ_map(Angiosperm_data_cube,
 TO_ts <- total_occ_ts(Angiosperm_data_cube,
                            cell_size="grid")
 
+TO_ts_with_ci <- add_ci(TO_ts)
+
+plot(TO_ts_with_ci)
+
 saveRDS(TO_map,
         paste0(output_path, '/TO_map.rds'))
 
-saveRDS(TO_ts,
-        paste0(output_path, '/TO_ts.rds'))
+saveRDS(TO_ts_with_ci,
+        paste0('./src/Flanders_1km/TO_ts.rds'))
 
 
 
@@ -269,7 +273,11 @@ OD_map_plot <- plot(OD_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
 OD_ts <- occ_density_ts(Angiosperm_data_cube,
-                        cell_size="grid")
+                        cell_size="grid",
+                        shapefile_path = "./_preprocessing/data/raw/spatial/Flanders.shp")
+
+OD_ts_with_ci <- add_ci(OD_ts)
+
 OD_ts_plot <- plot(OD_ts)
 
 ##export data to showcase in dashboard
@@ -366,8 +374,11 @@ saveRDS(ComP_map,
 
 gc()
 
-SRD_ts <-spec_richness_density_ts(Angiosperm_data_cube,
-                         cell_size="grid")
+Natura2000 <- read_sf("./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.geojson")
+write_sf(Natura2000, "./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.shp")
+SRD_ts <- b3gbi::spec_richness_density_ts(Angiosperm_data_cube,
+                         cell_size="grid",
+                         shapefile_path = "./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.shp")
 SRD_map <-spec_richness_density_map(Angiosperm_data_cube,
                         spherical_geometry = FALSE,
                          cell_size="grid")

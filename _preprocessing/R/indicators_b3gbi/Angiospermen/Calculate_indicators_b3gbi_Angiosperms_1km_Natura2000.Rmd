@@ -8,6 +8,7 @@ output: html_document
 ```{r}
 #install.packages("b3gbi", repos = #c("https://b-cubed-eu.r-universe.dev","https://cloud.r-project.org"))
 #b3gbi#install.packages("rnaturalearthdata")
+remotes::install_github("b-cubed-eu/b3gbi", ref = "fix/shapefile-area")
 
 gc()
 library(b3gbi)
@@ -87,122 +88,6 @@ saveRDS(TO_ts,
 #Bootstrapping ok
 ```
 
-#8.4. Rarity
-
-```{r}
-"Rarity quantifies the scarcity or infrequency of species, and when summed over multiple species, serves as a crucial biodiversity indicator for conservation. b3gbi offers two distinct measures: Abundance-Based Rarity (based on species' proportional occurrences) and Area-Based Rarity (based on species' spatial occupancy). These can be mapped (indicator_map) to identify areas with a higher presence of rare species, or tracked over time (indicator_ts) to observe changes in overall rarity."
-
-#bootstrapping ok
-
-gc()
-
-ArRM_map <-  area_rarity_map(Angiosperm_data_cube,
-                             spherical_geometry = FALSE,
-                            cell_size="grid")
-
-ArRM_map_plot <- plot(ArRM_map)
-
-AbRM_map <- ab_rarity_map(Angiosperm_data_cube,
-                          spherical_geometry = FALSE,
-                            cell_size="grid")
-
-AbRM_map_plot <- plot(AbRM_map)
-
-ArRM_ts <-  area_rarity_ts(Angiosperm_data_cube,
-                            cell_size="grid")
-
-ArRM_ts_plot <- plot(ArRM_ts)
-
-AbRM_ts <- ab_rarity_ts(Angiosperm_data_cube,
-                            cell_size="grid")
-
-AbRM_ts_plot <- plot(AbRM_ts)
-
-##export data to showcase in dashboard
-saveRDS(ArRM_map,
-        paste0(output_path, '/arRM_map.rds'))
-
-saveRDS(ArRM_ts,
-        paste0(output_path, '/arRM_ts.rds'))
-
-
-saveRDS(AbRM_map,
-        paste0(output_path, '/abRM_map.rds'))
-
-saveRDS(AbRM_ts,
-        paste0(output_path, '/abRM_ts.rds'))
-
-```
-
-#8.5. Estimated Hill Diversity
-
-```{r}
-'Hill Diversity provides a unified framework for various diversity measures, allowing for different emphases on rare versus common species through a single parameter, q. b3gbi calculates three common forms: q=0 (approximates Species Richness, weighing all species equally), q=1 (emphasizes common species, like Hill-Shannon), and q=2 (emphasizes very common species, like Hill-Simpson). These indicators represent the "effective number of species" and can be mapped (indicator_map) or tracked over time (indicator_ts) to provide multi-faceted insights into biodiversity patterns.
-
-#SR: Species richness - hill0_map() and hill0_ts()
-
-#HSh: Hill-Shannon diversity - hill1_map() and hill1_ts()
-
-#HSi: Hill-Simpson diversity - hill2_map() and hill2_ts()'
-
-#gc()
-
-#SR_map <-  hill0_map(Angiosperm_data_cube,
-#                     spherical_geometry = FALSE,
-#                            cell_size="grid")
-
-#SR_map_plot <- plot(SR_map)
-
-#error
-#HSh_map <- hill1_map(Angiosperm_data_cube,
-#                     spherical_geometry = FALSE,
-#                            cell_size="grid")
-
-#HSh_map_plot <- plot(HSh_map)
-
-#HSi_map <- hill2_map(Angiosperm_data_cube,
-#                     spherical_geometry = FALSE,
-#                            cell_size="grid")
-
-#HSi_map_plot <- plot(HSi_map)
-
-#SR_ts <-  hill0_ts(Angiosperm_data_cube,
-#                            cell_size="grid")
-
-#SR_ts_plot <- plot(SR_ts)
-
-#HSh_ts <- hill1_ts(Angiosperm_data_cube,
-#                            cell_size="grid")
-
-#HSh_ts_plot <- plot(HSh_ts)
-
-#HSi_ts <- hill2_ts(Angiosperm_data_cube,
-#                            cell_size="grid")
-
-#HSi_ts_plot <- plot(HSi_ts)
-
-##export data to showcase in dashboard
-#saveRDS(SR_map,
-#        paste0(output_path, '/SR_map.rds'))
-
-#saveRDS(SR_ts,
-#        paste0(output_path, '/SR_ts.rds'))
-
-
-#saveRDS(HSh_map,
-#        paste0(output_path, '/HSh_map.rds'))
-
-#saveRDS(HSh_ts,
-#       paste0(output_path, '/HSh_ts.rds'))
-
-#saveRDS(HSi_map,
-#        paste0(output_path, '/HSi_map.rds'))
-
-#saveRDS(HSi_ts,
-#        paste0(output_path, '/HSi_ts.rds'))
-
-```
-
 #8.6. Cumulative Species Richness
 
 ```{r}
@@ -280,36 +165,6 @@ saveRDS(OD_map,
 
 saveRDS(OD_ts,
         paste0(output_path, '/OD_ts.rds'))
-```
-
-#8.11. Taxonomic Distinctness
-
-```{r}
-
-'Taxonomic Distinctness measures the average taxonomic distance between any two randomly chosen species in a sample, incorporating their phylogenetic or taxonomic relatedness. A higher value indicates a broader representation of evolutionary history within the community. It can highlight areas on a map (indicator_map) or show trends over time (indicator_ts) where species are, on average, more distantly related.'
-
-gc()
-
-#print
-#TODO: lukt niet om schaal aan te passen naar 1 km
-TD_map <- tax_distinct_map(Angiosperm_data_cube,
-                           spherical_geometry = FALSE,
-                            cell_size="grid")
-TD_map_plot <- plot(TD_map)
-
-#TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
-TD_ts <- tax_distinct_ts(Angiosperm_data_cube,
-                         cell_size="grid")
-
-TD_ts_plot <- plot(TD_ts)
-
-##export data to showcase in dashboard
-saveRDS(TD_map,
-        paste0(output_path, '/TD_map.rds'))
-
-saveRDS(TD_ts,
-        paste0(output_path, '/TD_ts.rds'))
-
 ```
 
 #8.12. Species Turnover -\> possibly renamed Occupancy turnover?

@@ -331,6 +331,9 @@ saveRDS(OT_ts,
 ```
 
 #8.13 completeness
+```{r}
+
+```
 
 ```{r}
 'This function calculates the completeness of biodiversity data over a gridded map or as a time series using the Sample Coverage metric from the iNEXT package.'

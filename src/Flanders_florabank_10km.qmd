@@ -17,7 +17,7 @@ library(dplyr)
 library(sf)
 ```
 
-The indicators displayed below were calculated for flowering plants recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 June 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.9rpv52.
+The indicators displayed below were calculated for native flowering plants reported in Florabank and recorded in Flanders from 1975 onwards. Details of the download settings are available from GBIF.org (16 June 2026) GBIF Occurrence Download https://doi.org/10.15468/dl.9rpv52.
 
 ::: {.callout-tip collapse="true" appearance="minimal" icon="false"}
 {{< include TotalOccurrences.Rmd >}}
