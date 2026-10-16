@@ -105,7 +105,6 @@ This indicator provides a "triage map" for policymakers and conservation agencie
 
 This indicator treats all "threatened" categories (CR, EN, VU) with equal weight when calculating the expected loss, and therefore, it does not differentiate between a species that is on the brink of extinction versus one that is vulnerable. Furthermore, it relies on the up-to-date accuracy of regional Red Lists, and therefore, the potential loss of a species that has become threatened but is not officially assessed yet will not be factored in.
 
-
 ```{r pd-loss-data, echo = FALSE, warning = FALSE, message = FALSE}
 pd_loss_map <- read_sf("./pdIndicator/pd_loss_Vl_1km.geojson")
 
@@ -118,7 +117,7 @@ pd_loss <- st_drop_geometry(pd_loss_map)
 pd_loss_groep <- inner_join(pd_loss, status, by = "CELLCODE")
 pd_loss_groep <- pd_loss_groep[!is.na(pd_loss_groep$pd_loss), ]
 ```
- 
+
 ```{r pd-loss-share, echo=FALSE, warning = FALSE, message = FALSE}
 # percentage of cells with an expected loss (> 0) per group
 procent <- tapply(pd_loss_groep$pd_loss > 0, pd_loss_groep$groep, mean) * 100
@@ -135,7 +134,7 @@ ggplot(aandeel, aes(x = groep, y = procent, fill = groep)) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor = element_blank())
 ```
- 
+
 ```{r pd-loss-boxplot, echo = FALSE, warning = FALSE, message = FALSE}
 # only cells with an expected loss
 met_verlies <- pd_loss_groep[pd_loss_groep$pd_loss > 0, ]
@@ -150,6 +149,4 @@ ggplot(met_verlies, aes(x = groep, y = pd_loss, fill = groep)) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor = element_blank())
 ```
-
-
 :::
