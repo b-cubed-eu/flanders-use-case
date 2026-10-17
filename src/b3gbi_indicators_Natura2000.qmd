@@ -73,7 +73,7 @@ df_both <- bind_rows(df_nat, df_non)
 ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
 
   # groeps-trend
-  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+  geom_smooth(se = FALSE, size = 1, alpha= 0.15) +
 
   # ruwe punten
   geom_point(alpha = 0.6, size = 2) +
@@ -113,7 +113,7 @@ df_both <- bind_rows(df_nat, df_non)
 ggplot(df_both, aes(x = year, y = diversity_val, colour = Group, fill = Group)) +
 
   # groeps-trend
-  geom_smooth(se = TRUE, size = 1, alpha= 0.15) +
+  geom_smooth(se = FALSE, size = 1, alpha= 0.15) +
 
   # ruwe punten
   geom_point(alpha = 0.6, size = 2) +
