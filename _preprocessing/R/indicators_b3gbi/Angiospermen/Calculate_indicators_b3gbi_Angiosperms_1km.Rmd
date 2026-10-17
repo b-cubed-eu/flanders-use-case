@@ -8,9 +8,9 @@ output: html_document
 ```{r}
 #install.packages("b3gbi", repos = #c("https://b-cubed-eu.r-universe.dev","https://cloud.r-project.org"))
 #b3gbi#install.packages("rnaturalearthdata")
-remotes::install_github("b-cubed-eu/b3gbi", ref = "fix/shapefile-area")
+#remotes::install_github("b-cubed-eu/b3gbi", ref = "fix/shapefile-area")
 gc()
-#library(b3gbi)
+library(b3gbi)
 library(sf)
 library(taxize)
 library(here)
@@ -272,11 +272,11 @@ OD_map <- occ_density_map(Angiosperm_data_cube,
 OD_map_plot <- plot(OD_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
-OD_ts <- occ_density_ts(Angiosperm_data_cube,
+OD_ts <- b3gbi::occ_density_ts(Angiosperm_data_cube,
                         cell_size="grid",
                         shapefile_path = "./_preprocessing/data/raw/spatial/Flanders.shp")
 
-OD_ts_with_ci <- add_ci(OD_ts)
+OD_ts_with_ci <- dubicube::add_ci(OD_ts)
 
 OD_ts_plot <- plot(OD_ts)
 
@@ -374,11 +374,10 @@ saveRDS(ComP_map,
 
 gc()
 
-Natura2000 <- read_sf("./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.geojson")
-write_sf(Natura2000, "./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.shp")
+
 SRD_ts <- b3gbi::spec_richness_density_ts(Angiosperm_data_cube,
-                         cell_size="grid",
-                         shapefile_path = "./_preprocessing/data/raw/spatial/EEA_1km_Natura2000.shp")
+                         cell_size="grid")
+
 SRD_map <-spec_richness_density_map(Angiosperm_data_cube,
                         spherical_geometry = FALSE,
                          cell_size="grid")
