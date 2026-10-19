@@ -24,7 +24,7 @@ library(here)
 ```{r}
 Focus <- 'Insecta_data_Flanders_nonNatura2000'
 
-Angiosperm_data_cube <- process_cube(read.csv(paste0("./_preprocessing/data/raw/",Focus,".csv")))
+Angiosperm_data_cube <- b3gbi::process_cube(read.csv(paste0("./_preprocessing/data/raw/",Focus,".csv")))
 
 
 
@@ -270,8 +270,9 @@ OD_map <- occ_density_map(Angiosperm_data_cube,
 OD_map_plot <- plot(OD_map)
 
 #TODO;check dat NA buiten Vlaanderen resultaat niet beïnvloedt?
-OD_ts <- occ_density_ts(Angiosperm_data_cube,
-                        cell_size="grid")
+OD_ts <- b3gbi::occ_density_ts(Angiosperm_data_cube,
+                        cell_size="grid",
+                        shapefile_path = "./_preprocessing/data/raw/spatial/EEA_1km_nonNatura2000.shp")
 OD_ts_plot <- plot(OD_ts)
 
 ##export data to showcase in dashboard
@@ -279,7 +280,7 @@ saveRDS(OD_map,
         paste0(output_path, '/OD_map.rds'))
 
 saveRDS(OD_ts,
-        paste0(output_path, '/OD_ts.rds'))
+        './src/Insecta_data_Flanders_nonNatura2000/OD_ts.rds')
 ```
 
 #8.11. Taxonomic Distinctness
@@ -368,8 +369,10 @@ saveRDS(ComP_map,
 
 gc()
 
-SRD_ts <-spec_richness_density_ts(Angiosperm_data_cube,
-                         cell_size="grid")
+SRD_ts <- b3gbi::spec_richness_density_ts(Angiosperm_data_cube,
+                         cell_size="grid",
+                        shapefile_path = "./_preprocessing/data/raw/spatial/EEA_1km_nonNatura2000.shp")
+
 SRD_map <-spec_richness_density_map(Angiosperm_data_cube,
                         spherical_geometry = FALSE,
                          cell_size="grid")
@@ -377,7 +380,7 @@ SRD_map <-spec_richness_density_map(Angiosperm_data_cube,
 
 ##export data to showcase in dashboard
 saveRDS(SRD_ts,
-        paste0(output_path, '/SRD_ts.rds'))
+        './src/Insecta_data_Flanders_nonNatura2000/SRD_ts.rds')
 
 ##export data to showcase in dashboard
 saveRDS(SRD_map,
