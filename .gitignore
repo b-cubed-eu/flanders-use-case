@@ -39,6 +39,9 @@ google-services.json
 preprocessing/data/raw/*
 _preprocessing/data/raw/*
 _preprocessing/R/HabitatDirectiveTrends/*
+_preprocessing/R/Flanders_data/*
+_preprocessing/R/invasimapr/*
+
 
 /.quarto/
 **/*.quarto_ipynb
