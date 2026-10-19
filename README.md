@@ -4,6 +4,7 @@
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 ![Last Commit](https://img.shields.io/github/last-commit/b-cubed-eu/flanders-use-case)
 ![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blueviolet)
+[![Release v1.0](https://img.shields.io/badge/release-v1.0-orange)](https://github.com/b-cubed-eu/flanders-use-case/releases/tag/v1.0)
 
 ## 🚀 Quick Start / Explore the Dashboard
 
