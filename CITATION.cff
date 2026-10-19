@@ -43,9 +43,9 @@ authors:
   affiliation: Botanical Garden of Meise 
   orcid: 0000-0002-0596-5376
 keywords:
-- dashboard
-- general indicators
-- phylogenetic indicators
+- Quarto dashboard
+- General indicators
+- Phylogenetic indicators
 - Invasive Alien Species indicators
 - Biodiversity Cubes
 contact:
