@@ -6,10 +6,6 @@ authors:
   family-names: Hillaert
   affiliation: Research Institute for Nature and Forest (INBO)
   orcid: 0000-0002-3761-8846
-- given-names: Tim
-  family-names: Adriaens
-  affiliation: Research Institute for Nature and Forest (INBO)
-  orcid: 0000-0001-7268-4200
 - given-names: Lissa
   family-names: Breugelmans
   affiliation: Research Institute for Nature and Forest (INBO)
@@ -18,6 +14,26 @@ authors:
   family-names: Langeraert
   affiliation: Research Institute for Nature and Forest (INBO)
   orcid: 0000-0002-5900-8109
+- given-names: Tim
+  family-names: Adriaens
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0001-7268-4200
+- given-names: Soria
+  family-names: Delva
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0002-7164-6031
+- given-names: Sandra
+  family-names: MacFadyen
+  affiliation: Stellenbosch University Faculty of Science
+  orcid: 0000-0002-5316-440X
+- given-names: Damiano
+  family-names: Oldoni
+  affiliation: Research Institute for Nature and Forest (INBO)
+  orcid: 0000-0003-3445-7562
+- given-names: Nikol
+  family-names: Yovcheva
+  affiliation: Pensoft Publishers (Bulgaria)
+  orcid: 0009-0008-9320-7719
 - given-names: Toon
   family-names: Van Daele
   affiliation: Research Institute for Nature and Forest (INBO)
